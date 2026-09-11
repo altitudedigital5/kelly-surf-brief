@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Al's Cowabunga Surf Report by Kelly Slater Bot · Wed Sep 9 Evening</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0A1F33; --lagoon:#1AABB8; --coral:#FF6B4A; --sand:#FFF6E8;
+    --hibiscus:#E85D75; --palm:#2D8A6A; --ink:#0A1F33; --muted:#5A7382;
+    --line:rgba(10,31,51,.12); --soft:#F3F8F9; --card:#FFFFFF;
+    --go:#2D8A6A; --go-bg:#D8F0E8; --warn:#C47A2A; --warn-bg:#F8E8C8;
+    --stop:#C0342F; --stop-bg:#F8E0DC;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  body{margin:0;background:linear-gradient(180deg,#0A1F33 0%,#12324A 28%,#E8F4F6 28%);color:var(--ink);font-family:Karla,system-ui,sans-serif}
+  .page{
+    width:min(720px,100%); margin:12px auto; background:var(--card);
+    border-radius:16px; padding:0 0 10px; box-shadow:0 14px 40px rgba(10,31,51,.22);
+    overflow:hidden; position:relative;
+  }
+  .stripe{
+    height:6px; width:100%;
+    background:linear-gradient(90deg,#0A1F33 0%,#1AABB8 28%,#FF6B4A 58%,#E85D75 78%,#FFF6E8 100%);
+  }
+  .inner{padding:10px 14px 0}
+
+  .eyebrow{font-family:DM Mono,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lagoon);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  h1{font-family:Fraunces,Georgia,serif;font-size:22px;line-height:1.1;margin:4px 0 8px;letter-spacing:-.02em;color:var(--navy)}
+  h1 em{font-style:italic;color:var(--coral)}
+
+  /* dual CALL chips */
+  .calls{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+  .call{
+    min-width:0;background:var(--sand);border-radius:12px;padding:8px 10px;
+    border:1px solid var(--line); position:relative; overflow:hidden;
+    display:flex;flex-direction:column;gap:2px;
+  }
+  .call::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--coral),var(--hibiscus))}
+  .call.go::before{background:linear-gradient(180deg,var(--lagoon),var(--palm))}
+  .call.go{background:linear-gradient(135deg,#E8F8F6,#FFF6E8)}
+  .call .heat{
+    display:inline-block;align-self:flex-start;font-family:DM Mono,monospace;font-size:8px;letter-spacing:.1em;
+    text-transform:uppercase;background:var(--navy);color:#fff;padding:1px 6px;border-radius:999px;
+  }
+  .call.go .heat{background:var(--palm)}
+  .call .big{font-family:Fraunces,Georgia,serif;font-size:18px;font-weight:700;line-height:1.1;color:var(--navy);letter-spacing:-.02em}
+  .call .sec{margin:0;font-size:11px;color:var(--muted);line-height:1.25}
+
+  /* metrics strip */
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:8px}
+  .tile{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:7px 8px;min-width:0}
+  .tile .k{font-family:DM Mono,monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+  .tile .v{font-family:Fraunces,Georgia,serif;font-size:18px;font-weight:700;letter-spacing:-.02em;line-height:1;color:var(--navy)}
+  .tile .m{margin-top:2px;font-size:10px;color:var(--muted);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  /* ride bar — board + temp only, NO hint */
+  .ride{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    background:linear-gradient(105deg,#0A1F33 0%,#134A5C 45%,#1AABB8 100%);color:#fff;border-radius:12px;
+    padding:8px 12px;margin-bottom:8px;
+  }
+  .ride .lbl{font-family:DM Mono,monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+  .ride .rec{font-family:Fraunces,Georgia,serif;font-size:16px;font-weight:700;line-height:1.15}
+  .ride .wchip{font-family:DM Mono,monospace;font-size:12px;background:rgba(255,246,232,.16);border-radius:999px;padding:4px 10px;white-space:nowrap}
+
+  /* ʻIke — short */
+  .teach{
+    display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:start;
+    background:linear-gradient(135deg,#FFF6E8 0%,#E8F8F6 100%);
+    border:1px solid rgba(26,171,184,.25); border-radius:12px; padding:8px 10px; margin-bottom:8px;
+  }
+  .teach .mark{
+    width:28px;height:28px;border-radius:50%;
+    background:linear-gradient(135deg,var(--lagoon),var(--palm));
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .teach .mark svg{width:14px;height:14px}
+  .teach .okina{font-family:DM Mono,monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--lagoon)}
+  .teach h2{margin:1px 0 2px;font-family:Fraunces,Georgia,serif;font-size:13px;color:var(--navy);font-weight:700}
+  .teach p{margin:0;font-size:12px;color:var(--muted);line-height:1.35}
+
+  .sec-h{margin:0 0 6px;font-family:DM Mono,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:500}
+
+  /* WHERE compact */
+  .where{margin-bottom:8px}
+  .spot{display:grid;grid-template-columns:22px 1fr auto;gap:6px;align-items:center;padding:6px 8px;border-radius:10px;margin-bottom:4px;background:var(--soft)}
+  .spot.best{background:var(--go-bg);box-shadow:inset 3px 0 0 var(--palm)}
+  .spot .n{font-family:Fraunces,Georgia,serif;font-size:16px;font-weight:700;color:var(--palm);text-align:center}
+  .spot:not(.best) .n{color:var(--muted)}
+  .spot .name{font-weight:700;font-size:13px;line-height:1.15}
+  .spot .why{font-size:11px;color:var(--muted);line-height:1.25;margin-top:1px}
+  .pill{font-family:DM Mono,monospace;font-size:9px;letter-spacing:.06em;padding:2px 6px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+  .spot.best .pill{border-color:rgba(45,138,106,.4);color:var(--palm)}
+  .spot.skip{opacity:.75}
+  .spot.skip .name{font-weight:600;font-size:12px}
+
+  /* WHEN */
+  .when{margin-bottom:8px}
+  .when-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:6px}
+  .slot{border-radius:8px;padding:6px 4px;text-align:center;background:var(--soft);border:1px solid var(--line)}
+  .slot.on{background:var(--go-bg);border-color:transparent;box-shadow:inset 0 0 0 1px rgba(45,138,106,.3)}
+  .slot.meh{background:var(--warn-bg);border-color:transparent}
+  .slot.fade{opacity:.5}
+  .slot .t{font-family:DM Mono,monospace;font-size:8px;letter-spacing:.06em;color:var(--muted)}
+  .slot .s{font-weight:700;font-size:11px;margin-top:2px}
+  .slot.on .s{color:var(--palm)}
+  .slot.meh .s{color:var(--warn)}
+  .tide{height:56px;position:relative;margin:2px 0}
+  .tide svg{width:100%;height:100%;display:block}
+  .tide-legend{display:flex;justify-content:space-between;font-family:DM Mono,monospace;font-size:9px;color:var(--muted);gap:4px}
+  .when-note{margin:4px 0 0;font-size:11px;color:var(--muted);line-height:1.3}
+
+  /* footer strip — 3 mini cols / chips */
+  .footstrip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:6px}
+  .fchip{border:1px solid var(--line);border-radius:10px;padding:6px 8px;background:#fff;min-width:0}
+  .fchip.warn{background:var(--stop-bg);border-color:transparent;box-shadow:inset 3px 0 0 var(--stop)}
+  .fchip h3{margin:0 0 3px;font-family:DM Mono,monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500}
+  .fchip p,.fchip li{margin:0;font-size:11px;color:var(--muted);line-height:1.3}
+  .fchip ul{margin:0;padding-left:14px}
+  .fchip b{color:var(--ink);font-weight:600}
+
+  .srcwrap{border-top:1px solid var(--line);padding:6px 14px 4px;display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+  .src{font-family:DM Mono,monospace;font-size:8px;color:var(--muted);line-height:1.35;margin:0;max-width:100%;overflow:hidden}
+  .brand{font-family:DM Mono,monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--lagoon);white-space:nowrap;flex-shrink:0}
+
+  @media (max-width:900px){
+    body{background:#0A1F33}
+    .page{width:100%;max-width:100%;margin:0;border-radius:0;box-shadow:none}
+    .inner{padding:10px 12px 0}
+    .srcwrap{padding:6px 12px 10px}
+  }
+  @media (max-width:480px){
+    .inner{padding:8px 10px 0}
+    h1{font-size:20px}
+    .metrics{grid-template-columns:1fr 1fr}
+    .tile .v{font-size:17px}
+    .when-bar{grid-template-columns:repeat(5,1fr)}
+    .footstrip{grid-template-columns:1fr}
+    .spot{grid-template-columns:20px 1fr auto}
+    .eyebrow{white-space:normal;line-height:1.3}
+    .srcwrap{flex-direction:column;padding:6px 10px 14px;gap:4px}
+    .brand{white-space:normal}
+  }
+  @media print{
+    body{background:#fff}
+    .page{margin:0;box-shadow:none;width:100%;border-radius:0}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="stripe" aria-hidden="true"></div>
+  <div class="inner">
+
+  <div class="eyebrow">Al's Cowabunga Surf Report · by Kelly Slater Bot · CURRENT CHECK · Wed Sep 9, 2026 · ~7:34 PM PT</div>
+  <h1>Near high + short SW — <em>hold hard surf tonight.</em></h1>
+
+  <div class="calls">
+    <div class="call">
+      <div class="heat">LOCAL</div>
+      <div class="big">Little Point</div>
+      <p class="sec">Best of local · soft only</p>
+    </div>
+    <div class="call go">
+      <div class="heat">BEST</div>
+      <div class="big">Little Point</div>
+      <p class="sec">Cliffs/OB skip at flood</p>
+    </div>
+  </div>
+
+  <div class="metrics">
+    <div class="tile">
+      <div class="k">Face</div>
+      <div class="v">2–3.5 ft</div>
+      <div class="m">NWS 2–4 · waist–chest</div>
+    </div>
+    <div class="tile">
+      <div class="k">Swell</div>
+      <div class="v">3.6 ft</div>
+      <div class="m">SW 218° · 8s · 46258</div>
+    </div>
+    <div class="tile">
+      <div class="k">Wind</div>
+      <div class="v">Calm</div>
+      <div class="m">0 kt · LJAC1 glassy</div>
+    </div>
+    <div class="tile">
+      <div class="k">Tide</div>
+      <div class="v">6.6 ft ↑</div>
+      <div class="m">H 6.3 @ 8:39p</div>
+    </div>
+  </div>
+
+  <!-- board: name + water temp ONLY — no description/hint -->
+  <div class="ride">
+    <div>
+      <div class="lbl">Ride</div>
+      <div class="rec">Fish / mid · log if Tourmo</div>
+    </div>
+    <div class="wchip">~73°F</div>
+  </div>
+
+  <div class="teach">
+    <div class="mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M2 14c3-2 5-2 8 0s5 2 8 0 5-2 8 0" stroke="#FFF6E8" stroke-width="2" stroke-linecap="round"/><path d="M2 18c3-2 5-2 8 0s5 2 8 0 5-2 8 0" stroke="#FFF6E8" stroke-width="2" stroke-linecap="round" opacity=".7"/></svg>
+    </div>
+    <div>
+      <div class="okina">ʻIke · Ocean Teaching</div>
+      <h2>Period is the story — patience at flood</h2>
+      <p>Tonight’s outer SW is ~8s: short-period mush that softens fast on a near-high tide. Tomorrow’s ~17s pulse is a different animal — waiting for dawn beats forcing soft walls at 6.6 ft.</p>
+    </div>
+  </div>
+
+  <div class="where">
+    <h2 class="sec-h">Where · local ranked</h2>
+    <div class="spot best">
+      <div class="n">1</div>
+      <div>
+        <div class="name">Little Point</div>
+        <div class="why">Rising/mid–high fits · SW 8s soft but usable</div>
+      </div>
+      <span class="pill">LOCAL + BEST</span>
+    </div>
+    <div class="spot">
+      <div class="n">2</div>
+      <div>
+        <div class="name">Tourmaline</div>
+        <div class="why">High-tide mush longboard backup</div>
+      </div>
+      <span class="pill">SOFT</span>
+    </div>
+    <div class="spot">
+      <div class="n">3</div>
+      <div>
+        <div class="name">Birdrock Calumet</div>
+        <div class="why">Wants lower–mid · compromised at flood</div>
+      </div>
+      <span class="pill">COMPROMISED</span>
+    </div>
+    <div class="spot skip">
+      <div class="n">·</div>
+      <div>
+        <div class="name">Skip · PB N / Drive / Point · Cliffs / OB · hold eve</div>
+      </div>
+      <span class="pill">SKIP</span>
+    </div>
+  </div>
+
+  <div class="when">
+    <h2 class="sec-h">When · remaining eve + tom dawn</h2>
+    <div class="when-bar">
+      <div class="slot fade"><div class="t">DAWN</div><div class="s">Done</div></div>
+      <div class="slot fade"><div class="t">DAY</div><div class="s">Done</div></div>
+      <div class="slot meh"><div class="t">NOW–9P</div><div class="s">Mush</div></div>
+      <div class="slot fade"><div class="t">NIGHT</div><div class="s">High</div></div>
+      <div class="slot on"><div class="t">TOM DAWN</div><div class="s">Best next</div></div>
+    </div>
+    <div class="tide">
+      <svg viewBox="0 0 360 56" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="tg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1AABB8" stop-opacity=".28"/>
+            <stop offset="100%" stop-color="#1AABB8" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path d="M0,35 C25,46 35,50 41,50 C60,50 100,18 137,15 C160,13 185,26 218,38 C240,43 255,40 255,38 C280,26 300,8 310,7 C330,5 350,8 360,9" fill="none" stroke="#1AABB8" stroke-width="2"/>
+        <path d="M0,35 C25,46 35,50 41,50 C60,50 100,18 137,15 C160,13 185,26 218,38 C240,43 255,40 255,38 C280,26 300,8 310,7 C330,5 350,8 360,9 L360,56 L0,56 Z" fill="url(#tg)"/>
+        <line x1="295" y1="4" x2="295" y2="50" stroke="#FF6B4A" stroke-width="1.5" stroke-dasharray="2 2"/>
+        <circle cx="295" cy="9" r="3.5" fill="#FF6B4A"/>
+      </svg>
+    </div>
+    <div class="tide-legend"><span>2:45a L −0.6</span><span>9:06a H 4.9</span><span>2:34p L 1.3</span><span>8:39p H 6.3</span></div>
+    <p class="when-note"><b style="color:var(--ink)">Tonight mush</b> at near-high · <b style="color:var(--ink)">Tom dawn better</b> — L −0.5 @ 3:17a → H 5.2 @ 9:33a · SW ~2 ft @ 17s · go early</p>
+  </div>
+
+  <div class="footstrip">
+    <div class="fchip">
+      <h3>Skip</h3>
+      <p>PB N / Drive · PB Point · Cliffs / OB · hard shortboard</p>
+    </div>
+    <div class="fchip warn">
+      <h3>Gotchas</h3>
+      <p>Flood Adv thru 11p · mod rips · 6.6 ft reefs · 46232 offline</p>
+    </div>
+    <div class="fchip">
+      <h3>Swell / Wind</h3>
+      <p><b>SW</b> ~218° · <b>calm / NNE 3 kt</b> glassy</p>
+    </div>
+  </div>
+
+  </div><!-- /.inner -->
+
+  <div class="srcwrap">
+    <p class="src">46258 @ 6:56p: 3.6 ft / 8s / 218° / 72.9°F · 46225 3.9 ft / 8s / 216° · LJAC1 0 kt @ 6:48p · NOAA 9410230 6.575 ft @ 7:24p · tides H 6.325/8:39p · Thu L −0.455/3:17a H 5.225/9:33a · NWS SD 2–4 · Flood thru 11p · Surfline Premium not used</p>
+    <div class="brand">Al's Cowabunga · Kelly Slater Bot</div>
+  </div>
+
+</div>
+</body>
+</html>
