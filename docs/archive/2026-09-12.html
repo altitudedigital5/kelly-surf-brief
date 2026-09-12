@@ -14,10 +14,16 @@
     --line:rgba(10,31,51,.12); --soft:#F3F8F9; --card:#FFFFFF;
     --go:#2D8A6A; --go-bg:#D8F0E8; --warn:#C47A2A; --warn-bg:#F8E8C8;
     --stop:#C0342F; --stop-bg:#F8E0DC;
+    --go-bar-h:64px;
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
-  body{margin:0;background:linear-gradient(180deg,#0A1F33 0%,#12324A 28%,#E8F4F6 28%);color:var(--ink);font-family:Karla,system-ui,sans-serif}
+  body{
+    margin:0;
+    background:linear-gradient(180deg,#0A1F33 0%,#12324A 28%,#E8F4F6 28%);
+    color:var(--ink);font-family:Karla,system-ui,sans-serif;
+    padding-bottom:calc(var(--go-bar-h) + env(safe-area-inset-bottom,0px) + 8px);
+  }
   .page{
     width:min(720px,100%); margin:12px auto; background:var(--card);
     border-radius:16px; padding:0 0 10px; box-shadow:0 14px 40px rgba(10,31,51,.22);
@@ -50,13 +56,30 @@
   .call .big{font-family:Fraunces,Georgia,serif;font-size:18px;font-weight:700;line-height:1.1;color:var(--navy);letter-spacing:-.02em}
   .call .sec{margin:0;font-size:11px;color:var(--muted);line-height:1.25}
 
-  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:8px}
-  .tile{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:7px 8px;min-width:0}
-  .tile .k{font-family:DM Mono,monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
-  .tile .v{font-family:Fraunces,Georgia,serif;font-size:18px;font-weight:700;letter-spacing:-.02em;line-height:1;color:var(--navy)}
-  .tile .m{margin-top:2px;font-size:10px;color:var(--muted);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .swellviz{
+    display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
+    background:var(--soft);border:1px solid var(--line);border-radius:12px;
+    padding:8px 10px;margin-bottom:8px;
+  }
+  .swellviz .bars{display:flex;flex-direction:column;gap:5px;min-width:0}
+  .sbar{display:grid;grid-template-columns:64px 1fr auto;gap:6px;align-items:center}
+  .sbar .lab{font-family:DM Mono,monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .sbar .track{height:10px;background:rgba(10,31,51,.08);border-radius:999px;overflow:hidden;position:relative}
+  .sbar .fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--lagoon),var(--palm))}
+  .sbar .fill.wind{background:linear-gradient(90deg,#7EB8C8,var(--coral))}
+  .sbar .fill.hint{opacity:.45;background:linear-gradient(90deg,#A8C5CE,#E8A090)}
+  .sbar .num{font-family:DM Mono,monospace;font-size:10px;color:var(--ink);white-space:nowrap}
+  .swellviz .meta{margin:2px 0 0;font-size:10px;color:var(--muted);line-height:1.25}
+  .rose{
+    width:72px;height:72px;flex-shrink:0;position:relative;
+  }
+  .rose svg{width:100%;height:100%;display:block}
+  .rose .deg{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    font-family:DM Mono,monospace;font-size:9px;font-weight:500;color:var(--navy);
+    text-align:center;line-height:1.1;pointer-events:none;
+  }
 
-  /* Ride bar: board name + water temp ONLY — NO description/hint paragraph */
   .ride{
     display:flex;align-items:center;justify-content:space-between;gap:10px;
     background:linear-gradient(105deg,#0A1F33 0%,#134A5C 45%,#1AABB8 100%);color:#fff;border-radius:12px;
@@ -95,32 +118,65 @@
   .spot.skip{opacity:.75}
   .spot.skip .name{font-weight:600;font-size:12px}
 
-  .when{margin-bottom:8px}
-  .when-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:6px}
-  .slot{border-radius:8px;padding:6px 4px;text-align:center;background:var(--soft);border:1px solid var(--line)}
-  .slot.on{background:var(--go-bg);border-color:transparent;box-shadow:inset 0 0 0 1px rgba(45,138,106,.3)}
-  .slot.meh{background:var(--warn-bg);border-color:transparent}
-  .slot.fade{opacity:.5}
-  .slot .t{font-family:DM Mono,monospace;font-size:8px;letter-spacing:.06em;color:var(--muted)}
-  .slot .s{font-weight:700;font-size:11px;margin-top:2px}
-  .slot.on .s{color:var(--palm)}
-  .slot.meh .s{color:var(--warn)}
-  .tide{height:56px;position:relative;margin:2px 0}
-  .tide svg{width:100%;height:100%;display:block}
-  .tide-legend{display:flex;justify-content:space-between;font-family:DM Mono,monospace;font-size:9px;color:var(--muted);gap:4px}
-  .when-note{margin:4px 0 0;font-size:11px;color:var(--muted);line-height:1.3}
+  .scrub{margin-bottom:8px;background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+  .scrub-read{
+    display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline;margin-bottom:6px;
+    font-size:12px;color:var(--muted);
+  }
+  .scrub-read .t{font-family:Fraunces,Georgia,serif;font-size:16px;font-weight:700;color:var(--navy)}
+  .scrub-read .chip{
+    font-family:DM Mono,monospace;font-size:10px;letter-spacing:.04em;
+    padding:2px 7px;border-radius:999px;background:#fff;border:1px solid var(--line);
+  }
+  .scrub-read .chip.go{background:var(--go-bg);border-color:transparent;color:var(--palm);font-weight:600}
+  .scrub-read .chip.meh{background:var(--warn-bg);border-color:transparent;color:var(--warn);font-weight:600}
+  .scrub-read .chip.skip{background:var(--stop-bg);border-color:transparent;color:var(--stop);font-weight:600}
+  .scrub-wins{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:6px}
+  .swin{border-radius:8px;padding:5px 4px;text-align:center;background:#fff;border:1px solid var(--line);font-size:10px}
+  .swin.on{background:var(--go-bg);border-color:transparent}
+  .swin.meh{background:var(--warn-bg);border-color:transparent}
+  .swin .k{font-family:DM Mono,monospace;font-size:8px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+  .swin .v{font-weight:700;margin-top:1px;font-size:11px}
+  .swin.on .v{color:var(--palm)}
+  .swin.meh .v{color:var(--warn)}
+  .scrub-chart{height:72px;position:relative;margin:2px 0 4px}
+  .scrub-chart svg{width:100%;height:100%;display:block}
+  .scrub-slider{width:100%;accent-color:var(--coral);margin:0;height:28px}
+  .scrub-legend{display:flex;justify-content:space-between;font-family:DM Mono,monospace;font-size:9px;color:var(--muted);gap:4px}
+  .scrub-note{margin:4px 0 0;font-size:11px;color:var(--muted);line-height:1.3}
+  .print-marker{display:none}
 
-  .footstrip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:6px}
+  .footstrip{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:6px}
   .fchip{border:1px solid var(--line);border-radius:10px;padding:6px 8px;background:#fff;min-width:0}
   .fchip.warn{background:var(--stop-bg);border-color:transparent;box-shadow:inset 3px 0 0 var(--stop)}
   .fchip h3{margin:0 0 3px;font-family:DM Mono,monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500}
-  .fchip p,.fchip li{margin:0;font-size:11px;color:var(--muted);line-height:1.3}
-  .fchip ul{margin:0;padding-left:14px}
+  .fchip p{margin:0;font-size:11px;color:var(--muted);line-height:1.3}
   .fchip b{color:var(--ink);font-weight:600}
 
   .srcwrap{border-top:1px solid var(--line);padding:6px 14px 4px;display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
   .src{font-family:DM Mono,monospace;font-size:8px;color:var(--muted);line-height:1.35;margin:0;max-width:100%;overflow:hidden}
   .brand{font-family:DM Mono,monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--lagoon);white-space:nowrap;flex-shrink:0}
+
+  .gobar{
+    position:fixed;left:0;right:0;bottom:0;z-index:40;
+    background:linear-gradient(105deg,#0A1F33 0%,#134A5C 55%,#1AABB8 100%);
+    color:#fff;padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px));
+    box-shadow:0 -8px 28px rgba(10,31,51,.35);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .gobar-inner{
+    width:min(720px,100%);display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;
+  }
+  .gobar .who{font-family:DM Mono,monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;opacity:.7}
+  .gobar .spotname{font-family:Fraunces,Georgia,serif;font-size:15px;font-weight:700;line-height:1.1}
+  .gobar .meta{font-size:11px;opacity:.85;margin-top:1px}
+  .gobar .acts{display:flex;gap:6px}
+  .gobar a,.gobar button{
+    appearance:none;border:0;cursor:pointer;text-decoration:none;color:#0A1F33;
+    background:rgba(255,246,232,.92);font-family:DM Mono,monospace;font-size:10px;letter-spacing:.06em;
+    text-transform:uppercase;font-weight:600;padding:8px 10px;border-radius:999px;white-space:nowrap;
+  }
+  .gobar a:active,.gobar button:active{transform:scale(.97)}
 
   @media (max-width:900px){
     body{background:#0A1F33}
@@ -131,18 +187,22 @@
   @media (max-width:480px){
     .inner{padding:8px 10px 0}
     h1{font-size:20px}
-    .metrics{grid-template-columns:1fr 1fr}
-    .tile .v{font-size:17px}
-    .when-bar{grid-template-columns:repeat(5,1fr)}
+    .scrub-wins{grid-template-columns:repeat(4,1fr)}
     .footstrip{grid-template-columns:1fr}
     .spot{grid-template-columns:20px 1fr auto}
     .eyebrow{white-space:normal;line-height:1.3}
     .srcwrap{flex-direction:column;padding:6px 10px 14px;gap:4px}
     .brand{white-space:normal}
+    .gobar-inner{grid-template-columns:1fr auto;gap:6px}
+    .gobar .acts{grid-column:1 / -1}
+    .gobar a,.gobar button{flex:1;text-align:center}
   }
   @media print{
-    body{background:#fff}
+    body{background:#fff;padding-bottom:0}
     .page{margin:0;box-shadow:none;width:100%;border-radius:0}
+    .gobar{display:none !important}
+    .scrub-slider{display:none !important}
+    .print-marker{display:block}
   }
 </style>
 </head>
@@ -151,16 +211,14 @@
   <div class="stripe" aria-hidden="true"></div>
   <div class="inner">
 
-  <!-- layout_v5 compact: do not put placeholders or nested comments here -->
-
-  <div class="eyebrow">Al's Cowabunga Surf Report by Kelly Slater Bot · AM · Sat Sep 12, 2026 · ~6:47 AM PT</div>
-  <h1>Long SW still organizing — <em>Little Point before 10:28a high.</em></h1>
+  <div class="eyebrow">Al's Cowabunga Surf Report by Kelly Slater Bot · MID · Sat Sep 12, 2026 · ~11:47 AM PT</div>
+  <h1>Past the AM pulse — <em>Little Point held; high mush now.</em></h1>
 
   <div class="calls">
     <div class="call go">
       <div class="heat">LOCAL</div>
       <div class="big">Little Point</div>
-      <p class="sec">SSW 206° + rising mid</p><!-- optional; omit or empty for spot-name-only chip -->
+      <p class="sec">SW 222° · high mush now</p>
     </div>
     <div class="call go">
       <div class="heat">BEST</div>
@@ -169,36 +227,44 @@
     </div>
   </div>
 
-  <div class="metrics">
-    <div class="tile">
-      <div class="k">Face</div>
-      <div class="v">2–3 ft</div>
-      <div class="m">NWS SD · low rips</div>
+  <div class="swellviz" aria-label="Swell energy">
+    <div class="bars">
+      <div class="sbar">
+        <div class="lab">Ground</div>
+        <div class="track"><div class="fill" style="width:57%"></div></div>
+        <div class="num">SwH 2.3 ft · 14s</div>
+      </div>
+      <div class="sbar">
+        <div class="lab">Windswell</div>
+        <div class="track"><div class="fill wind" style="width:65%"></div></div>
+        <div class="num">WWH 2.6 ft · 5s</div>
+      </div>
+      <div class="sbar">
+        <div class="lab">Hs buoy</div>
+        <div class="track"><div class="fill" style="width:82%;opacity:.35"></div></div>
+        <div class="num">Hs 3.3 ft · 46258</div>
+      </div>
+      <p class="meta">Buoy 46258 spectrum · groundswell vs windswell quoted · face 2–3 ft est (NWS SD)</p>
     </div>
-    <div class="tile">
-      <div class="k">Swell</div>
-      <div class="v">3.6 ft</div>
-      <div class="m">SSW 206° · 15s · 46258</div>
-    </div>
-    <div class="tile">
-      <div class="k">Wind</div>
-      <div class="v">ESE 4 kt</div>
-      <div class="m">LJAC1 · SW 10 later</div>
-    </div>
-    <div class="tile">
-      <div class="k">Tide</div>
-      <div class="v">2.7 ft ↑</div>
-      <div class="m">H 5.6 @ 10:28a</div>
+    <div class="rose" aria-hidden="true">
+      <svg viewBox="0 0 72 72">
+        <circle cx="36" cy="36" r="30" fill="#fff" stroke="rgba(10,31,51,.12)" stroke-width="1"/>
+        <circle cx="36" cy="36" r="22" fill="none" stroke="rgba(26,171,184,.25)" stroke-width="1" stroke-dasharray="2 2"/>
+        <text x="36" y="12" text-anchor="middle" font-size="7" fill="#5A7382" font-family="DM Mono,monospace">N</text>
+        <line x1="44.4" y1="26.6" x2="17.3" y2="56.8" stroke="#FF6B4A" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="17.3" cy="56.8" r="3.5" fill="#FF6B4A"/>
+        <circle cx="36" cy="36" r="2.5" fill="#0A1F33"/>
+      </svg>
+      <div class="deg">222°<br>SW</div>
     </div>
   </div>
 
-  <!-- BOARD: name + water temp ONLY — do NOT add a hint/description paragraph -->
   <div class="ride">
     <div>
       <div class="lbl">Ride</div>
       <div class="rec">Fish / mid</div>
     </div>
-    <div class="wchip">~71–73°F</div>
+    <div class="wchip">~72°F</div>
   </div>
 
   <div class="teach">
@@ -207,20 +273,19 @@
     </div>
     <div>
       <div class="okina">ʻIke · Ocean Teaching</div>
-      <h2>Wait for the pulse</h2>
-      <p>Outer SSW ~15s still organizes sets under short WNW chop — take the pulse, not every bump. Rising toward 5.6 ft @ 10:28a softens sand first; light ESE now is cleaner than yesterday’s SSE.</p><!-- ~2 short sentences max -->
+      <h2>High softens the ledge</h2>
+      <p>Long SW still pulses under short W windswell, but 5.6 ft @ 10:28a has flooded the takeoff. Wait for the set or bank the AM — SW 12 kt now is dirtier than the ESE dawn glass.</p>
     </div>
   </div>
 
   <div class="where">
     <h2 class="sec-h">Where · local ranked</h2>
-    <!-- each spot: .spot[.best|.skip] > .n + ( .name + .why ) + .pill ; why max one short line; collapse skips into one line -->
     
     <div class="spot best">
       <div class="n">1</div>
       <div>
         <div class="name">Little Point</div>
-        <div class="why">SSW 206° + rising mid–high preferred</div>
+        <div class="why">SSW/SW 222° · AM rising was best; high mush now</div>
       </div>
       <span class="pill">LOCAL + BEST</span>
     </div>
@@ -228,7 +293,7 @@
       <div class="n">2</div>
       <div>
         <div class="name">Birdrock Calumet</div>
-        <div class="why">SW angle · early before reef floods</div>
+        <div class="why">SW angle · early window already passed</div>
       </div>
       <span class="pill">EARLY</span>
     </div>
@@ -236,7 +301,7 @@
       <div class="n">3</div>
       <div>
         <div class="name">Tourmaline</div>
-        <div class="why">Soft log backup · mush into 10:28a high</div>
+        <div class="why">Soft log · mush through high</div>
       </div>
       <span class="pill">SOFT</span>
     </div>
@@ -244,7 +309,7 @@
       <div class="n">4</div>
       <div>
         <div class="name">PB Drive</div>
-        <div class="why">Mid–high ok · long-period closeout risk</div>
+        <div class="why">Mid–high ok · closeout risk on long pulse</div>
       </div>
       <span class="pill">MEH</span>
     </div>
@@ -258,31 +323,40 @@
 
   </div>
 
-  <div class="when">
-    <h2 class="sec-h">When · timeline</h2>
-    <div class="when-bar">
-      <div class="slot on"><div class="t">NOW–9:30A</div><div class="s">Go</div></div>
-      <div class="slot meh"><div class="t">9:30–11A</div><div class="s">High mush</div></div>
-      <div class="slot meh"><div class="t">MID</div><div class="s">Falling</div></div>
-      <div class="slot fade"><div class="t">PM</div><div class="s">SW 10</div></div>
-      <div class="slot fade"><div class="t">EVE</div><div class="s">Flood</div></div>
+  <div class="scrub" id="scrub">
+    <h2 class="sec-h">When · scrub timeline</h2>
+    <div class="scrub-read" id="scrubRead">
+      <span class="t" id="scrubTime">11:00a</span>
+      <span id="scrubTide">5.5 ft tide</span>
+      <span id="scrubWind">SW 12 kt · LJAC1</span>
+      <span class="chip meh" id="scrubWin">MEH</span>
+      <span id="scrubFace">2–3 ft est</span>
+    </div>
+    <div class="scrub-wins">
+      <div class="swin on"><div class="k">Dawn/AM</div><div class="v">GO</div></div>
+      <div class="swin meh"><div class="k">High mush</div><div class="v">MEH</div></div>
+      <div class="swin meh"><div class="k">PM low</div><div class="v">MEH</div></div>
+      <div class="swin meh"><div class="k">Sunset</div><div class="v">MEH</div></div>
 </div>
-    <div class="tide">
-      <svg viewBox="0 0 360 56" preserveAspectRatio="none">
+    <div class="scrub-chart">
+      <svg viewBox="0 0 360 72" preserveAspectRatio="none" aria-hidden="true">
         <defs>
           <linearGradient id="tg" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stop-color="#1AABB8" stop-opacity=".28"/>
             <stop offset="100%" stop-color="#1AABB8" stop-opacity="0"/>
           </linearGradient>
         </defs>
-        <path d="M0,28 C25,38 45,50 64,50 C100,50 135,12 157,8 C190,5 220,30 250,48 C270,52 290,40 310,24 C325,14 335,10 341,10 C350,10 356,12 360,14" fill="none" stroke="#1AABB8" stroke-width="2"/>
-        <path d="M0,28 C25,38 45,50 64,50 C100,50 135,12 157,8 C190,5 220,30 250,48 C270,52 290,40 310,24 C325,14 335,10 341,10 C350,10 356,12 360,14 L360,56 L0,56 Z" fill="url(#tg)"/>
-        <line x1="102" y1="4" x2="102" y2="50" stroke="#FF6B4A" stroke-width="1.5" stroke-dasharray="2 2"/>
-        <circle cx="102" cy="30" r="3.5" fill="#FF6B4A"/>
+        <path d="M0.0,19.9 L15.7,33.6 L31.3,47.7 L47.0,58.8 L62.6,64.0 L78.3,62.2 L93.9,53.7 L109.6,40.7 L125.2,26.6 L140.9,14.6 L156.5,8.0 L172.2,8.2 L187.8,15.1 L203.5,26.9 L219.1,40.7 L234.8,52.9 L250.4,60.6 L266.1,61.8 L281.7,56.6 L297.4,46.3 L313.0,33.7 L328.7,22.2 L344.3,14.8 L360.0,13.4 L360,72 L0,72 Z" fill="url(#tg)"/>
+        <path d="M0.0,19.9 L15.7,33.6 L31.3,47.7 L47.0,58.8 L62.6,64.0 L78.3,62.2 L93.9,53.7 L109.6,40.7 L125.2,26.6 L140.9,14.6 L156.5,8.0 L172.2,8.2 L187.8,15.1 L203.5,26.9 L219.1,40.7 L234.8,52.9 L250.4,60.6 L266.1,61.8 L281.7,56.6 L297.4,46.3 L313.0,33.7 L328.7,22.2 L344.3,14.8 L360.0,13.4" fill="none" stroke="#1AABB8" stroke-width="2"/>
+        <line id="scrubPlayhead" x1="172.2" y1="4" x2="172.2" y2="68" stroke="#FF6B4A" stroke-width="1.5" stroke-dasharray="2 2"/>
+        <circle id="scrubDot" cx="172.2" cy="8.2" r="3.5" fill="#FF6B4A"/>
+        <line class="print-marker" x1="109.6" y1="4" x2="109.6" y2="68" stroke="#2D8A6A" stroke-width="1.5" opacity=".7"/>
       </svg>
-</div>
-    <div class="tide-legend"><span>4:15a L 0.3</span><span>10:28a H 5.6</span><span>4:41p L 0.5</span><span>10:44p H 5.1</span></div>
-    <p class="when-note"><b style="color:var(--ink)">Window NOW–9:30a</b> — rising mid before H 5.6 @ 10:28a · PZZ SW 10 kt later under long SSW</p><!-- one line -->
+      <div class="print-marker" aria-hidden="true"></div>
+    </div>
+    <input class="scrub-slider" id="scrubSlider" type="range" min="0" max="23" step="1" value="11" aria-label="Scrub timeline hour">
+    <div class="scrub-legend"><span>4:15a L 0.3</span><span>10:28a H 5.6</span><span>4:41p L 0.5</span><span>10:44p H 5.1</span></div>
+    <p class="scrub-note"><b style="color:var(--ink)">Best was dawn–9:30a</b> — rising mid before H 5.6 @ 10:28a · NOW high mush · PM low under SW 10 (PZZ)</p>
   </div>
 
   <div class="footstrip">
@@ -292,21 +366,87 @@
     </div>
     <div class="fchip warn">
       <h3>Gotchas</h3>
-      <p>Low rips AM (NWS) · 10:28a mush · SW 10 PM · 46232 offline</p>
-    </div>
-    <div class="fchip">
-      <h3>Swell / Wind</h3>
-      <p><b>SSW</b> 206° / 15s · Hs 3.6 ft · <b>ESE 4 kt</b> AM</p>
+      <p>High mush now · SW 12 kt · PM SW 10 · 46232 offline · low AM rips (NWS)</p>
     </div>
   </div>
 
-  </div><!-- /.inner -->
+  </div>
 
   <div class="srcwrap">
-    <p class="src">46258 @ 5:56a PT (12:56Z): Hs 3.6 ft / DPD 15s / MWD 208° / 73.0°F · SPEC @ 6:26a (13:26Z): SwH 2.0 ft @ 15.4s SSW + WWH 3.0 ft @ 6.7s WNW / MWD 206° · 46225 @ 5:56a: 3.6 ft / 15s / 208° · 46254 2.3 ft / 15s / 287° · 46224 3.0 ft / 15s / 205° · 46232 OFFLINE since Sep 1 · LJAC1 ESE 100° 4.1 kt @ 5:54a · NOAA 9410230 WL 2.747 ft @ 6:36a · tides L 0.346/4:15a H 5.605/10:28a L 0.537/4:41p H 5.054/10:44p · WTMP station 71.1°F @ 6:36a (buoy 73.0°F) · NWS SRF SD 2–3 ft mixed 230/270 low rips · water 68–75°F · PZZ740 var &lt;10 becoming SW 10 · seas 3 · SW 2 ft @ 15s · Surfline Premium not used</p>
+    <p class="src">46258 @ 11:26a PT (18:26Z): Hs 3.3 ft / DPD 14s / MWD 222° / 73.6°F · SPEC: SwH 2.3 ft @ 14.3s SW + WWH 2.6 ft @ 5.0s W · 46225 @ 11:26a: 3.6 ft / 14s / 209° · 46254 @ 10:56a: 2.6 ft / 8s / 285° · 46224 @ 11:26a: 3.3 ft / 15s / 205° · 46232 OFFLINE since Sep 1 · LJAC1 SW 220° 12.1 kt @ 10:54a (AM ESE 100–140° 4–5 kt @ 6:06–7:36a) · NOAA 9410230 WL 6.06 ft @ 11:36a PT · tides L 0.346/4:15a H 5.605/10:28a L 0.537/4:41p H 5.054/10:44p · WTMP station 72.1°F @ 11:36a · NWS SRF SD 2–3 ft mixed SW 230° / W 270° low rips · water 68–75°F · PZZ740 var <10 becoming SW 10 aft · seas 3 · SW 2 ft @ 15s · Surfline Premium not used</p>
     <div class="brand">Al's Cowabunga · Kelly Slater Bot</div>
   </div>
 
 </div>
+
+<div class="gobar" role="region" aria-label="GO bar">
+  <div class="gobar-inner">
+    <div>
+      <div class="who">LOCAL · BEST</div>
+      <div class="spotname">Little Point</div>
+      <div class="meta">Best window dawn–9:30a · Fish / mid · ~72°F</div>
+    </div>
+    <div class="acts">
+      <a href="https://maps.google.com/?q=Little+Point+Fernglen+Neptune+Place+La+Jolla+CA" target="_blank" rel="noopener">Maps</a>
+      <button type="button" id="shareBtn">Share</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var SHARE_URL = "https://d2gwgujzd9dqcv.cloudfront.net/";
+  var HOURS = [{"h": 0, "tide": 4.43, "wind": "ESE 3–5 kt", "wind_src": "LJAC1 AM", "win": "SKIP", "wcls": "skip", "face": "2–3 ft est"}, {"h": 1, "tide": 3.17, "wind": "ESE 3–5 kt", "wind_src": "LJAC1 AM", "win": "SKIP", "wcls": "skip", "face": "2–3 ft est"}, {"h": 2, "tide": 1.87, "wind": "ESE 3–5 kt", "wind_src": "LJAC1 AM", "win": "SKIP", "wcls": "skip", "face": "2–3 ft est"}, {"h": 3, "tide": 0.85, "wind": "ESE 3–5 kt", "wind_src": "LJAC1 AM", "win": "SKIP", "wcls": "skip", "face": "2–3 ft est"}, {"h": 4, "tide": 0.37, "wind": "ESE 3–5 kt", "wind_src": "LJAC1 AM", "win": "SKIP", "wcls": "skip", "face": "2–3 ft est"}, {"h": 5, "tide": 0.54, "wind": "ESE 3–5 kt", "wind_src": "LJAC1 AM", "win": "GO", "wcls": "go", "face": "2–3 ft est"}, {"h": 6, "tide": 1.32, "wind": "ESE 3–5 kt", "wind_src": "LJAC1 AM", "win": "GO", "wcls": "go", "face": "2–3 ft est"}, {"h": 7, "tide": 2.52, "wind": "ESE 3–5 kt", "wind_src": "LJAC1 AM", "win": "GO", "wcls": "go", "face": "2–3 ft est"}, {"h": 8, "tide": 3.82, "wind": "ESE 3–5 kt", "wind_src": "LJAC1 AM", "win": "GO", "wcls": "go", "face": "2–3 ft est"}, {"h": 9, "tide": 4.92, "wind": "S–SW ~6 kt", "wind_src": "LJAC1", "win": "GO", "wcls": "go", "face": "2–3 ft est"}, {"h": 10, "tide": 5.53, "wind": "S–SW 6–10 kt", "wind_src": "LJAC1", "win": "MEH", "wcls": "meh", "face": "2–3 ft est"}, {"h": 11, "tide": 5.51, "wind": "SW 12 kt", "wind_src": "LJAC1", "win": "MEH", "wcls": "meh", "face": "2–3 ft est"}, {"h": 12, "tide": 4.88, "wind": "SW ~10 kt", "wind_src": "PZZ740", "win": "MEH", "wcls": "meh", "face": "2–3 ft est"}, {"h": 13, "tide": 3.79, "wind": "SW ~10 kt", "wind_src": "PZZ740", "win": "SKIP", "wcls": "skip", "face": "2–3 ft est"}, {"h": 14, "tide": 2.52, "wind": "SW ~10 kt", "wind_src": "PZZ740", "win": "SKIP", "wcls": "skip", "face": "2–3 ft est"}, {"h": 15, "tide": 1.39, "wind": "SW ~10 kt", "wind_src": "PZZ740", "win": "MEH", "wcls": "meh", "face": "2–3 ft est"}, {"h": 16, "tide": 0.68, "wind": "SW ~10 kt", "wind_src": "PZZ740", "win": "MEH", "wcls": "meh", "face": "2–3 ft est"}, {"h": 17, "tide": 0.57, "wind": "SW ~10 kt", "wind_src": "PZZ740", "win": "MEH", "wcls": "meh", "face": "2–3 ft est"}, {"h": 18, "tide": 1.05, "wind": "var <10 kt", "wind_src": "PZZ740", "win": "SKIP", "wcls": "skip", "face": "2–3 ft est"}, {"h": 19, "tide": 2.0, "wind": "var <10 kt", "wind_src": "PZZ740", "win": "MEH", "wcls": "meh", "face": "2–3 ft est"}, {"h": 20, "tide": 3.16, "wind": "var <10 kt", "wind_src": "PZZ740", "win": "SKIP", "wcls": "skip", "face": "2–3 ft est"}, {"h": 21, "tide": 4.22, "wind": "var <10 kt", "wind_src": "PZZ740", "win": "SKIP", "wcls": "skip", "face": "2–3 ft est"}, {"h": 22, "tide": 4.9, "wind": "var <10 kt", "wind_src": "PZZ740", "win": "SKIP", "wcls": "skip", "face": "2–3 ft est"}, {"h": 23, "tide": 5.03, "wind": "var <10 kt", "wind_src": "PZZ740", "win": "SKIP", "wcls": "skip", "face": "2–3 ft est"}];
+  var slider = document.getElementById('scrubSlider');
+  var play = document.getElementById('scrubPlayhead');
+  function fmtHour(h){
+    var ap = h >= 12 ? 'p' : 'a';
+    var hr = h % 12; if (hr === 0) hr = 12;
+    return hr + ':00' + ap;
+  }
+  function apply(h){
+    var d = HOURS[h] || HOURS[0];
+    document.getElementById('scrubTime').textContent = fmtHour(h);
+    document.getElementById('scrubTide').textContent = d.tide.toFixed(1) + ' ft tide';
+    document.getElementById('scrubWind').textContent = d.wind + ' · ' + d.wind_src;
+    var w = document.getElementById('scrubWin');
+    w.textContent = d.win;
+    w.className = 'chip ' + d.wcls;
+    document.getElementById('scrubFace').textContent = d.face;
+    if (play) {
+      var x = (h / 23) * 360;
+      play.setAttribute('x1', x);
+      play.setAttribute('x2', x);
+      var dot = document.getElementById('scrubDot');
+      if (dot) {
+        dot.setAttribute('cx', x);
+        var mn = 0.37, mx = 5.53;
+        var y = 8 + (mx - d.tide) / (mx - mn) * 56;
+        dot.setAttribute('cy', y);
+      }
+    }
+  }
+  if (slider) {
+    slider.addEventListener('input', function(){ apply(+slider.value); });
+    apply(+slider.value);
+  }
+  var btn = document.getElementById('shareBtn');
+  if (btn) {
+    btn.addEventListener('click', function(){
+      var data = {title: "Al's Cowabunga Surf Report", text: 'Al\'s Cowabunga · Little Point LOCAL+BEST · AM GO before 10:28a high', url: SHARE_URL};
+      if (navigator.share) {
+        navigator.share(data).catch(function(){});
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(SHARE_URL).then(function(){
+          btn.textContent = 'Copied';
+          setTimeout(function(){ btn.textContent = 'Share'; }, 1500);
+        });
+      } else {
+        prompt('Copy share URL', SHARE_URL);
+      }
+    });
+  }
+})();
+</script>
 </body>
 </html>
