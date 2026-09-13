@@ -24,10 +24,11 @@
     color:var(--ink);font-family:Karla,system-ui,sans-serif;
     padding-bottom:calc(var(--go-bar-h) + env(safe-area-inset-bottom,0px) + 8px);
   }
+  html,body{overflow-x:hidden}
   .page{
     width:min(720px,100%); margin:12px auto; background:var(--card);
     border-radius:16px; padding:0 0 10px; box-shadow:0 14px 40px rgba(10,31,51,.22);
-    overflow:hidden; position:relative;
+    overflow-x:hidden; overflow-y:visible; position:relative;
   }
   .stripe{
     height:6px; width:100%;
@@ -139,9 +140,12 @@
   .swin .v{font-weight:700;margin-top:1px;font-size:11px}
   .swin.on .v{color:var(--palm)}
   .swin.meh .v{color:var(--warn)}
-  .scrub-chart{height:72px;position:relative;margin:2px 0 4px}
-  .scrub-chart svg{width:100%;height:100%;display:block}
-  .scrub-slider{width:100%;accent-color:var(--coral);margin:0;height:28px}
+  .scrub-chart{height:72px;position:relative;margin:2px 0 4px;touch-action:none;cursor:ew-resize}
+  .scrub-chart svg{width:100%;height:100%;display:block;pointer-events:none}
+  .scrub-slider{
+    width:100%;accent-color:var(--coral);margin:0;height:44px;
+    touch-action:pan-x; display:block;
+  }
   .scrub-legend{display:flex;justify-content:space-between;font-family:DM Mono,monospace;font-size:9px;color:var(--muted);gap:4px}
   .scrub-note{margin:4px 0 0;font-size:11px;color:var(--muted);line-height:1.3}
   .print-marker{display:none}
@@ -154,7 +158,7 @@
   .fchip b{color:var(--ink);font-weight:600}
 
   .srcwrap{border-top:1px solid var(--line);padding:6px 14px 4px;display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
-  .src{font-family:DM Mono,monospace;font-size:8px;color:var(--muted);line-height:1.35;margin:0;max-width:100%;overflow:hidden}
+  .src{font-family:DM Mono,monospace;font-size:8px;color:var(--muted);line-height:1.35;margin:0;max-width:100%;overflow:visible;white-space:normal;word-break:break-word}
   .brand{font-family:DM Mono,monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--lagoon);white-space:nowrap;flex-shrink:0}
 
   .gobar{
@@ -165,7 +169,7 @@
     display:flex;align-items:center;justify-content:center;
   }
   .gobar-inner{
-    width:min(720px,100%);display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;
+    width:min(720px,100%);display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
   }
   .gobar .who{font-family:DM Mono,monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;opacity:.7}
   .gobar .spotname{font-family:Fraunces,Georgia,serif;font-size:15px;font-weight:700;line-height:1.1}
@@ -185,6 +189,7 @@
     .srcwrap{padding:6px 12px 10px}
   }
   @media (max-width:480px){
+    :root{--go-bar-h:96px}
     .inner{padding:8px 10px 0}
     h1{font-size:20px}
     .scrub-wins{grid-template-columns:repeat(4,1fr)}
@@ -388,7 +393,7 @@
     </div>
     <div class="acts">
       <a href="https://maps.google.com/?q=32.8053,-117.2620" target="_blank" rel="noopener">Maps</a>
-      <button type="button" id="shareBtn">Share</button>
+      <button type="button" id="shareBtn" data-share-text="Al's Cowabunga · Tourmaline LOCAL+BEST · NOW–9:30a before the high">Share</button>
     </div>
   </div>
 </div>
@@ -430,10 +435,35 @@
     slider.addEventListener('input', function(){ apply(+slider.value); });
     apply(+slider.value);
   }
+  var chart = document.querySelector('.scrub-chart');
+  function hourFromX(el, clientX){
+    var r = el.getBoundingClientRect();
+    if (!r.width) return 0;
+    var t = (clientX - r.left) / r.width;
+    return Math.max(0, Math.min(23, Math.round(t * 23)));
+  }
+  function setHour(h){
+    h = Math.max(0, Math.min(23, h|0));
+    if (slider) slider.value = String(h);
+    apply(h);
+  }
+  if (chart) {
+    chart.addEventListener('pointerdown', function(e){
+      e.preventDefault();
+      try { chart.setPointerCapture(e.pointerId); } catch (err) {}
+      setHour(hourFromX(chart, e.clientX));
+    });
+    chart.addEventListener('pointermove', function(e){
+      if (e.pointerType === 'mouse' && !(e.buttons & 1)) return;
+      e.preventDefault();
+      setHour(hourFromX(chart, e.clientX));
+    });
+  }
   var btn = document.getElementById('shareBtn');
   if (btn) {
     btn.addEventListener('click', function(){
-      var data = {title: "Al's Cowabunga Surf Report", text: 'Al's Cowabunga · Tourmaline LOCAL+BEST · NOW–9:30a before the high', url: SHARE_URL};
+      var shareText = btn.getAttribute('data-share-text') || "Al's Cowabunga Surf Report";
+      var data = {title: "Al's Cowabunga Surf Report", text: shareText, url: SHARE_URL};
       if (navigator.share) {
         navigator.share(data).catch(function(){});
       } else if (navigator.clipboard && navigator.clipboard.writeText) {
