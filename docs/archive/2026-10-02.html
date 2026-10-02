@@ -252,6 +252,31 @@
   @keyframes grow{from{transform:scaleX(.2)} to{transform:scaleX(1)}}
   @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(45,138,106,0)} 50%{box-shadow:0 0 0 4px rgba(45,138,106,.22)}}
 
+
+  /* Both-local: hide dual CALL cards; hero + optional whisper carry the call */
+  .calls.hidden{display:none}
+  .calls.single{grid-template-columns:1fr}
+  .calls.single .call + .call{display:none}
+
+  .lockey{
+    margin:0 0 8px; padding:7px 10px; border-radius:12px;
+    background:linear-gradient(135deg,#F4FBFA 0%, #FFF6E8 100%);
+    border:1px solid rgba(26,171,184,.22);
+  }
+  .lockey .lk-h{
+    font-family:DM Mono,monospace; font-size:9px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--lagoon); margin:0 0 4px;
+  }
+  .lockey p{margin:0 0 3px; font-size:11px; line-height:1.35; color:var(--muted)}
+  .lockey p:last-child{margin:0}
+  .lockey .tag{
+    display:inline-block; font-family:DM Mono,monospace; font-size:8px; letter-spacing:.1em;
+    text-transform:uppercase; padding:1px 5px; border-radius:999px; margin-right:4px;
+    vertical-align:1px;
+  }
+  .lockey .tag.home{background:var(--go-bg); color:var(--palm); font-weight:600}
+  .lockey .tag.far{background:rgba(10,31,51,.08); color:var(--muted); font-weight:600}
+
   @media (max-width:900px){
     body{background:#0E2A40}
     .page{width:100%; max-width:100%; margin:0; border-radius:0; box-shadow:none}
@@ -299,19 +324,8 @@
     <div class="kicker">Today's call</div>
     <div class="eyebrow">Al's Cowabunga · Fri Oct 2 · North PB</div>
     <h1 class="say">Glass morning.<br>PB north of the pier, now through 10:30.</h1>
-    <p class="whisper">Rather stay on your street? <em>PB Drive, same window.</em></p>
-    <div class="calls">
-      <div class="call go">
-        <div class="heat">LOCAL</div>
-        <div class="big">PB Drive</div>
-        <p class="sec">WSW 13s · NOW–10:30a</p>
-      </div>
-      <div class="call go">
-        <div class="heat">BEST</div>
-        <div class="big">PB north of pier</div>
-        <p class="sec">glass morning · same window</p>
-      </div>
-    </div>
+    <p class="whisper">also fine: <em>PB Drive</em></p>
+    <!-- Both picks are LOCAL (PB north + PB Drive) → one hero only; no dual CALL cards. -->
     <div class="sea" aria-hidden="true">
       <svg class="a" viewBox="0 0 640 36" preserveAspectRatio="none"><path fill="rgba(255,246,232,.20)" d="M0 20c20 0 20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10V36H0Z"/></svg>
       <svg class="b" viewBox="0 0 640 36" preserveAspectRatio="none"><path fill="rgba(126,224,232,.28)" d="M0 26c20 0 20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8V36H0Z"/></svg>
@@ -360,6 +374,12 @@
     <div class="wchip">~72°F</div>
   </div>
 
+  <div class="lockey" aria-label="Which spots are local">
+    <div class="lk-h">Home stretch</div>
+    <p><span class="tag home">LOCAL</span> PB north · Drive · Tourmo · PB Point · Calumet · Little Point</p>
+    <p><span class="tag far">NOT</span> Cliffs · OB · Scripps · Blacks · North County</p>
+  </div>
+
   <div class="teach">
     <div class="mark" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none"><path d="M2 14c3-2 5-2 8 0s5 2 8 0 5-2 8 0" stroke="#FFF6E8" stroke-width="2" stroke-linecap="round"/><path d="M2 18c3-2 5-2 8 0s5 2 8 0 5-2 8 0" stroke="#FFF6E8" stroke-width="2" stroke-linecap="round" opacity=".7"/></svg>
@@ -374,23 +394,23 @@
   <div class="where">
     <h2 class="sec-h">Where it's working</h2>
     <div class="spot best">
-      <div class="n">1</div>
-      <div>
-        <div class="name">PB Drive</div>
-        <div class="why">Your local. Clean west-southwest, glass north wind, tide still rising. Score 0.98.</div>
-      </div>
-      <span class="pill">LOCAL</span>
-    </div>
-    <div class="spot best">
       <div class="n">★</div>
       <div>
         <div class="name">PB north of pier</div>
-        <div class="why">Best of the morning. Same 0.98 on the pier sand. Go before the 5.4 high and the northwest breeze.</div>
+        <div class="why">The call. Clean west-southwest, glass north wind, tide still rising. Score 0.98 — go before the 5.4 high and the northwest breeze.</div>
       </div>
-      <span class="pill">BEST</span>
+      <span class="pill">CALL</span>
     </div>
     <div class="spot">
       <div class="n">2</div>
+      <div>
+        <div class="name">PB Drive</div>
+        <div class="why">Also fine — same 0.98 on the home sandbars. Same window.</div>
+      </div>
+      <span class="pill">ALT</span>
+    </div>
+    <div class="spot">
+      <div class="n">3</div>
       <div>
         <div class="name">Tourmaline</div>
         <div class="why">Score 0.97 early, then it mushes toward the 5.4 high. If you go, be in before about 9. It'll be crowded.</div>
@@ -398,7 +418,7 @@
       <span class="pill">ALT</span>
     </div>
     <div class="spot">
-      <div class="n">3</div>
+      <div class="n">4</div>
       <div>
         <div class="name">Little Point</div>
         <div class="why">Tied at 0.98 and the angle is in the cone, but groundswell is only about 2.3 ft. Leave before ~5.5 ft, around 10a.</div>
@@ -406,7 +426,7 @@
       <span class="pill">ALT</span>
     </div>
     <div class="spot">
-      <div class="n">4</div>
+      <div class="n">5</div>
       <div>
         <div class="name">Calumet</div>
         <div class="why">Score 0.87. West-southwest is fine, but the tide is already high for a 0.5–3.5 window.</div>
@@ -479,13 +499,13 @@
 <div class="gobar" role="region" aria-label="GO bar">
   <div class="gobar-inner">
     <div>
-      <div class="who">LOCAL · best is north of the pier</div>
-      <div class="spotname">PB Drive</div>
+      <div class="who">LOCAL</div>
+      <div class="spotname">PB north of the pier</div>
       <div class="meta">NOW–10:30a · Fish / mid · ~72°F</div>
     </div>
     <div class="acts">
-      <a href="https://maps.google.com/?q=32.8008,-117.2596" target="_blank" rel="noopener">Maps</a>
-      <button type="button" id="shareBtn" data-share-text="Al&#x27;s Cowabunga · PB Drive LOCAL + PB north BEST · NOW–10:30a WSW 13s + glass N · skip Calumet tide-high + noon H + after dark">Share</button>
+      <a href="https://maps.google.com/?q=32.7968,-117.2579" target="_blank" rel="noopener">Maps</a>
+      <button type="button" id="shareBtn" data-share-text="Al&#x27;s Cowabunga · PB north of the pier · NOW–10:30a WSW 13s + glass N · also fine PB Drive · skip noon H + after dark">Share</button>
     </div>
   </div>
 </div>
