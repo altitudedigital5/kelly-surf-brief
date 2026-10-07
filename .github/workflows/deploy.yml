@@ -33,6 +33,9 @@ jobs:
           if [ -f docs/latest.pdf ]; then
             aws s3 cp docs/latest.pdf "s3://${S3_BUCKET}/latest.pdf" --content-type application/pdf --cache-control "max-age=60"
           fi
+          if [ -f docs/weekly.html ]; then
+            aws s3 cp docs/weekly.html "s3://${S3_BUCKET}/weekly.html" --content-type text/html --cache-control "max-age=60"
+          fi
           aws s3 sync docs/archive/ "s3://${S3_BUCKET}/archive/" \
             --exclude "*" --include "*.html" --include "*.pdf" \
             --cache-control "max-age=86400"
@@ -40,4 +43,4 @@ jobs:
         run: |
           aws cloudfront create-invalidation \
             --distribution-id "${CLOUDFRONT_ID}" \
-            --paths "/" "/index.html" "/latest.pdf" "/archive/*"
+            --paths "/" "/index.html" "/weekly.html" "/latest.pdf" "/archive/*"
