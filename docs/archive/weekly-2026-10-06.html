@@ -128,18 +128,24 @@
   .sec-h{margin:0 0 6px; font-family:DM Mono,monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:500}
   .sec-h .hint{font-weight:400; letter-spacing:.06em; text-transform:none; color:rgba(90,115,130,.75); margin-left:4px}
 
-  /* ——— Next 3 days visual strip ——— */
+  /* ——— Next 5 days visual strip (3+2 wrap on phone; 5-across when wide) ——— */
   .near-viz{margin:0 0 12px}
   .near-strip{
-    display:grid; grid-template-columns:repeat(3, 1fr); gap:6px;
+    display:grid;
+    grid-template-columns:repeat(6, 1fr);
+    gap:6px;
   }
   .near-card{
+    grid-column:span 2; /* 3 per row → row2 gets 2 cards (days 4–5) */
     display:flex; flex-direction:column; align-items:stretch;
     text-decoration:none; color:inherit;
     background:var(--soft); border:1px solid var(--line); border-radius:14px;
     padding:8px 8px 9px; position:relative; overflow:hidden;
     min-width:0; -webkit-tap-highlight-color:transparent;
   }
+  /* Center the second-row pair when only 2 cards (days 4–5) */
+  .near-card:nth-child(4){grid-column:2 / span 2}
+  .near-card:nth-child(5){grid-column:4 / span 2}
   .near-card::before{
     content:""; position:absolute; left:0; top:0; bottom:0; width:3px;
     background:linear-gradient(180deg,var(--lagoon),var(--palm));
@@ -336,6 +342,14 @@
   @keyframes glow{0%,100%{filter:saturate(1)} 50%{filter:saturate(1.25) brightness(1.06)}}
   @keyframes sheen{from{background-position:0% 50%} to{background-position:200% 50%}}
 
+
+  @media (min-width:560px){
+    .near-strip{grid-template-columns:repeat(5, 1fr); gap:7px}
+    .near-card,
+    .near-card:nth-child(4),
+    .near-card:nth-child(5){grid-column:span 1}
+  }
+
   @media (max-width:900px){
     body{background:#0E2A40}
     .page{width:100%; max-width:100%; margin:0; border-radius:0; box-shadow:none}
@@ -346,9 +360,13 @@
     :root{--go-bar-h:72px}
     .hero{padding:8px 12px 26px}
     .near-strip{gap:5px}
-    .nc-day{font-size:15px}
-    .nc-bar-wrap{height:48px}
+    .near-card{padding:7px 7px 8px; border-radius:12px}
+    .nc-day{font-size:14px}
+    .nc-bar-wrap{height:44px; margin:3px 0 5px}
     .nc-size{font-size:10px}
+    .nc-board{font-size:8px; padding:2px 6px; margin-bottom:4px}
+    .nc-meta{font-size:10px}
+    .nc-when{font-size:8px}
     .grid3{grid-template-columns:1fr 1fr}
     .grid3 .cell:last-child{grid-column:1 / -1}
     .srcwrap{flex-direction:column; gap:4px}
@@ -383,8 +401,8 @@
   </header>
   <div class="inner">
 
-    <section class="near-viz" aria-label="Next 3 days at a glance">
-    <h2 class="sec-h">Next 3 days <span class="hint">tap a card → detail</span></h2>
+    <section class="near-viz" aria-label="Next 5 days at a glance">
+    <h2 class="sec-h">Next 5 days <span class="hint">tap a card → detail</span></h2>
     <div class="near-strip">
       <a class="near-card today" href="#day-tue">
         <div class="nc-top">
@@ -428,6 +446,34 @@
         <div class="nc-when">Early AM</div>
         <div class="nc-conf med" title="Medium confidence" aria-label="Confidence medium"><i></i><i></i><i></i><span class="clbl">med</span></div>
       </a>
+      <a class="near-card peak" href="#day-fri">
+        <div class="nc-top">
+          <div><span class="nc-day">Fri</span> <span class="nc-date">9</span></div>
+          <span class="nc-flag fcst">FCST</span>
+        </div>
+        <div class="nc-bar-wrap" title="PZZ740 seas 4–5 · S 4@13s">
+          <div class="nc-bar" style="--sz:83" aria-hidden="true"></div>
+          <div class="nc-size">4–5<span>′</span></div>
+        </div>
+        <div class="nc-board inferno"><span class="glyph" aria-hidden="true"></span>Inferno</div>
+        <p class="nc-meta">Calumet</p>
+        <div class="nc-when">Early–late AM</div>
+        <div class="nc-conf med" title="Medium confidence" aria-label="Confidence medium"><i></i><i></i><i></i><span class="clbl">med</span></div>
+      </a>
+      <a class="near-card" href="#day-sat">
+        <div class="nc-top">
+          <div><span class="nc-day">Sat</span> <span class="nc-date">10</span></div>
+          <span class="nc-flag fcst">FCST</span>
+        </div>
+        <div class="nc-bar-wrap" title="PZZ740 seas 5 · S 4@14s">
+          <div class="nc-bar" style="--sz:83" aria-hidden="true"></div>
+          <div class="nc-size">~5<span>′</span></div>
+        </div>
+        <div class="nc-board inferno"><span class="glyph" aria-hidden="true"></span>Inferno</div>
+        <p class="nc-meta">LOCAL S-face</p>
+        <div class="nc-when">Early AM</div>
+        <div class="nc-conf med" title="Med-low confidence" aria-label="Confidence med-low"><i></i><i></i><i></i><span class="clbl">med−</span></div>
+      </a>
     </div>
   </section>
 
@@ -438,7 +484,7 @@
     <p><span class="tag far">Drive only when BEST</span> Cliffs · OB · Scripps · Blacks · North County</p>
   </div>
 
-  <h2 class="sec-h">Seven-day calls <span class="hint">scroll for Thu–Mon</span></h2>
+  <h2 class="sec-h">Seven-day calls <span class="hint">scroll for Sun–Mon</span></h2>
     <article class="day today near" id="day-tue">
     <div class="day-top">
       <div>
@@ -493,7 +539,7 @@
     <p class="vibe">SRF Thursday: surf 3–6 ft · High rip risk · mixed S ~190° + W ~280°. PZZ740: var &lt;10 → W 10 afternoon · seas 4–5 · W 2 @ 5s + S 4 @ 13s. Tide H 5.4 @ 8:28a → L 0.6 @ 2:31p — fat first hour, better on the drain. Dual CALL only if Cliffs is clearly better than LOCAL.</p>
     <span class="src-tag">FORECAST · SRF Thu + PZZ740</span>
   </article>
-  <article class="day peak far" id="day-fri">
+  <article class="day peak near" id="day-fri">
     <div class="day-top">
       <div>
         <span class="day-name">Fri</span>
@@ -508,9 +554,10 @@
       <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL · Calumet / Birdrock</div></div>
       <div class="cell"><div class="lbl">Board</div><div class="val board">Inferno 72</div></div>
     </div>
-    <span class="src-tag">FORECAST · PZZ740 seas 4–5 · S 4@13s · Tide H 5.7@8:53a</span>
+    <p class="vibe">PZZ740 Fri: var &lt;10 → W 10 afternoon · seas 4–5 · W 2 @ 9s + S 4 @ 13s. Beach Hazards Statement still through Fri night. Tide H 5.7 @ 8:53a → L 0.3 @ 3:11p — wait for the drop before reefy LOCAL. Quiver stays Inferno while SRF-class size holds.</p>
+    <span class="src-tag">FORECAST · PZZ740 (SRF detail thins)</span>
   </article>
-  <article class="day far" id="day-sat">
+  <article class="day near" id="day-sat">
     <div class="day-top">
       <div>
         <span class="day-name">Sat</span>
@@ -525,7 +572,8 @@
       <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL · south-facing</div></div>
       <div class="cell"><div class="lbl">Board</div><div class="val board">Inferno 72</div></div>
     </div>
-    <span class="src-tag">FORECAST · PZZ740 seas 5 · S 4@14s · re-check SRF Sat AM</span>
+    <p class="vibe">PZZ740 Sat: var &lt;10 → W 10 afternoon · seas 5 · NW 3 @ 5s + S 4 @ 14s. Tide H 5.9 @ 9:18a → L 0.0 @ 3:49p. NWS grid: partly sunny, NW 5–10. Confidence softer — re-check SRF Sat morning before locking a drive.</p>
+    <span class="src-tag">FORECAST · PZZ740 extended</span>
   </article>
   <article class="day soft far" id="day-sun">
     <div class="day-top">
@@ -572,7 +620,7 @@
   </div>
 
   <div class="srcwrap">
-    <p class="src">FORECAST: NWS SRF SGX issued 1:06p PT Tue Oct 6 (SD coast through Thu detail) · NWS CWF/PZZ740 issued 12:57p PT Tue Oct 6 (through Sun night) · NOAA CO-OPS 9410230 hi/lo predictions Oct 6–13 · NWS grid SGX/54,18 wind/wx · LIVE trend: NDBC 46258.spec Hs ~0.8–1.0 m / SwH ~0.6–0.7 m @ 13–14s S–SW (evening Oct 6 PT) · Surfline Premium not used · quiver_pick.py for BOARD labels · Weekly viz refresh Oct 6 PT — see WEEKLY.md</p>
+    <p class="src">FORECAST: NWS SRF SGX issued 1:06p PT Tue Oct 6 (SD coast through Thu detail) · NWS CWF/PZZ740 issued 12:57p PT Tue Oct 6 (through Sun night) · NOAA CO-OPS 9410230 hi/lo predictions Oct 6–13 · NWS grid SGX/54,18 wind/wx · LIVE trend: NDBC 46258.spec Hs ~0.8–1.0 m / SwH ~0.6–0.7 m @ 13–14s S–SW (evening Oct 6 PT) · Surfline Premium not used · quiver_pick.py for BOARD labels · Weekly viz = next 5 days — see WEEKLY.md</p>
     <div class="brand">Al's Cowabunga · Kelly Slater Bot</div>
   </div>
 </div>
