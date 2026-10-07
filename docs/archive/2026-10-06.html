@@ -38,6 +38,27 @@
     background-size:220% 100%;
     animation:sheen 10s linear infinite;
   }
+
+  /* Daily ↔ Weekly toggle — sticky on mobile */
+  .viewnav{
+    position:sticky; top:0; z-index:30;
+    display:flex; gap:4px; padding:8px 10px;
+    background:rgba(255,251,246,.92); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .viewnav a{
+    flex:1; text-align:center; text-decoration:none;
+    font-family:DM Mono,monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    font-weight:600; padding:10px 8px; border-radius:999px;
+    color:var(--muted); background:transparent; border:1px solid transparent;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .viewnav a.on{
+    color:#fff; background:linear-gradient(105deg,#0A1F33,#1AABB8);
+    box-shadow:0 4px 14px rgba(10,31,51,.2);
+  }
+  .viewnav a:not(.on):active{background:rgba(10,31,51,.06)}
+
   .hero{
     position:relative;
     padding:14px 16px 40px;
@@ -345,6 +366,10 @@
 <body>
 <div class="page">
   <div class="stripe" aria-hidden="true"></div>
+  <nav class="viewnav" aria-label="Brief view">
+    <a class="on" href="/" aria-current="page">Daily</a>
+    <a href="/weekly.html">Weekly</a>
+  </nav>
   <header class="hero">
     <div class="sun" aria-hidden="true"></div>
     <div class="kicker">Today's call</div>

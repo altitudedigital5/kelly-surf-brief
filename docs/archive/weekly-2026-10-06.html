@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Al's Cowabunga · Weekly forecast · Oct 6–12, 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,600&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0A1F33; --lagoon:#1AABB8; --coral:#FF6B4A; --sand:#FFF6E8;
+    --hibiscus:#E85D75; --palm:#2D8A6A; --ink:#0A1F33; --muted:#5A7382;
+    --line:rgba(10,31,51,.12); --soft:#F4F7F4; --card:#FFFBF6;
+    --go:#2D8A6A; --go-bg:#D8F0E8; --warn:#C47A2A; --warn-bg:#F8E8C8;
+    --stop:#C0342F; --stop-bg:#F8E0DC;
+    --go-bar-h:56px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  body{
+    margin:0;
+    background:
+      radial-gradient(900px 320px at 110% -40px, rgba(255,176,103,.55), transparent 60%),
+      linear-gradient(180deg,#0E2A40 0, #146073 200px, #F3E6D4 200px);
+    color:var(--ink);font-family:Karla,system-ui,sans-serif;
+    padding-bottom:calc(var(--go-bar-h) + env(safe-area-inset-bottom,0px) + 8px);
+  }
+  html,body{overflow-x:hidden}
+  .page{
+    width:min(720px,100%); margin:12px auto; background:var(--card);
+    border-radius:18px; padding:0 0 8px; box-shadow:0 16px 44px rgba(10,31,51,.22);
+    overflow-x:hidden; overflow-y:visible; position:relative;
+  }
+  .stripe{
+    height:7px; width:100%;
+    background:linear-gradient(90deg,#0A1F33,#1AABB8 18%,#7EE0E8 36%,#FF6B4A 58%,#E85D75 76%,#FFF6E8 92%);
+    background-size:220% 100%;
+    animation:sheen 10s linear infinite;
+  }
+
+  /* Daily ↔ Weekly toggle — sticky on mobile */
+  .viewnav{
+    position:sticky; top:0; z-index:30;
+    display:flex; gap:4px; padding:8px 10px;
+    background:rgba(255,251,246,.92); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .viewnav a{
+    flex:1; text-align:center; text-decoration:none;
+    font-family:DM Mono,monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    font-weight:600; padding:10px 8px; border-radius:999px;
+    color:var(--muted); background:transparent; border:1px solid transparent;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .viewnav a.on{
+    color:#fff; background:linear-gradient(105deg,#0A1F33,#1AABB8);
+    box-shadow:0 4px 14px rgba(10,31,51,.2);
+  }
+  .viewnav a:not(.on):active{background:rgba(10,31,51,.06)}
+
+  .hero{
+    position:relative;
+    padding:14px 16px 36px;
+    background:
+      radial-gradient(120px 80px at 92% 18%, rgba(255,196,120,.45), transparent 70%),
+      linear-gradient(168deg,#16445C 0%, #0A1F33 46%, #147A86 100%);
+    color:var(--sand);
+    overflow:hidden;
+  }
+  .sun{
+    position:absolute; right:16px; top:14px; z-index:0;
+    width:48px; height:48px; border-radius:50%;
+    background:radial-gradient(circle at 38% 36%, #FFF8EC, #FFC56A 46%, #FF6B4A 100%);
+    box-shadow:0 0 0 8px rgba(255,196,120,.16), 0 0 28px rgba(255,176,103,.75);
+    animation:glow 5s ease-in-out infinite;
+    pointer-events:none;
+  }
+  .kicker{
+    position:relative; z-index:1;
+    font-family:DM Mono,monospace; font-size:10px; letter-spacing:.16em;
+    text-transform:uppercase; color:#F0C9A0;
+  }
+  .eyebrow{
+    position:relative; z-index:1;
+    margin-top:3px;
+    font-family:DM Mono,monospace; font-size:10px; letter-spacing:.08em;
+    text-transform:uppercase; color:rgba(255,246,232,.62);
+  }
+  .say{
+    position:relative; z-index:1;
+    font-family:Fraunces,Georgia,serif; font-weight:700;
+    font-size:clamp(24px, 6.5vw, 34px);
+    line-height:1.1; letter-spacing:-.025em;
+    margin:8px 0 0; color:#FFF6E8;
+    max-width:20ch; padding-right:8px;
+  }
+  .say::after{
+    content:""; display:block; width:64px; height:3px; margin-top:10px; border-radius:99px;
+    background:linear-gradient(90deg,#FF6B4A,#FFD7A0,#7EE0E8);
+    background-size:200% 100%;
+    animation:sheen 3.6s ease-in-out infinite;
+  }
+  .whisper{
+    position:relative; z-index:1;
+    margin:8px 0 0; max-width:40ch;
+    font-size:14px; line-height:1.35; color:rgba(255,246,232,.84);
+  }
+  .whisper em{font-style:italic; font-family:Fraunces,Georgia,serif; color:#FFC98A; font-weight:600}
+  .badge-row{position:relative; z-index:1; display:flex; flex-wrap:wrap; gap:6px; margin-top:12px}
+  .badge{
+    font-family:DM Mono,monospace; font-size:9px; letter-spacing:.08em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px;
+    background:rgba(255,246,232,.14); color:rgba(255,246,232,.9);
+    border:1px solid rgba(255,246,232,.2);
+  }
+  .badge.live{background:rgba(45,138,106,.35); border-color:rgba(126,224,232,.4)}
+  .badge.fcst{background:rgba(255,107,74,.22); border-color:rgba(255,196,120,.35)}
+  .sea{position:absolute; left:0; right:0; bottom:0; height:34px; pointer-events:none; z-index:0}
+  .sea svg{position:absolute; left:0; bottom:0; width:200%; height:100%; display:block}
+  .sea .a{animation:drift 16s linear infinite}
+  .sea .b{animation:drift 26s linear infinite; opacity:.9}
+
+  .inner{padding:12px 14px 0}
+  .sec-h{margin:0 0 8px; font-family:DM Mono,monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:500}
+
+  .day{
+    background:var(--soft); border:1px solid var(--line); border-radius:14px;
+    padding:10px 12px; margin-bottom:8px; position:relative; overflow:hidden;
+  }
+  .day::before{content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:linear-gradient(180deg,var(--lagoon),var(--palm))}
+  .day.peak::before{background:linear-gradient(180deg,var(--coral),var(--hibiscus))}
+  .day.soft::before{background:rgba(90,115,130,.35)}
+  .day.today{background:linear-gradient(160deg,#F3FFFB,#FFF6E8); box-shadow:inset 0 0 0 1px rgba(45,138,106,.2)}
+  .day-top{display:flex; flex-wrap:wrap; gap:6px 10px; align-items:baseline; justify-content:space-between; margin-bottom:4px}
+  .day-name{font-family:Fraunces,Georgia,serif; font-size:18px; font-weight:700; color:var(--navy); letter-spacing:-.02em}
+  .day-date{font-family:DM Mono,monospace; font-size:10px; color:var(--muted); letter-spacing:.04em}
+  .conf{
+    font-family:DM Mono,monospace; font-size:9px; letter-spacing:.08em; text-transform:uppercase;
+    padding:2px 7px; border-radius:999px; font-weight:600;
+  }
+  .conf.hi{background:var(--go-bg); color:var(--palm)}
+  .conf.med{background:var(--warn-bg); color:var(--warn)}
+  .conf.lo{background:var(--stop-bg); color:var(--stop)}
+  .call-line{
+    font-family:Fraunces,Georgia,serif; font-size:15px; font-weight:700; line-height:1.25;
+    color:var(--navy); margin:2px 0 6px;
+  }
+  .grid3{
+    display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-bottom:6px;
+  }
+  .cell{
+    background:#fff; border:1px solid var(--line); border-radius:10px; padding:6px 8px; min-width:0;
+  }
+  .cell .lbl{font-family:DM Mono,monospace; font-size:8px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+  .cell .val{font-weight:700; font-size:12px; line-height:1.25; margin-top:2px; color:var(--ink)}
+  .cell .val.board{color:var(--palm)}
+  .vibe{margin:0; font-size:12px; color:var(--muted); line-height:1.35}
+  .src-tag{
+    display:inline-block; margin-top:6px;
+    font-family:DM Mono,monospace; font-size:8px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--lagoon);
+  }
+
+  .lockey{
+    margin:0 0 8px; padding:7px 10px; border-radius:12px;
+    background:linear-gradient(135deg,#F4FBFA 0%, #FFF6E8 100%);
+    border:1px solid rgba(26,171,184,.22);
+  }
+  .lockey .lk-h{
+    font-family:DM Mono,monospace; font-size:9px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--lagoon); margin:0 0 4px;
+  }
+  .lockey p{margin:0 0 3px; font-size:11px; line-height:1.35; color:var(--muted)}
+  .lockey p:last-child{margin:0}
+  .lockey .tag{
+    display:inline-block; font-family:DM Mono,monospace; font-size:8px; letter-spacing:.1em;
+    text-transform:uppercase; padding:1px 5px; border-radius:999px; margin-right:4px; vertical-align:1px;
+  }
+  .lockey .tag.home{background:var(--go-bg); color:var(--palm); font-weight:600}
+  .lockey .tag.far{background:rgba(10,31,51,.08); color:var(--muted); font-weight:600}
+
+  .note{
+    margin:0 0 10px; padding:8px 10px; border-radius:12px;
+    background:#fff; border:1px solid var(--line);
+    font-size:12px; color:var(--muted); line-height:1.4;
+  }
+  .note b{color:var(--ink)}
+
+  .srcwrap{border-top:1px solid var(--line); padding:6px 14px 10px; display:flex; justify-content:space-between; gap:8px; align-items:flex-start}
+  .src{font-family:DM Mono,monospace; font-size:8px; color:var(--muted); line-height:1.35; margin:0; word-break:break-word}
+  .brand{font-family:DM Mono,monospace; font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--lagoon); white-space:nowrap; flex-shrink:0}
+
+  .gobar{
+    position:fixed; left:0; right:0; bottom:0; z-index:40;
+    background:linear-gradient(105deg,#0A1F33 0%, #134A5C 55%, #1AABB8 100%);
+    color:#fff; padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px));
+    box-shadow:0 -8px 28px rgba(10,31,51,.35);
+  }
+  .gobar-inner{width:min(720px,100%); margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:8px}
+  .gobar .who{font-family:DM Mono,monospace; font-size:8px; letter-spacing:.12em; text-transform:uppercase; opacity:.7}
+  .gobar .spotname{font-family:Fraunces,Georgia,serif; font-size:14px; font-weight:700; line-height:1.15}
+  .gobar .meta{font-size:11px; opacity:.85; margin-top:1px}
+  .gobar a{
+    appearance:none; border:0; cursor:pointer; text-decoration:none; color:#0A1F33;
+    background:rgba(255,246,232,.92); font-family:DM Mono,monospace; font-size:10px; letter-spacing:.06em;
+    text-transform:uppercase; font-weight:600; padding:8px 12px; border-radius:999px; white-space:nowrap;
+  }
+
+  @keyframes drift{from{transform:translateX(0)} to{transform:translateX(-50%)}}
+  @keyframes glow{0%,100%{filter:saturate(1)} 50%{filter:saturate(1.25) brightness(1.06)}}
+  @keyframes sheen{from{background-position:0% 50%} to{background-position:200% 50%}}
+
+  @media (max-width:900px){
+    body{background:#0E2A40}
+    .page{width:100%; max-width:100%; margin:0; border-radius:0; box-shadow:none}
+    .inner{padding:12px 12px 0}
+    .srcwrap{padding:6px 12px 10px}
+  }
+  @media (max-width:480px){
+    :root{--go-bar-h:72px}
+    .hero{padding:12px 12px 34px}
+    .grid3{grid-template-columns:1fr 1fr; }
+    .grid3 .cell:last-child{grid-column:1 / -1}
+    .srcwrap{flex-direction:column; gap:4px}
+    .brand{white-space:normal}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{animation:none !important; transition:none !important}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="stripe" aria-hidden="true"></div>
+  <nav class="viewnav" aria-label="Brief view">
+    <a href="/">Daily</a>
+    <a class="on" href="/weekly.html" aria-current="page">Weekly</a>
+  </nav>
+  <header class="hero">
+    <div class="sun" aria-hidden="true"></div>
+    <div class="kicker">Week ahead</div>
+    <div class="eyebrow">Al's Cowabunga · week of Oct 6 · North PB</div>
+    <h1 class="say">South swell builds midweek.<br>Thursday is the hunt.</h1>
+    <p class="whisper">Plan the calendar off <em>forecast</em> cards — lock the session off the <em>Daily</em> live brief.</p>
+    <div class="badge-row">
+      <span class="badge fcst">Forecast labeled</span>
+      <span class="badge live">Live = buoy / tide obs</span>
+    </div>
+    <div class="sea" aria-hidden="true">
+      <svg class="a" viewBox="0 0 640 36" preserveAspectRatio="none"><path fill="rgba(255,246,232,.20)" d="M0 20c20 0 20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10V36H0Z"/></svg>
+      <svg class="b" viewBox="0 0 640 36" preserveAspectRatio="none"><path fill="rgba(126,224,232,.28)" d="M0 26c20 0 20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8V36H0Z"/></svg>
+    </div>
+  </header>
+  <div class="inner">
+
+  <div class="lockey" aria-label="Which spots are local">
+    <div class="lk-h">Home stretch</div>
+    <p><span class="tag home">LOCAL</span> PB north · Drive · Tourmo · PB Point · Calumet · Little Point</p>
+    <p><span class="tag far">Drive only when BEST</span> Cliffs · OB · Scripps · Blacks · North County</p>
+  </div>
+
+  <p class="note"><b>How to read this:</b> each day is a short WHERE / WHEN / BOARD call from NWS SRF + PZZ740 + tide 9410230 + buoy trend. Numbers are quoted from those products — never invented. Confidence drops past ~Thu as the model run ages. Flip to <b>Daily</b> for the AM decision with live buoys.</p>
+
+  <h2 class="sec-h">Seven-day calls</h2>
+    <article class="day today">
+    <div class="day-top">
+      <div>
+        <span class="day-name">Tue</span>
+        <span class="day-date"> · Oct 6</span>
+      </div>
+      <span class="conf hi">LIVE · high</span>
+    </div>
+    <div class="call-line">Dead glass AM — PB north of the pier.</div>
+    <div class="grid3">
+      <div class="cell"><div class="lbl">When</div><div class="val">8–11a</div></div>
+      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL · PB north (Drive also fine)</div></div>
+      <div class="cell"><div class="lbl">Board</div><div class="val board">Anvil twin</div></div>
+    </div>
+    <p class="vibe">Live 46258 SwH ~2.0 ft @ 13s SW + WWH ~2.0 @ 10s · NWS SRF 2–4 ft · LJAC1 glass early, NW sea breeze by late morning. Flip to Daily for the full brief.</p>
+    <span class="src-tag">LIVE buoy/tide + Daily brief</span>
+  </article>
+  <article class="day ">
+    <div class="day-top">
+      <div>
+        <span class="day-name">Wed</span>
+        <span class="day-date"> · Oct 7</span>
+      </div>
+      <span class="conf med">forecast · med-high</span>
+    </div>
+    <div class="call-line">South pulse steps up — still a home-stretch morning.</div>
+    <div class="grid3">
+      <div class="cell"><div class="lbl">When</div><div class="val">Dawn–10a (before W fills)</div></div>
+      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL · PB north / Drive; peek Calumet if S feels thicker</div></div>
+      <div class="cell"><div class="lbl">Board</div><div class="val board">Anvil twin</div></div>
+    </div>
+    <p class="vibe">PZZ740: variable &lt;10 kt → W 10 afternoon · seas 3–4 · W 2 ft @ 5s + S 3 ft @ 13s. SRF SD through Wed: 2–4 ft, sets to 5 · mod rips · mixed S ~180° + W ~280°. Tide H 5.0 @ 8:02a → L 1.1 @ 1:49p (9410230). Coastal Flood Advisory starts 6a. Soft sandbar fish day unless faces clean up punchy.</p>
+    <span class="src-tag">FORECAST · PZZ740 + SRF + tides</span>
+  </article>
+  <article class="day peak">
+    <div class="day-top">
+      <div>
+        <span class="day-name">Thu</span>
+        <span class="day-date"> · Oct 8</span>
+      </div>
+      <span class="conf med">forecast · medium</span>
+    </div>
+    <div class="call-line">Week's peak juice — south swell, high rips, Inferno weather.</div>
+    <div class="grid3">
+      <div class="cell"><div class="lbl">When</div><div class="val">Early AM glass → mid-morning</div></div>
+      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL · Calumet / Little Point; BEST Cliffs only if 3–6 clears PB</div></div>
+      <div class="cell"><div class="lbl">Board</div><div class="val board">Inferno 72</div></div>
+    </div>
+    <p class="vibe">SRF Thursday: surf 3–6 ft · High rip risk · mixed S ~190° + W ~280°. PZZ740: var &lt;10 → W 10 afternoon · seas 4–5 · W 2 @ 5s + S 4 @ 13s. Tide H 5.4 @ 8:28a → L 0.6 @ 2:31p — fat first hour, better on the drain. Dual CALL only if Cliffs is clearly better than LOCAL.</p>
+    <span class="src-tag">FORECAST · SRF Thu + PZZ740</span>
+  </article>
+  <article class="day peak">
+    <div class="day-top">
+      <div>
+        <span class="day-name">Fri</span>
+        <span class="day-date"> · Oct 9</span>
+      </div>
+      <span class="conf med">forecast · medium</span>
+    </div>
+    <div class="call-line">Still on the south — early drain off a fat high.</div>
+    <div class="grid3">
+      <div class="cell"><div class="lbl">When</div><div class="val">Early AM through late morning</div></div>
+      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL · Calumet / Birdrock stretch</div></div>
+      <div class="cell"><div class="lbl">Board</div><div class="val board">Inferno 72</div></div>
+    </div>
+    <p class="vibe">PZZ740 Fri: var &lt;10 → W 10 afternoon · seas 4–5 · W 2 @ 9s + S 4 @ 13s. Beach Hazards Statement still through Fri night. Tide H 5.7 @ 8:53a → L 0.3 @ 3:11p — wait for the drop before reefy LOCAL. Quiver stays Inferno while SRF-class size holds.</p>
+    <span class="src-tag">FORECAST · PZZ740 (SRF detail thins)</span>
+  </article>
+  <article class="day ">
+    <div class="day-top">
+      <div>
+        <span class="day-name">Sat</span>
+        <span class="day-date"> · Oct 10</span>
+      </div>
+      <span class="conf med">forecast · med-low</span>
+    </div>
+    <div class="call-line">Longer-period S still around — morning LOCAL first.</div>
+    <div class="grid3">
+      <div class="cell"><div class="lbl">When</div><div class="val">Early AM</div></div>
+      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL · south-facing; Cliffs only if drive-worthy</div></div>
+      <div class="cell"><div class="lbl">Board</div><div class="val board">Inferno 72</div></div>
+    </div>
+    <p class="vibe">PZZ740 Sat: var &lt;10 → W 10 afternoon · seas 5 · NW 3 @ 5s + S 4 @ 14s. Tide H 5.9 @ 9:18a → L 0.0 @ 3:49p. NWS grid: partly sunny, NW 5–10. Confidence softer — re-check SRF Sat morning before locking a drive.</p>
+    <span class="src-tag">FORECAST · PZZ740 extended</span>
+  </article>
+  <article class="day soft">
+    <div class="day-top">
+      <div>
+        <span class="day-name">Sun</span>
+        <span class="day-date"> · Oct 11</span>
+      </div>
+      <span class="conf lo">forecast · low</span>
+    </div>
+    <div class="call-line">Windswell + showers — dawn dabble or sleep in.</div>
+    <div class="grid3">
+      <div class="cell"><div class="lbl">When</div><div class="val">Dawn only (if at all)</div></div>
+      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL · sheltered sandbar; skip if chopped</div></div>
+      <div class="cell"><div class="lbl">Board</div><div class="val board">Anvil twin</div></div>
+    </div>
+    <p class="vibe">PZZ740 Sun: W 10–15 · seas 4–5 building 5–7 afternoon · W 4 @ 6s + S 3 @ 15s · slight chance showers. Grid: chance rain, W 5–15. Shortboard underpowers in the chop — Anvil for speed, or stay dry.</p>
+    <span class="src-tag">FORECAST · PZZ740 + grid</span>
+  </article>
+  <article class="day soft">
+    <div class="day-top">
+      <div>
+        <span class="day-name">Mon</span>
+        <span class="day-date"> · Oct 12</span>
+      </div>
+      <span class="conf lo">forecast · low</span>
+    </div>
+    <div class="call-line">Unsettled holiday — wait for the AM Daily.</div>
+    <div class="grid3">
+      <div class="cell"><div class="lbl">When</div><div class="val">TBD live</div></div>
+      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL default · no drive yet</div></div>
+      <div class="cell"><div class="lbl">Board</div><div class="val board">TW wings / Anvil</div></div>
+    </div>
+    <p class="vibe">Grid Columbus Day: chance showers, SW 10–15. PZZ740 Sun night already SW 15–20 seas 6–7 — leftover chop likely. Soft small → TW wings; if waist mush returns → Anvil. Do not invent size — refresh from SRF/PZZ740 Mon AM.</p>
+    <span class="src-tag">FORECAST · low confidence extended</span>
+  </article>
+
+  <p class="note"><b>Board logic (weekly):</b> same quiver rules as Daily — Inferno 72 for punchy/clean chest+ (Thu–Sat pulse), Anvil twin for soft waist–chest sandbar (Tue–Wed, maybe Sun), TW wings for soft small / underpowered mush (Mon wildcard). Dual CALL only when BEST is outside LOCAL (Cliffs/OB/etc.).</p>
+
+  </div>
+
+  <div class="srcwrap">
+    <p class="src">FORECAST: NWS SRF SGX issued 1:06p PT Tue Oct 6 (SD coast through Thu detail) · NWS CWF/PZZ740 issued 12:57p PT Tue Oct 6 (through Sun night) · NOAA CO-OPS 9410230 hi/lo predictions Oct 6–13 · NWS grid SGX/54,18 wind/wx · LIVE trend: NDBC 46258.spec Hs ~0.8–1.0 m / SwH ~0.6–0.7 m @ 13–14s S–SW (evening Oct 6 PT) · Surfline Premium not used · quiver_pick.py for BOARD labels · Weekly refreshed with AM routine — see WEEKLY.md</p>
+    <div class="brand">Al's Cowabunga · Kelly Slater Bot</div>
+  </div>
+</div>
+
+<div class="gobar" role="region" aria-label="Week highlight">
+  <div class="gobar-inner">
+    <div>
+      <div class="who">WEEK PEAK · FORECAST</div>
+      <div class="spotname">Thu · Calumet / Little Point</div>
+      <div class="meta">Early AM · Inferno 72 · SRF 3–6 ft</div>
+    </div>
+    <a href="/">Today's daily</a>
+  </div>
+</div>
+</body>
+</html>
