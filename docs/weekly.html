@@ -14,7 +14,9 @@
     --line:rgba(10,31,51,.12); --soft:#F4F7F4; --card:#FFFBF6;
     --go:#2D8A6A; --go-bg:#D8F0E8; --warn:#C47A2A; --warn-bg:#F8E8C8;
     --stop:#C0342F; --stop-bg:#F8E0DC;
+    --inferno:#FF6B4A; --anvil:#1AABB8; --tw:#7B6BA8;
     --go-bar-h:56px;
+    --size-max:6; /* face-ft scale ceiling for bars (SRF Thu max) */
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
@@ -22,7 +24,7 @@
     margin:0;
     background:
       radial-gradient(900px 320px at 110% -40px, rgba(255,176,103,.55), transparent 60%),
-      linear-gradient(180deg,#0E2A40 0, #146073 200px, #F3E6D4 200px);
+      linear-gradient(180deg,#0E2A40 0, #146073 160px, #F3E6D4 160px);
     color:var(--ink);font-family:Karla,system-ui,sans-serif;
     padding-bottom:calc(var(--go-bar-h) + env(safe-area-inset-bottom,0px) + 8px);
   }
@@ -33,7 +35,7 @@
     overflow-x:hidden; overflow-y:visible; position:relative;
   }
   .stripe{
-    height:7px; width:100%;
+    height:6px; width:100%;
     background:linear-gradient(90deg,#0A1F33,#1AABB8 18%,#7EE0E8 36%,#FF6B4A 58%,#E85D75 76%,#FFF6E8 92%);
     background-size:220% 100%;
     animation:sheen 10s linear infinite;
@@ -42,14 +44,14 @@
   /* Daily ↔ Weekly toggle — sticky on mobile */
   .viewnav{
     position:sticky; top:0; z-index:30;
-    display:flex; gap:4px; padding:8px 10px;
+    display:flex; gap:4px; padding:6px 10px;
     background:rgba(255,251,246,.92); backdrop-filter:blur(10px);
     border-bottom:1px solid var(--line);
   }
   .viewnav a{
     flex:1; text-align:center; text-decoration:none;
     font-family:DM Mono,monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase;
-    font-weight:600; padding:10px 8px; border-radius:999px;
+    font-weight:600; padding:9px 8px; border-radius:999px;
     color:var(--muted); background:transparent; border:1px solid transparent;
     -webkit-tap-highlight-color:transparent;
   }
@@ -59,135 +61,258 @@
   }
   .viewnav a:not(.on):active{background:rgba(10,31,51,.06)}
 
+  /* Compact hero — keep fun tone, less prose */
   .hero{
     position:relative;
-    padding:14px 16px 36px;
+    padding:10px 14px 28px;
     background:
-      radial-gradient(120px 80px at 92% 18%, rgba(255,196,120,.45), transparent 70%),
+      radial-gradient(100px 70px at 94% 16%, rgba(255,196,120,.45), transparent 70%),
       linear-gradient(168deg,#16445C 0%, #0A1F33 46%, #147A86 100%);
     color:var(--sand);
     overflow:hidden;
   }
   .sun{
-    position:absolute; right:16px; top:14px; z-index:0;
-    width:48px; height:48px; border-radius:50%;
+    position:absolute; right:12px; top:10px; z-index:0;
+    width:36px; height:36px; border-radius:50%;
     background:radial-gradient(circle at 38% 36%, #FFF8EC, #FFC56A 46%, #FF6B4A 100%);
-    box-shadow:0 0 0 8px rgba(255,196,120,.16), 0 0 28px rgba(255,176,103,.75);
+    box-shadow:0 0 0 6px rgba(255,196,120,.16), 0 0 22px rgba(255,176,103,.7);
     animation:glow 5s ease-in-out infinite;
     pointer-events:none;
   }
   .kicker{
     position:relative; z-index:1;
-    font-family:DM Mono,monospace; font-size:10px; letter-spacing:.16em;
+    font-family:DM Mono,monospace; font-size:9px; letter-spacing:.16em;
     text-transform:uppercase; color:#F0C9A0;
   }
   .eyebrow{
     position:relative; z-index:1;
-    margin-top:3px;
-    font-family:DM Mono,monospace; font-size:10px; letter-spacing:.08em;
-    text-transform:uppercase; color:rgba(255,246,232,.62);
+    margin-top:2px;
+    font-family:DM Mono,monospace; font-size:9px; letter-spacing:.08em;
+    text-transform:uppercase; color:rgba(255,246,232,.58);
   }
   .say{
     position:relative; z-index:1;
     font-family:Fraunces,Georgia,serif; font-weight:700;
-    font-size:clamp(24px, 6.5vw, 34px);
-    line-height:1.1; letter-spacing:-.025em;
-    margin:8px 0 0; color:#FFF6E8;
-    max-width:20ch; padding-right:8px;
+    font-size:clamp(20px, 5.5vw, 28px);
+    line-height:1.12; letter-spacing:-.025em;
+    margin:6px 0 0; color:#FFF6E8;
+    max-width:22ch; padding-right:40px;
   }
   .say::after{
-    content:""; display:block; width:64px; height:3px; margin-top:10px; border-radius:99px;
+    content:""; display:block; width:52px; height:3px; margin-top:8px; border-radius:99px;
     background:linear-gradient(90deg,#FF6B4A,#FFD7A0,#7EE0E8);
     background-size:200% 100%;
     animation:sheen 3.6s ease-in-out infinite;
   }
   .whisper{
     position:relative; z-index:1;
-    margin:8px 0 0; max-width:40ch;
-    font-size:14px; line-height:1.35; color:rgba(255,246,232,.84);
+    margin:6px 0 0; max-width:36ch;
+    font-size:12px; line-height:1.3; color:rgba(255,246,232,.78);
   }
   .whisper em{font-style:italic; font-family:Fraunces,Georgia,serif; color:#FFC98A; font-weight:600}
-  .badge-row{position:relative; z-index:1; display:flex; flex-wrap:wrap; gap:6px; margin-top:12px}
+  .badge-row{position:relative; z-index:1; display:flex; flex-wrap:wrap; gap:5px; margin-top:8px}
   .badge{
-    font-family:DM Mono,monospace; font-size:9px; letter-spacing:.08em; text-transform:uppercase;
-    padding:3px 8px; border-radius:999px;
+    font-family:DM Mono,monospace; font-size:8px; letter-spacing:.08em; text-transform:uppercase;
+    padding:2px 7px; border-radius:999px;
     background:rgba(255,246,232,.14); color:rgba(255,246,232,.9);
     border:1px solid rgba(255,246,232,.2);
   }
   .badge.live{background:rgba(45,138,106,.35); border-color:rgba(126,224,232,.4)}
   .badge.fcst{background:rgba(255,107,74,.22); border-color:rgba(255,196,120,.35)}
-  .sea{position:absolute; left:0; right:0; bottom:0; height:34px; pointer-events:none; z-index:0}
+  .sea{position:absolute; left:0; right:0; bottom:0; height:26px; pointer-events:none; z-index:0}
   .sea svg{position:absolute; left:0; bottom:0; width:200%; height:100%; display:block}
   .sea .a{animation:drift 16s linear infinite}
   .sea .b{animation:drift 26s linear infinite; opacity:.9}
 
-  .inner{padding:12px 14px 0}
-  .sec-h{margin:0 0 8px; font-family:DM Mono,monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:500}
+  .inner{padding:10px 12px 0}
+  .sec-h{margin:0 0 6px; font-family:DM Mono,monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:500}
+  .sec-h .hint{font-weight:400; letter-spacing:.06em; text-transform:none; color:rgba(90,115,130,.75); margin-left:4px}
 
-  .day{
+  /* ——— Next 3 days visual strip ——— */
+  .near-viz{margin:0 0 12px}
+  .near-strip{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:6px;
+  }
+  .near-card{
+    display:flex; flex-direction:column; align-items:stretch;
+    text-decoration:none; color:inherit;
     background:var(--soft); border:1px solid var(--line); border-radius:14px;
-    padding:10px 12px; margin-bottom:8px; position:relative; overflow:hidden;
+    padding:8px 8px 9px; position:relative; overflow:hidden;
+    min-width:0; -webkit-tap-highlight-color:transparent;
   }
-  .day::before{content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:linear-gradient(180deg,var(--lagoon),var(--palm))}
-  .day.peak::before{background:linear-gradient(180deg,var(--coral),var(--hibiscus))}
-  .day.soft::before{background:rgba(90,115,130,.35)}
-  .day.today{background:linear-gradient(160deg,#F3FFFB,#FFF6E8); box-shadow:inset 0 0 0 1px rgba(45,138,106,.2)}
-  .day-top{display:flex; flex-wrap:wrap; gap:6px 10px; align-items:baseline; justify-content:space-between; margin-bottom:4px}
-  .day-name{font-family:Fraunces,Georgia,serif; font-size:18px; font-weight:700; color:var(--navy); letter-spacing:-.02em}
-  .day-date{font-family:DM Mono,monospace; font-size:10px; color:var(--muted); letter-spacing:.04em}
-  .conf{
-    font-family:DM Mono,monospace; font-size:9px; letter-spacing:.08em; text-transform:uppercase;
-    padding:2px 7px; border-radius:999px; font-weight:600;
+  .near-card::before{
+    content:""; position:absolute; left:0; top:0; bottom:0; width:3px;
+    background:linear-gradient(180deg,var(--lagoon),var(--palm));
   }
-  .conf.hi{background:var(--go-bg); color:var(--palm)}
-  .conf.med{background:var(--warn-bg); color:var(--warn)}
-  .conf.lo{background:var(--stop-bg); color:var(--stop)}
-  .call-line{
-    font-family:Fraunces,Georgia,serif; font-size:15px; font-weight:700; line-height:1.25;
-    color:var(--navy); margin:2px 0 6px;
+  .near-card.peak::before{background:linear-gradient(180deg,var(--coral),var(--hibiscus))}
+  .near-card.today{
+    background:linear-gradient(160deg,#F3FFFB,#FFF6E8);
+    box-shadow:inset 0 0 0 1px rgba(45,138,106,.22);
   }
-  .grid3{
-    display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-bottom:6px;
+  .near-card:active{transform:scale(.98)}
+  .nc-top{display:flex; align-items:baseline; justify-content:space-between; gap:2px; margin-bottom:2px}
+  .nc-day{font-family:Fraunces,Georgia,serif; font-size:16px; font-weight:700; color:var(--navy); letter-spacing:-.02em}
+  .nc-date{font-family:DM Mono,monospace; font-size:8px; color:var(--muted); letter-spacing:.02em}
+  .nc-flag{
+    font-family:DM Mono,monospace; font-size:7px; letter-spacing:.06em; text-transform:uppercase;
+    font-weight:600; padding:1px 5px; border-radius:999px; white-space:nowrap;
   }
-  .cell{
-    background:#fff; border:1px solid var(--line); border-radius:10px; padding:6px 8px; min-width:0;
+  .nc-flag.live{background:var(--go-bg); color:var(--palm)}
+  .nc-flag.fcst{background:rgba(255,107,74,.14); color:var(--coral)}
+
+  /* Size energy bar — height from --sz (0–100% of scale) */
+  .nc-bar-wrap{
+    display:flex; align-items:flex-end; gap:5px;
+    height:52px; margin:4px 0 6px;
+    padding:0 2px;
   }
-  .cell .lbl{font-family:DM Mono,monospace; font-size:8px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
-  .cell .val{font-weight:700; font-size:12px; line-height:1.25; margin-top:2px; color:var(--ink)}
-  .cell .val.board{color:var(--palm)}
-  .vibe{margin:0; font-size:12px; color:var(--muted); line-height:1.35}
-  .src-tag{
-    display:inline-block; margin-top:6px;
-    font-family:DM Mono,monospace; font-size:8px; letter-spacing:.06em; text-transform:uppercase;
-    color:var(--lagoon);
+  .nc-bar{
+    flex:1; height:calc(var(--sz, 40) * 1%);
+    min-height:8px; max-height:100%;
+    border-radius:6px 6px 3px 3px;
+    background:linear-gradient(180deg, var(--lagoon), #0E6A78);
+    position:relative;
+  }
+  .near-card.peak .nc-bar{background:linear-gradient(180deg, var(--coral), var(--hibiscus))}
+  .near-card.soft .nc-bar{background:linear-gradient(180deg, #A8B8C0, #6A7E8A); opacity:.85}
+  .nc-size{
+    font-family:DM Mono,monospace; font-size:11px; font-weight:600;
+    color:var(--navy); letter-spacing:-.02em; line-height:1; white-space:nowrap;
+    align-self:flex-end; padding-bottom:2px;
+  }
+  .nc-size span{font-size:8px; color:var(--muted); font-weight:500}
+
+  .nc-board{
+    display:inline-flex; align-items:center; gap:4px;
+    font-family:DM Mono,monospace; font-size:9px; letter-spacing:.04em; text-transform:uppercase;
+    font-weight:600; padding:3px 7px; border-radius:8px; margin-bottom:5px;
+    width:fit-content; max-width:100%;
+  }
+  .nc-board .glyph{
+    width:10px; height:10px; border-radius:3px; flex-shrink:0;
+  }
+  .nc-board.inferno{background:rgba(255,107,74,.16); color:#C4452A}
+  .nc-board.inferno .glyph{background:var(--inferno)}
+  .nc-board.anvil{background:rgba(26,171,184,.16); color:#0E6A78}
+  .nc-board.anvil .glyph{background:var(--anvil)}
+  .nc-board.tw{background:rgba(123,107,168,.16); color:#5A4A8A}
+  .nc-board.tw .glyph{background:var(--tw)}
+
+  .nc-meta{font-size:11px; line-height:1.25; color:var(--ink); font-weight:600; margin:0}
+  .nc-when{font-family:DM Mono,monospace; font-size:9px; color:var(--muted); letter-spacing:.02em; margin-top:2px}
+
+  .nc-conf{
+    display:flex; gap:3px; margin-top:6px; align-items:center;
+  }
+  .nc-conf i{
+    width:6px; height:6px; border-radius:50%; background:rgba(90,115,130,.25);
+    font-style:normal;
+  }
+  .nc-conf.hi i{background:var(--palm)}
+  .nc-conf.med i:nth-child(-n+2){background:var(--warn)}
+  .nc-conf.lo i:first-child{background:var(--stop)}
+  .nc-conf .clbl{
+    font-family:DM Mono,monospace; font-size:7px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--muted); margin-left:2px;
   }
 
+  /* Compact home stretch */
   .lockey{
-    margin:0 0 8px; padding:7px 10px; border-radius:12px;
+    margin:0 0 8px; padding:6px 9px; border-radius:10px;
     background:linear-gradient(135deg,#F4FBFA 0%, #FFF6E8 100%);
     border:1px solid rgba(26,171,184,.22);
   }
   .lockey .lk-h{
-    font-family:DM Mono,monospace; font-size:9px; letter-spacing:.12em;
-    text-transform:uppercase; color:var(--lagoon); margin:0 0 4px;
+    font-family:DM Mono,monospace; font-size:8px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--lagoon); margin:0 0 3px;
   }
-  .lockey p{margin:0 0 3px; font-size:11px; line-height:1.35; color:var(--muted)}
+  .lockey p{margin:0 0 2px; font-size:10px; line-height:1.3; color:var(--muted)}
   .lockey p:last-child{margin:0}
   .lockey .tag{
-    display:inline-block; font-family:DM Mono,monospace; font-size:8px; letter-spacing:.1em;
-    text-transform:uppercase; padding:1px 5px; border-radius:999px; margin-right:4px; vertical-align:1px;
+    display:inline-block; font-family:DM Mono,monospace; font-size:7px; letter-spacing:.1em;
+    text-transform:uppercase; padding:1px 5px; border-radius:999px; margin-right:3px; vertical-align:1px;
   }
   .lockey .tag.home{background:var(--go-bg); color:var(--palm); font-weight:600}
   .lockey .tag.far{background:rgba(10,31,51,.08); color:var(--muted); font-weight:600}
 
+  .note-mini{
+    margin:0 0 10px; font-size:11px; color:var(--muted); line-height:1.35;
+  }
+  .note-mini b{color:var(--ink)}
   .note{
     margin:0 0 10px; padding:8px 10px; border-radius:12px;
     background:#fff; border:1px solid var(--line);
     font-size:12px; color:var(--muted); line-height:1.4;
   }
   .note b{color:var(--ink)}
+  details.readhow{margin:0 0 10px}
+  details.readhow summary{
+    cursor:pointer; font-family:DM Mono,monospace; font-size:9px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--lagoon); list-style:none;
+    padding:4px 0;
+  }
+  details.readhow summary::-webkit-details-marker{display:none}
+  details.readhow summary::before{content:"▸ "; opacity:.7}
+  details.readhow[open] summary::before{content:"▾ "}
+  details.readhow .note{margin-top:4px; margin-bottom:0}
 
-  .srcwrap{border-top:1px solid var(--line); padding:6px 14px 10px; display:flex; justify-content:space-between; gap:8px; align-items:flex-start}
+  /* Day cards — denser; .near highlighted; .far quieter */
+  .day{
+    background:var(--soft); border:1px solid var(--line); border-radius:12px;
+    padding:8px 10px; margin-bottom:6px; position:relative; overflow:hidden;
+  }
+  .day::before{content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:linear-gradient(180deg,var(--lagoon),var(--palm))}
+  .day.peak::before{background:linear-gradient(180deg,var(--coral),var(--hibiscus))}
+  .day.soft::before{background:rgba(90,115,130,.35)}
+  .day.today{background:linear-gradient(160deg,#F3FFFB,#FFF6E8); box-shadow:inset 0 0 0 1px rgba(45,138,106,.2)}
+  .day.far{opacity:.92; padding:7px 10px}
+  .day.far .call-line{font-size:13px; margin:1px 0 4px}
+  .day.far .vibe{display:none}
+  .day-top{display:flex; flex-wrap:wrap; gap:4px 8px; align-items:baseline; justify-content:space-between; margin-bottom:2px}
+  .day-name{font-family:Fraunces,Georgia,serif; font-size:16px; font-weight:700; color:var(--navy); letter-spacing:-.02em}
+  .day-date{font-family:DM Mono,monospace; font-size:9px; color:var(--muted); letter-spacing:.04em}
+  .conf{
+    font-family:DM Mono,monospace; font-size:8px; letter-spacing:.08em; text-transform:uppercase;
+    padding:2px 6px; border-radius:999px; font-weight:600;
+  }
+  .conf.hi{background:var(--go-bg); color:var(--palm)}
+  .conf.med{background:var(--warn-bg); color:var(--warn)}
+  .conf.lo{background:var(--stop-bg); color:var(--stop)}
+  .call-line{
+    font-family:Fraunces,Georgia,serif; font-size:14px; font-weight:700; line-height:1.2;
+    color:var(--navy); margin:1px 0 5px;
+  }
+  .grid3{
+    display:grid; grid-template-columns:1fr 1fr 1fr; gap:5px; margin-bottom:4px;
+  }
+  .cell{
+    background:#fff; border:1px solid var(--line); border-radius:8px; padding:5px 7px; min-width:0;
+  }
+  .cell .lbl{font-family:DM Mono,monospace; font-size:7px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+  .cell .val{font-weight:700; font-size:11px; line-height:1.2; margin-top:1px; color:var(--ink)}
+  .cell .val.board{color:var(--palm)}
+  .vibe{margin:0; font-size:11px; color:var(--muted); line-height:1.3}
+  .src-tag{
+    display:inline-block; margin-top:4px;
+    font-family:DM Mono,monospace; font-size:7px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--lagoon);
+  }
+
+  /* Mini size spark in day card header */
+  .day-spark{
+    display:inline-block; width:36px; height:10px; vertical-align:middle; margin-left:4px;
+    background:rgba(10,31,51,.06); border-radius:3px; overflow:hidden; position:relative;
+  }
+  .day-spark i{
+    position:absolute; left:0; bottom:0; top:0;
+    width:calc(var(--sz, 40) * 1%);
+    background:linear-gradient(90deg,var(--lagoon),var(--palm));
+    border-radius:3px; font-style:normal;
+  }
+  .day.peak .day-spark i{background:linear-gradient(90deg,var(--coral),var(--hibiscus))}
+  .day.soft .day-spark i{background:#A8B8C0}
+
+  .srcwrap{border-top:1px solid var(--line); padding:6px 12px 10px; display:flex; justify-content:space-between; gap:8px; align-items:flex-start}
   .src{font-family:DM Mono,monospace; font-size:8px; color:var(--muted); line-height:1.35; margin:0; word-break:break-word}
   .brand{font-family:DM Mono,monospace; font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--lagoon); white-space:nowrap; flex-shrink:0}
 
@@ -214,13 +339,17 @@
   @media (max-width:900px){
     body{background:#0E2A40}
     .page{width:100%; max-width:100%; margin:0; border-radius:0; box-shadow:none}
-    .inner{padding:12px 12px 0}
-    .srcwrap{padding:6px 12px 10px}
+    .inner{padding:10px 10px 0}
+    .srcwrap{padding:6px 10px 10px}
   }
   @media (max-width:480px){
     :root{--go-bar-h:72px}
-    .hero{padding:12px 12px 34px}
-    .grid3{grid-template-columns:1fr 1fr; }
+    .hero{padding:8px 12px 26px}
+    .near-strip{gap:5px}
+    .nc-day{font-size:15px}
+    .nc-bar-wrap{height:48px}
+    .nc-size{font-size:10px}
+    .grid3{grid-template-columns:1fr 1fr}
     .grid3 .cell:last-child{grid-column:1 / -1}
     .srcwrap{flex-direction:column; gap:4px}
     .brand{white-space:normal}
@@ -241,18 +370,67 @@
     <div class="sun" aria-hidden="true"></div>
     <div class="kicker">Week ahead</div>
     <div class="eyebrow">Al's Cowabunga · week of Oct 6 · North PB</div>
-    <h1 class="say">South swell builds midweek.<br>Thursday is the hunt.</h1>
-    <p class="whisper">Plan the calendar off <em>forecast</em> cards — lock the session off the <em>Daily</em> live brief.</p>
+    <h1 class="say">South swell builds.<br>Thursday is the hunt.</h1>
+    <p class="whisper">Scan the strip — lock the session on <em>Daily</em>.</p>
     <div class="badge-row">
-      <span class="badge fcst">Forecast labeled</span>
-      <span class="badge live">Live = buoy / tide obs</span>
+      <span class="badge fcst">Forecast</span>
+      <span class="badge live">Live = buoy/tide</span>
     </div>
     <div class="sea" aria-hidden="true">
-      <svg class="a" viewBox="0 0 640 36" preserveAspectRatio="none"><path fill="rgba(255,246,232,.20)" d="M0 20c20 0 20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10V36H0Z"/></svg>
+      <svg class="a" viewBox="0 0 640 36" preserveAspectRatio="none"><path fill="rgba(255,246,232,.20)" d="M0 20c20 0 20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10V36H0Z"/></svg>
       <svg class="b" viewBox="0 0 640 36" preserveAspectRatio="none"><path fill="rgba(126,224,232,.28)" d="M0 26c20 0 20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8V36H0Z"/></svg>
     </div>
   </header>
   <div class="inner">
+
+    <section class="near-viz" aria-label="Next 3 days at a glance">
+    <h2 class="sec-h">Next 3 days <span class="hint">tap a card → detail</span></h2>
+    <div class="near-strip">
+      <a class="near-card today" href="#day-tue">
+        <div class="nc-top">
+          <div><span class="nc-day">Tue</span> <span class="nc-date">6</span></div>
+          <span class="nc-flag live">LIVE</span>
+        </div>
+        <div class="nc-bar-wrap" title="SRF / live: ~2–4 ft">
+          <div class="nc-bar" style="--sz:67" aria-hidden="true"></div>
+          <div class="nc-size">2–4<span>′</span></div>
+        </div>
+        <div class="nc-board anvil"><span class="glyph" aria-hidden="true"></span>Anvil</div>
+        <p class="nc-meta">PB north</p>
+        <div class="nc-when">8–11a</div>
+        <div class="nc-conf hi" title="High confidence" aria-label="Confidence high"><i></i><i></i><i></i><span class="clbl">hi</span></div>
+      </a>
+      <a class="near-card" href="#day-wed">
+        <div class="nc-top">
+          <div><span class="nc-day">Wed</span> <span class="nc-date">7</span></div>
+          <span class="nc-flag fcst">FCST</span>
+        </div>
+        <div class="nc-bar-wrap" title="SRF: 2–4 ft, sets to 5">
+          <div class="nc-bar" style="--sz:83" aria-hidden="true"></div>
+          <div class="nc-size">2–4<span>′</span></div>
+        </div>
+        <div class="nc-board anvil"><span class="glyph" aria-hidden="true"></span>Anvil</div>
+        <p class="nc-meta">PB north</p>
+        <div class="nc-when">Dawn–10a</div>
+        <div class="nc-conf med" title="Med-high confidence" aria-label="Confidence med-high"><i></i><i></i><i></i><span class="clbl">med+</span></div>
+      </a>
+      <a class="near-card peak" href="#day-thu">
+        <div class="nc-top">
+          <div><span class="nc-day">Thu</span> <span class="nc-date">8</span></div>
+          <span class="nc-flag fcst">PEAK</span>
+        </div>
+        <div class="nc-bar-wrap" title="SRF Thursday: 3–6 ft">
+          <div class="nc-bar" style="--sz:100" aria-hidden="true"></div>
+          <div class="nc-size">3–6<span>′</span></div>
+        </div>
+        <div class="nc-board inferno"><span class="glyph" aria-hidden="true"></span>Inferno</div>
+        <p class="nc-meta">Calumet</p>
+        <div class="nc-when">Early AM</div>
+        <div class="nc-conf med" title="Medium confidence" aria-label="Confidence medium"><i></i><i></i><i></i><span class="clbl">med</span></div>
+      </a>
+    </div>
+  </section>
+
 
   <div class="lockey" aria-label="Which spots are local">
     <div class="lk-h">Home stretch</div>
@@ -260,135 +438,141 @@
     <p><span class="tag far">Drive only when BEST</span> Cliffs · OB · Scripps · Blacks · North County</p>
   </div>
 
-  <p class="note"><b>How to read this:</b> each day is a short WHERE / WHEN / BOARD call from NWS SRF + PZZ740 + tide 9410230 + buoy trend. Numbers are quoted from those products — never invented. Confidence drops past ~Thu as the model run ages. Flip to <b>Daily</b> for the AM decision with live buoys.</p>
-
-  <h2 class="sec-h">Seven-day calls</h2>
-    <article class="day today">
+  <h2 class="sec-h">Seven-day calls <span class="hint">scroll for Thu–Mon</span></h2>
+    <article class="day today near" id="day-tue">
     <div class="day-top">
       <div>
         <span class="day-name">Tue</span>
         <span class="day-date"> · Oct 6</span>
+        <span class="day-spark" style="--sz:67" title="2–4′" aria-hidden="true"><i></i></span>
       </div>
       <span class="conf hi">LIVE · high</span>
     </div>
     <div class="call-line">Dead glass AM — PB north of the pier.</div>
     <div class="grid3">
       <div class="cell"><div class="lbl">When</div><div class="val">8–11a</div></div>
-      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL · PB north (Drive also fine)</div></div>
+      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL · PB north</div></div>
       <div class="cell"><div class="lbl">Board</div><div class="val board">Anvil twin</div></div>
     </div>
     <p class="vibe">Live 46258 SwH ~2.0 ft @ 13s SW + WWH ~2.0 @ 10s · NWS SRF 2–4 ft · LJAC1 glass early, NW sea breeze by late morning. Flip to Daily for the full brief.</p>
     <span class="src-tag">LIVE buoy/tide + Daily brief</span>
   </article>
-  <article class="day ">
+  <article class="day near" id="day-wed">
     <div class="day-top">
       <div>
         <span class="day-name">Wed</span>
         <span class="day-date"> · Oct 7</span>
+        <span class="day-spark" style="--sz:83" title="2–4′ sets 5" aria-hidden="true"><i></i></span>
       </div>
       <span class="conf med">forecast · med-high</span>
     </div>
-    <div class="call-line">South pulse steps up — still a home-stretch morning.</div>
+    <div class="call-line">South pulse steps up — home-stretch morning.</div>
     <div class="grid3">
-      <div class="cell"><div class="lbl">When</div><div class="val">Dawn–10a (before W fills)</div></div>
-      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL · PB north / Drive; peek Calumet if S feels thicker</div></div>
+      <div class="cell"><div class="lbl">When</div><div class="val">Dawn–10a</div></div>
+      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL · PB north / Drive</div></div>
       <div class="cell"><div class="lbl">Board</div><div class="val board">Anvil twin</div></div>
     </div>
-    <p class="vibe">PZZ740: variable &lt;10 kt → W 10 afternoon · seas 3–4 · W 2 ft @ 5s + S 3 ft @ 13s. SRF SD through Wed: 2–4 ft, sets to 5 · mod rips · mixed S ~180° + W ~280°. Tide H 5.0 @ 8:02a → L 1.1 @ 1:49p (9410230). Coastal Flood Advisory starts 6a. Soft sandbar fish day unless faces clean up punchy.</p>
+    <p class="vibe">PZZ740: var &lt;10 kt → W 10 afternoon · seas 3–4 · W 2 ft @ 5s + S 3 ft @ 13s. SRF SD through Wed: 2–4 ft, sets to 5 · mod rips · mixed S ~180° + W ~280°. Tide H 5.0 @ 8:02a → L 1.1 @ 1:49p (9410230). Soft sandbar fish day unless faces clean up punchy.</p>
     <span class="src-tag">FORECAST · PZZ740 + SRF + tides</span>
   </article>
-  <article class="day peak">
+  <article class="day peak near" id="day-thu">
     <div class="day-top">
       <div>
         <span class="day-name">Thu</span>
         <span class="day-date"> · Oct 8</span>
+        <span class="day-spark" style="--sz:100" title="3–6′" aria-hidden="true"><i></i></span>
       </div>
       <span class="conf med">forecast · medium</span>
     </div>
-    <div class="call-line">Week's peak juice — south swell, high rips, Inferno weather.</div>
+    <div class="call-line">Week's peak juice — south swell, Inferno weather.</div>
     <div class="grid3">
-      <div class="cell"><div class="lbl">When</div><div class="val">Early AM glass → mid-morning</div></div>
-      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL · Calumet / Little Point; BEST Cliffs only if 3–6 clears PB</div></div>
+      <div class="cell"><div class="lbl">When</div><div class="val">Early AM → mid-AM</div></div>
+      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL · Calumet / Little Point</div></div>
       <div class="cell"><div class="lbl">Board</div><div class="val board">Inferno 72</div></div>
     </div>
     <p class="vibe">SRF Thursday: surf 3–6 ft · High rip risk · mixed S ~190° + W ~280°. PZZ740: var &lt;10 → W 10 afternoon · seas 4–5 · W 2 @ 5s + S 4 @ 13s. Tide H 5.4 @ 8:28a → L 0.6 @ 2:31p — fat first hour, better on the drain. Dual CALL only if Cliffs is clearly better than LOCAL.</p>
     <span class="src-tag">FORECAST · SRF Thu + PZZ740</span>
   </article>
-  <article class="day peak">
+  <article class="day peak far" id="day-fri">
     <div class="day-top">
       <div>
         <span class="day-name">Fri</span>
         <span class="day-date"> · Oct 9</span>
+        <span class="day-spark" style="--sz:83" title="seas 4–5" aria-hidden="true"><i></i></span>
       </div>
       <span class="conf med">forecast · medium</span>
     </div>
     <div class="call-line">Still on the south — early drain off a fat high.</div>
     <div class="grid3">
-      <div class="cell"><div class="lbl">When</div><div class="val">Early AM through late morning</div></div>
-      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL · Calumet / Birdrock stretch</div></div>
+      <div class="cell"><div class="lbl">When</div><div class="val">Early–late AM</div></div>
+      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL · Calumet / Birdrock</div></div>
       <div class="cell"><div class="lbl">Board</div><div class="val board">Inferno 72</div></div>
     </div>
-    <p class="vibe">PZZ740 Fri: var &lt;10 → W 10 afternoon · seas 4–5 · W 2 @ 9s + S 4 @ 13s. Beach Hazards Statement still through Fri night. Tide H 5.7 @ 8:53a → L 0.3 @ 3:11p — wait for the drop before reefy LOCAL. Quiver stays Inferno while SRF-class size holds.</p>
-    <span class="src-tag">FORECAST · PZZ740 (SRF detail thins)</span>
+    <span class="src-tag">FORECAST · PZZ740 seas 4–5 · S 4@13s · Tide H 5.7@8:53a</span>
   </article>
-  <article class="day ">
+  <article class="day far" id="day-sat">
     <div class="day-top">
       <div>
         <span class="day-name">Sat</span>
         <span class="day-date"> · Oct 10</span>
+        <span class="day-spark" style="--sz:83" title="seas 5" aria-hidden="true"><i></i></span>
       </div>
       <span class="conf med">forecast · med-low</span>
     </div>
     <div class="call-line">Longer-period S still around — morning LOCAL first.</div>
     <div class="grid3">
       <div class="cell"><div class="lbl">When</div><div class="val">Early AM</div></div>
-      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL · south-facing; Cliffs only if drive-worthy</div></div>
+      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL · south-facing</div></div>
       <div class="cell"><div class="lbl">Board</div><div class="val board">Inferno 72</div></div>
     </div>
-    <p class="vibe">PZZ740 Sat: var &lt;10 → W 10 afternoon · seas 5 · NW 3 @ 5s + S 4 @ 14s. Tide H 5.9 @ 9:18a → L 0.0 @ 3:49p. NWS grid: partly sunny, NW 5–10. Confidence softer — re-check SRF Sat morning before locking a drive.</p>
-    <span class="src-tag">FORECAST · PZZ740 extended</span>
+    <span class="src-tag">FORECAST · PZZ740 seas 5 · S 4@14s · re-check SRF Sat AM</span>
   </article>
-  <article class="day soft">
+  <article class="day soft far" id="day-sun">
     <div class="day-top">
       <div>
         <span class="day-name">Sun</span>
         <span class="day-date"> · Oct 11</span>
+        <span class="day-spark" style="--sz:67" title="seas 4–5" aria-hidden="true"><i></i></span>
       </div>
       <span class="conf lo">forecast · low</span>
     </div>
     <div class="call-line">Windswell + showers — dawn dabble or sleep in.</div>
     <div class="grid3">
-      <div class="cell"><div class="lbl">When</div><div class="val">Dawn only (if at all)</div></div>
-      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL · sheltered sandbar; skip if chopped</div></div>
+      <div class="cell"><div class="lbl">When</div><div class="val">Dawn only</div></div>
+      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL · sheltered sandbar</div></div>
       <div class="cell"><div class="lbl">Board</div><div class="val board">Anvil twin</div></div>
     </div>
-    <p class="vibe">PZZ740 Sun: W 10–15 · seas 4–5 building 5–7 afternoon · W 4 @ 6s + S 3 @ 15s · slight chance showers. Grid: chance rain, W 5–15. Shortboard underpowers in the chop — Anvil for speed, or stay dry.</p>
-    <span class="src-tag">FORECAST · PZZ740 + grid</span>
+    <span class="src-tag">FORECAST · PZZ740 W 10–15 · seas 4–5 · chance showers</span>
   </article>
-  <article class="day soft">
+  <article class="day soft far" id="day-mon">
     <div class="day-top">
       <div>
         <span class="day-name">Mon</span>
         <span class="day-date"> · Oct 12</span>
+        <span class="day-spark" style="--sz:33" title="TBD live" aria-hidden="true"><i></i></span>
       </div>
       <span class="conf lo">forecast · low</span>
     </div>
     <div class="call-line">Unsettled holiday — wait for the AM Daily.</div>
     <div class="grid3">
       <div class="cell"><div class="lbl">When</div><div class="val">TBD live</div></div>
-      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL default · no drive yet</div></div>
-      <div class="cell"><div class="lbl">Board</div><div class="val board">TW wings / Anvil</div></div>
+      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL default</div></div>
+      <div class="cell"><div class="lbl">Board</div><div class="val board">TW / Anvil</div></div>
     </div>
-    <p class="vibe">Grid Columbus Day: chance showers, SW 10–15. PZZ740 Sun night already SW 15–20 seas 6–7 — leftover chop likely. Soft small → TW wings; if waist mush returns → Anvil. Do not invent size — refresh from SRF/PZZ740 Mon AM.</p>
-    <span class="src-tag">FORECAST · low confidence extended</span>
+    <span class="src-tag">FORECAST · low confidence · refresh Mon AM</span>
   </article>
 
-  <p class="note"><b>Board logic (weekly):</b> same quiver rules as Daily — Inferno 72 for punchy/clean chest+ (Thu–Sat pulse), Anvil twin for soft waist–chest sandbar (Tue–Wed, maybe Sun), TW wings for soft small / underpowered mush (Mon wildcard). Dual CALL only when BEST is outside LOCAL (Cliffs/OB/etc.).</p>
+
+  <details class="readhow">
+    <summary>How to read · board logic</summary>
+    <p class="note"><b>Sources:</b> NWS SRF + PZZ740 + tide 9410230 + buoy trend — numbers quoted, never invented. Confidence drops past ~Thu. Flip to <b>Daily</b> for the AM live call.<br><br><b>Boards:</b> Inferno 72 = punchy/clean chest+ · Anvil twin = soft waist–chest sandbar · TW wings = soft small / mush. Dual CALL only when BEST is outside LOCAL.</p>
+  </details>
+
 
   </div>
 
   <div class="srcwrap">
-    <p class="src">FORECAST: NWS SRF SGX issued 1:06p PT Tue Oct 6 (SD coast through Thu detail) · NWS CWF/PZZ740 issued 12:57p PT Tue Oct 6 (through Sun night) · NOAA CO-OPS 9410230 hi/lo predictions Oct 6–13 · NWS grid SGX/54,18 wind/wx · LIVE trend: NDBC 46258.spec Hs ~0.8–1.0 m / SwH ~0.6–0.7 m @ 13–14s S–SW (evening Oct 6 PT) · Surfline Premium not used · quiver_pick.py for BOARD labels · Weekly refreshed with AM routine — see WEEKLY.md</p>
+    <p class="src">FORECAST: NWS SRF SGX issued 1:06p PT Tue Oct 6 (SD coast through Thu detail) · NWS CWF/PZZ740 issued 12:57p PT Tue Oct 6 (through Sun night) · NOAA CO-OPS 9410230 hi/lo predictions Oct 6–13 · NWS grid SGX/54,18 wind/wx · LIVE trend: NDBC 46258.spec Hs ~0.8–1.0 m / SwH ~0.6–0.7 m @ 13–14s S–SW (evening Oct 6 PT) · Surfline Premium not used · quiver_pick.py for BOARD labels · Weekly viz refresh Oct 6 PT — see WEEKLY.md</p>
     <div class="brand">Al's Cowabunga · Kelly Slater Bot</div>
   </div>
 </div>
