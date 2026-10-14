@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gerry Bot Cowabunga Report · Wed Oct 14, 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,600&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0A1F33; --lagoon:#1AABB8; --coral:#FF6B4A; --sand:#FFF6E8;
+    --hibiscus:#E85D75; --palm:#2D8A6A; --ink:#0A1F33; --muted:#5A7382;
+    --line:rgba(10,31,51,.12); --soft:#F4F7F4; --card:#FFFBF6;
+    --go:#2D8A6A; --go-bg:#D8F0E8; --warn:#C47A2A; --warn-bg:#F8E8C8;
+    --stop:#C0342F; --stop-bg:#F8E0DC;
+    --go-bar-h:68px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  body{
+    margin:0;
+    background:
+      radial-gradient(900px 320px at 110% -40px, rgba(255,176,103,.55), transparent 60%),
+      linear-gradient(180deg,#0E2A40 0, #146073 200px, #F3E6D4 200px);
+    color:var(--ink);font-family:Karla,system-ui,sans-serif;
+    padding-bottom:calc(var(--go-bar-h) + env(safe-area-inset-bottom,0px) + 6px);
+  }
+  html,body{overflow-x:hidden}
+  .page{
+    width:min(720px,100%); margin:8px auto; background:var(--card);
+    border-radius:16px; padding:0 0 4px; box-shadow:0 14px 40px rgba(10,31,51,.2);
+    overflow-x:hidden; overflow-y:visible; position:relative;
+  }
+  .stripe{
+    height:5px; width:100%;
+    background:linear-gradient(90deg,#0A1F33,#1AABB8 18%,#7EE0E8 36%,#FF6B4A 58%,#E85D75 76%,#FFF6E8 92%);
+    background-size:220% 100%;
+    animation:sheen 10s linear infinite;
+  }
+
+  /* Daily ↔ Weekly toggle — sticky, 44px tap */
+  .viewnav{
+    position:sticky; top:0; z-index:30;
+    display:flex; gap:4px; padding:6px 8px;
+    background:rgba(255,251,246,.94); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .viewnav a{
+    flex:1; text-align:center; text-decoration:none;
+    font-family:DM Mono,monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    font-weight:600; padding:12px 8px; min-height:44px; border-radius:999px;
+    color:var(--muted); background:transparent; border:1px solid transparent;
+    display:flex; align-items:center; justify-content:center;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .viewnav a.on{
+    color:#fff; background:linear-gradient(105deg,#0A1F33,#1AABB8);
+    box-shadow:0 4px 14px rgba(10,31,51,.2);
+  }
+  .viewnav a:not(.on):active{background:rgba(10,31,51,.06)}
+
+  /* Hero: call owns first screen */
+  .hero{
+    position:relative;
+    padding:10px 14px 28px;
+    background:
+      radial-gradient(120px 80px at 92% 18%, rgba(255,196,120,.45), transparent 70%),
+      linear-gradient(168deg,#16445C 0%, #0A1F33 46%, #147A86 100%);
+    color:var(--sand);
+    overflow:hidden;
+  }
+  .sun{
+    position:absolute; right:12px; top:10px; z-index:0;
+    width:44px; height:44px; border-radius:50%;
+    background:radial-gradient(circle at 38% 36%, #FFF8EC, #FFC56A 46%, #FF6B4A 100%);
+    box-shadow:0 0 0 6px rgba(255,196,120,.16), 0 0 22px rgba(255,176,103,.7);
+    animation:glow 5s ease-in-out infinite;
+    pointer-events:none;
+  }
+  .kicker{
+    position:relative; z-index:1;
+    font-family:DM Mono,monospace; font-size:9px; letter-spacing:.16em;
+    text-transform:uppercase; color:#F0C9A0;
+  }
+  .eyebrow{
+    position:relative; z-index:1;
+    margin-top:2px;
+    font-family:DM Mono,monospace; font-size:9px; letter-spacing:.08em;
+    text-transform:uppercase; color:rgba(255,246,232,.58);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .say{
+    position:relative; z-index:1;
+    font-family:Fraunces,Georgia,serif; font-weight:700;
+    font-size:clamp(28px, 8vw, 38px);
+    line-height:1.05; letter-spacing:-.03em;
+    margin:6px 0 0; color:#FFF6E8;
+    max-width:17ch; padding-right:6px;
+  }
+  .say::after{
+    content:""; display:block; width:56px; height:3px; margin-top:8px; border-radius:99px;
+    background:linear-gradient(90deg,#FF6B4A,#FFD7A0,#7EE0E8);
+    background-size:200% 100%;
+    animation:sheen 3.6s ease-in-out infinite;
+  }
+  .whisper{
+    position:relative; z-index:1;
+    margin:6px 0 0; max-width:34ch;
+    font-size:13px; line-height:1.3; color:rgba(255,246,232,.84);
+  }
+  .whisper em{font-style:italic; font-family:Fraunces,Georgia,serif; color:#FFC98A; font-weight:600}
+  .sea{position:absolute; left:0; right:0; bottom:0; height:26px; pointer-events:none; z-index:0}
+  .sea svg{position:absolute; left:0; bottom:0; width:200%; height:100%; display:block}
+  .sea .a{animation:drift 16s linear infinite}
+  .sea .b{animation:drift 26s linear infinite; opacity:.9}
+
+  .inner{padding:8px 12px 0}
+  .calls{display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:8px 0 0; position:relative; z-index:1}
+  .call{
+    min-width:0; background:rgba(255,246,232,.95); border-radius:12px; padding:8px 10px;
+    border:0; position:relative; overflow:hidden;
+    display:flex; flex-direction:column; gap:1px;
+    box-shadow:0 5px 14px rgba(0,0,0,.12);
+  }
+  .call::before{content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:linear-gradient(180deg,var(--coral),var(--hibiscus))}
+  .call.go::before{background:linear-gradient(180deg,var(--lagoon),var(--palm))}
+  .call.go{background:linear-gradient(160deg,#F3FFFB,#FFF6E8)}
+  .call .heat{
+    display:inline-block; align-self:flex-start; font-family:DM Mono,monospace; font-size:8px; letter-spacing:.12em;
+    text-transform:uppercase; background:var(--navy); color:#fff; padding:3px 7px; border-radius:999px;
+  }
+  .call.go .heat{background:var(--palm); animation:pulse 2.8s ease-in-out infinite}
+  .call .big{font-family:Fraunces,Georgia,serif; font-size:15px; font-weight:700; line-height:1.1; color:var(--navy); letter-spacing:-.02em}
+  .call .sec{margin:0; font-size:11px; color:var(--muted); line-height:1.2}
+
+  .sec-h{margin:0 0 4px; font-family:DM Mono,monospace; font-size:9px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:500}
+
+  .swellviz{
+    display:grid; grid-template-columns:1fr auto; gap:6px; align-items:center;
+    background:var(--soft); border:1px solid var(--line); border-radius:12px;
+    padding:6px 8px; margin-bottom:6px;
+  }
+  .swellviz .bars{display:flex; flex-direction:column; gap:4px; min-width:0}
+  .sbar{display:grid; grid-template-columns:56px 1fr auto; gap:5px; align-items:center}
+  .sbar .lab{font-family:DM Mono,monospace; font-size:8px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+  .sbar .track{height:8px; background:rgba(10,31,51,.08); border-radius:999px; overflow:hidden; position:relative}
+  .sbar .fill{
+    height:100%; border-radius:999px;
+    background:linear-gradient(90deg,var(--lagoon),var(--palm));
+    transform-origin:left center;
+    animation:grow .9s cubic-bezier(.2,.8,.2,1) both;
+  }
+  .sbar:nth-child(2) .fill{animation-delay:.1s}
+  .sbar:nth-child(3) .fill{animation-delay:.2s}
+  .sbar .fill.wind{background:linear-gradient(90deg,#7EB8C8,var(--coral))}
+  .sbar .fill.hint{opacity:.45; background:linear-gradient(90deg,#A8C5CE,#E8A090)}
+  .sbar .num{font-family:DM Mono,monospace; font-size:9px; color:var(--ink); white-space:nowrap}
+  .swellviz .meta{margin:1px 0 0; font-size:9px; color:var(--muted); line-height:1.25}
+  .rose{width:60px; height:60px; flex-shrink:0; position:relative; animation:bob 3.6s ease-in-out infinite}
+  .rose svg{width:100%; height:100%; display:block}
+  .rose .deg{
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    font-family:DM Mono,monospace; font-size:8px; font-weight:500; color:var(--navy);
+    text-align:center; line-height:1.1; pointer-events:none;
+  }
+
+  .ride{
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+    background:linear-gradient(105deg,#0A1F33 0%, #134A5C 48%, #1AABB8 100%);
+    color:#fff; border-radius:12px; padding:7px 10px; margin-bottom:6px;
+  }
+  .ride .lbl{font-family:DM Mono,monospace; font-size:8px; letter-spacing:.14em; text-transform:uppercase; opacity:.7}
+  .ride .rec{font-family:Fraunces,Georgia,serif; font-size:15px; font-weight:700; line-height:1.1}
+  .ride .wchip{
+    font-family:DM Mono,monospace; font-size:11px;
+    background:rgba(255,246,232,.16); border-radius:999px; padding:5px 10px; white-space:nowrap;
+    animation:glow 5.5s ease-in-out infinite;
+  }
+
+  .quiver{
+    margin:0 0 6px; padding:6px 8px; border-radius:10px;
+    background:linear-gradient(135deg,#FFFBF6 0%, #EAF7F4 100%);
+    border:1px solid rgba(26,171,184,.22);
+  }
+  .quiver .qv-h{
+    font-family:DM Mono,monospace; font-size:8px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--lagoon); margin:0 0 3px;
+  }
+  .quiver .qv-pick{display:flex; flex-wrap:wrap; gap:3px 6px; align-items:baseline; margin:0 0 3px}
+  .quiver .qv-name{
+    font-family:Fraunces,Georgia,serif; font-size:13px; font-weight:700; color:var(--navy);
+  }
+  .quiver .qv-why{font-size:11px; color:var(--muted); line-height:1.25; flex:1 1 10rem}
+  .quiver .qv-alts{display:flex; flex-wrap:wrap; gap:4px}
+  .quiver .alt{
+    font-family:DM Mono,monospace; font-size:9px; letter-spacing:.04em;
+    padding:5px 8px; min-height:28px; border-radius:999px;
+    background:rgba(10,31,51,.05); color:var(--muted); opacity:.55;
+    border:1px solid transparent;
+    display:inline-flex; align-items:center;
+  }
+  .quiver .alt.on{
+    opacity:1; background:var(--go-bg); color:var(--palm); font-weight:600;
+    border-color:rgba(45,138,106,.25);
+  }
+
+  .teach{
+    display:grid; grid-template-columns:auto 1fr; gap:6px; align-items:start;
+    background:linear-gradient(135deg,#FFF6E8 0%, #E7F7F4 100%);
+    border:1px solid rgba(26,171,184,.28); border-radius:12px; padding:6px 8px; margin-bottom:6px;
+  }
+  .teach .mark{
+    width:24px; height:24px; border-radius:50%;
+    background:linear-gradient(135deg,var(--lagoon),var(--palm));
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .teach .mark svg{width:14px; height:14px; animation:bob 3.2s ease-in-out infinite}
+  .teach .okina{font-family:DM Mono,monospace; font-size:8px; letter-spacing:.12em; text-transform:uppercase; color:var(--lagoon)}
+  .teach h2{margin:1px 0 1px; font-family:Fraunces,Georgia,serif; font-size:13px; color:var(--navy); font-weight:700; letter-spacing:-.01em}
+  .teach p{margin:0; font-size:12px; color:#3E5562; line-height:1.3}
+
+  .where{margin-bottom:6px}
+  .spot{display:grid; grid-template-columns:20px 1fr auto; gap:5px; align-items:center; padding:6px 8px; min-height:40px; border-radius:10px; margin-bottom:3px; background:var(--soft)}
+  .spot.best{background:var(--go-bg); box-shadow:inset 3px 0 0 var(--palm)}
+  .spot .n{font-family:Fraunces,Georgia,serif; font-size:15px; font-weight:700; color:var(--palm); text-align:center}
+  .spot:not(.best) .n{color:var(--muted)}
+  .spot .name{font-weight:700; font-size:13px; line-height:1.1}
+  .spot .why{font-size:11px; color:var(--muted); line-height:1.2; margin-top:1px}
+  .pill{font-family:DM Mono,monospace; font-size:9px; letter-spacing:.06em; padding:4px 7px; border-radius:999px; background:#fff; border:1px solid var(--line); color:var(--muted); white-space:nowrap}
+  .spot.best .pill{border-color:rgba(45,138,106,.4); color:var(--palm)}
+  .spot.skip{opacity:.7}
+  .spot.skip .name{font-weight:600; font-size:11px; line-height:1.25}
+
+  .scrub{margin-bottom:6px; background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:6px 8px}
+  .scrub-read{
+    display:flex; flex-wrap:wrap; gap:4px 8px; align-items:baseline; margin-bottom:4px;
+    font-size:11px; color:var(--muted);
+  }
+  .scrub-read .t{font-family:Fraunces,Georgia,serif; font-size:15px; font-weight:700; color:var(--navy)}
+  .scrub-read .chip{
+    font-family:DM Mono,monospace; font-size:10px; letter-spacing:.04em;
+    padding:4px 8px; min-height:26px; border-radius:999px; background:#fff; border:1px solid var(--line);
+    display:inline-flex; align-items:center;
+  }
+  .scrub-read .chip.go{background:var(--go-bg); border-color:transparent; color:var(--palm); font-weight:600}
+  .scrub-read .chip.meh{background:var(--warn-bg); border-color:transparent; color:var(--warn); font-weight:600}
+  .scrub-read .chip.skip{background:var(--stop-bg); border-color:transparent; color:var(--stop); font-weight:600}
+  .scrub-wins{display:grid; grid-template-columns:repeat(4,1fr); gap:3px; margin-bottom:4px}
+  .swin{border-radius:8px; padding:5px 3px; text-align:center; background:#fff; border:1px solid var(--line); font-size:10px; min-height:36px}
+  .swin.on{background:var(--go-bg); border-color:transparent}
+  .swin.meh{background:var(--warn-bg); border-color:transparent}
+  .swin .k{font-family:DM Mono,monospace; font-size:7px; letter-spacing:.05em; color:var(--muted); text-transform:uppercase}
+  .swin .v{font-weight:700; margin-top:1px; font-size:11px}
+  .swin.on .v{color:var(--palm)}
+  .swin.meh .v{color:var(--warn)}
+  .scrub-chart{height:64px; position:relative; margin:2px 0 2px; touch-action:none; cursor:ew-resize}
+  .scrub-chart svg{width:100%; height:100%; display:block; pointer-events:none}
+  .scrub-slider{
+    width:100%; accent-color:var(--coral); margin:0; height:48px;
+    touch-action:pan-x; display:block;
+  }
+  .scrub-legend{display:flex; justify-content:space-between; font-family:DM Mono,monospace; font-size:8px; color:var(--muted); gap:3px}
+  .scrub-note{margin:3px 0 0; font-size:11px; color:var(--muted); line-height:1.3}
+  .print-marker{display:none}
+
+  .footstrip{display:grid; grid-template-columns:1fr 1fr; gap:4px; margin-bottom:4px}
+  .fchip{border:1px solid var(--line); border-radius:10px; padding:5px 7px; background:#fff; min-width:0}
+  .fchip.warn{background:var(--stop-bg); border-color:transparent; box-shadow:inset 3px 0 0 var(--stop)}
+  .fchip h3{margin:0 0 2px; font-family:DM Mono,monospace; font-size:8px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-weight:500}
+  .fchip p{margin:0; font-size:11px; color:var(--muted); line-height:1.3}
+  .fchip b{color:var(--ink); font-weight:600}
+
+  .srcwrap{border-top:1px solid var(--line); padding:5px 12px 4px; display:flex; justify-content:space-between; gap:6px; align-items:flex-start}
+  .src{font-family:DM Mono,monospace; font-size:7px; color:var(--muted); line-height:1.3; margin:0; max-width:100%; overflow:visible; white-space:normal; word-break:break-word}
+  .brand{font-family:DM Mono,monospace; font-size:8px; letter-spacing:.1em; text-transform:uppercase; color:var(--lagoon); white-space:nowrap; flex-shrink:0}
+
+  .gobar{
+    position:fixed; left:0; right:0; bottom:0; z-index:40;
+    background:linear-gradient(105deg,#0A1F33 0%, #134A5C 55%, #1AABB8 100%);
+    color:#fff; padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px));
+    box-shadow:0 -8px 28px rgba(10,31,51,.35);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .gobar-inner{
+    width:min(720px,100%); display:grid; grid-template-columns:1fr auto; gap:8px; align-items:center;
+  }
+  .gobar .who{font-family:DM Mono,monospace; font-size:8px; letter-spacing:.12em; text-transform:uppercase; opacity:.7}
+  .gobar .spotname{font-family:Fraunces,Georgia,serif; font-size:15px; font-weight:700; line-height:1.1}
+  .gobar .meta{font-size:11px; opacity:.85; margin-top:1px}
+  .gobar .acts{display:flex; gap:6px}
+  .gobar a,.gobar button{
+    appearance:none; border:0; cursor:pointer; text-decoration:none; color:#0A1F33;
+    background:rgba(255,246,232,.92); font-family:DM Mono,monospace; font-size:11px; letter-spacing:.06em;
+    text-transform:uppercase; font-weight:600; padding:12px 14px; min-height:44px; border-radius:999px; white-space:nowrap;
+    display:inline-flex; align-items:center; justify-content:center;
+  }
+  .gobar a:active,.gobar button:active{transform:scale(.97)}
+
+  @keyframes drift{from{transform:translateX(0)} to{transform:translateX(-50%)}}
+  @keyframes bob{0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)}}
+  @keyframes glow{0%,100%{filter:saturate(1)} 50%{filter:saturate(1.25) brightness(1.06)}}
+  @keyframes sheen{from{background-position:0% 50%} to{background-position:200% 50%}}
+  @keyframes grow{from{transform:scaleX(.2)} to{transform:scaleX(1)}}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(45,138,106,0)} 50%{box-shadow:0 0 0 4px rgba(45,138,106,.22)}}
+
+  /* Both-local: hide dual CALL cards; hero + optional whisper carry the call */
+  .calls.hidden{display:none}
+  .calls.single{grid-template-columns:1fr}
+  .calls.single .call + .call{display:none}
+
+  .lockey{
+    margin:0 0 6px; padding:5px 8px; border-radius:10px;
+    background:linear-gradient(135deg,#F4FBFA 0%, #FFF6E8 100%);
+    border:1px solid rgba(26,171,184,.22);
+  }
+  .lockey .lk-h{
+    font-family:DM Mono,monospace; font-size:8px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--lagoon); margin:0 0 2px;
+  }
+  .lockey p{margin:0 0 2px; font-size:10px; line-height:1.3; color:var(--muted)}
+  .lockey p:last-child{margin:0}
+  .lockey .tag{
+    display:inline-block; font-family:DM Mono,monospace; font-size:7px; letter-spacing:.1em;
+    text-transform:uppercase; padding:2px 5px; border-radius:999px; margin-right:3px;
+    vertical-align:1px;
+  }
+  .lockey .tag.home{background:var(--go-bg); color:var(--palm); font-weight:600}
+  .lockey .tag.far{background:rgba(10,31,51,.08); color:var(--muted); font-weight:600}
+
+  @media (max-width:900px){
+    body{background:#0E2A40}
+    .page{width:100%; max-width:100%; margin:0; border-radius:0; box-shadow:none}
+    .inner{padding:8px 10px 0}
+    .srcwrap{padding:5px 10px 8px}
+  }
+  @media (max-width:480px){
+    :root{--go-bar-h:104px}
+    .hero{padding:8px 12px 24px}
+    .sun{width:36px; height:36px; right:10px; top:8px}
+    .say{font-size:29px; max-width:15ch; margin-top:4px}
+    .whisper{font-size:12px; max-width:30ch}
+    .inner{padding:6px 10px 0}
+    .footstrip{grid-template-columns:1fr}
+    .spot{grid-template-columns:18px 1fr auto; padding:7px 8px; min-height:44px}
+    .eyebrow{white-space:normal; line-height:1.25}
+    .srcwrap{flex-direction:column; padding:5px 10px 12px; gap:3px}
+    .brand{white-space:normal}
+    .gobar-inner{grid-template-columns:1fr auto; gap:6px}
+    .gobar .acts{grid-column:1 / -1}
+    .gobar a,.gobar button{flex:1; text-align:center; min-height:48px; padding:14px 12px}
+    .scrub-wins{gap:3px}
+    .swellviz .meta{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{animation:none !important; transition:none !important}
+    .sbar .fill{transform:none !important}
+  }
+  @media print{
+    body{background:#fff; padding-bottom:0}
+    .page{margin:0; box-shadow:none; width:100%; border-radius:0}
+    .gobar{display:none !important}
+    .scrub-slider{display:none !important}
+    .print-marker{display:block}
+    .stripe,.sun,.sea svg,.sbar .fill,.call.go .heat,.rose,.teach .mark svg,.ride .wchip,.say::after{
+      animation:none !important;
+    }
+    .sbar .fill{transform:none !important}
+    *{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="stripe" aria-hidden="true"></div>
+  <nav class="viewnav" aria-label="Brief view">
+    <a class="on" href="/" aria-current="page">Daily</a>
+    <a href="/weekly.html">Weekly</a>
+  </nav>
+  <header class="hero">
+    <div class="sun" aria-hidden="true"></div>
+    <div class="kicker">Today's call</div>
+    <div class="eyebrow">Gerry Bot Cowabunga Report · Wed Oct 14 · North PB</div>
+    <h1 class="say">Offshore again, a bit smaller.<br>Little Point, out by 8:45.</h1>
+    <p class="whisper">round two of the S swell: <em>paddle out by 7:30</em></p>
+    
+    
+    <div class="sea" aria-hidden="true">
+      <svg class="a" viewBox="0 0 640 36" preserveAspectRatio="none"><path fill="rgba(255,246,232,.20)" d="M0 20c20 0 20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10s20-10 40-10s20 10 40 10V36H0Z"/></svg>
+      <svg class="b" viewBox="0 0 640 36" preserveAspectRatio="none"><path fill="rgba(126,224,232,.28)" d="M0 26c20 0 20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8s20-8 40-8s20 8 40 8V36H0Z"/></svg>
+    </div>
+  </header>
+  <div class="inner">
+
+  <h2 class="sec-h">What's in the water</h2>
+  <div class="swellviz" aria-label="Swell energy">
+    <div class="bars">
+      <div class="sbar">
+        <div class="lab">Ground</div>
+        <div class="track"><div class="fill" style="width:39%"></div></div>
+        <div class="num">SwH 3.9 ft · 15s</div>
+      </div>
+      <div class="sbar">
+        <div class="lab">Windswell</div>
+        <div class="track"><div class="fill wind" style="width:26%"></div></div>
+        <div class="num">WWH 2.6 ft · 8s</div>
+      </div>
+      <div class="sbar">
+        <div class="lab">Hs buoy</div>
+        <div class="track"><div class="fill" style="width:46%;opacity:.35"></div></div>
+        <div class="num">Hs 4.6 ft · 46258</div>
+      </div>
+      <p class="meta">Buoy 46258 spectrum · ground 3.9 ft @ 15s SSW (15–17s overnight) + WWH 2.6 ft @ 8s W · face 3–5 ft, sets 6 (NWS SRF SD) · PZZ740 S 3 ft @ 16s + W 1 ft @ 15s · MWD 208° SSW · wind E ~6 kt</p>
+    </div>
+    <div class="rose" aria-hidden="true">
+      <svg viewBox="0 0 72 72">
+        <circle cx="36" cy="36" r="30" fill="#fff" stroke="rgba(10,31,51,.12)" stroke-width="1"/>
+        <circle cx="36" cy="36" r="22" fill="none" stroke="rgba(26,171,184,.25)" stroke-width="1" stroke-dasharray="2 2"/>
+        <text x="36" y="12" text-anchor="middle" font-size="7" fill="#5A7382" font-family="DM Mono,monospace">N</text>
+        <line x1="36" y1="36" x2="23.8" y2="59.0" stroke="#FF6B4A" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="23.8" cy="59.0" r="3.5" fill="#FF6B4A"/>
+        <circle cx="36" cy="36" r="2.5" fill="#0A1F33"/>
+      </svg>
+      <div class="deg">208°<br>SSW</div>
+    </div>
+  </div>
+
+  <div class="ride">
+    <div>
+      <div class="lbl">Board</div>
+      <div class="rec">Inferno 72</div>
+    </div>
+    <div class="wchip">~70°F</div>
+  </div>
+
+  
+  <div class="quiver" aria-label="Quiver pick">
+    <div class="qv-h">Quiver</div>
+    <div class="qv-pick">
+      <span class="qv-name">Sharp Eye Inferno 72</span>
+      <span class="qv-why">Clean 15-second groundswell on a steep reef left with offshore wind. Still Inferno territory, even a foot smaller than Tuesday.</span>
+    </div>
+    <div class="qv-alts"><span class="alt">Anvil twin · only if you end up on the Drive sandbar</span><span class="alt">TW log · too much push for it today</span></div>
+  </div>
+
+  
+  <div class="lockey" aria-label="Which spots are local">
+    <div class="lk-h">Home stretch</div>
+    <p><span class="tag home">LOCAL</span> PB north · Drive · Tourmo · PB Point · Calumet · Little Point</p>
+    <p><span class="tag far">NOT</span> Cliffs · OB · Scripps · Blacks · North County</p>
+  </div>
+
+  <div class="teach">
+    <div class="mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M2 14c3-2 5-2 8 0s5 2 8 0 5-2 8 0" stroke="#FFF6E8" stroke-width="2" stroke-linecap="round"/><path d="M2 18c3-2 5-2 8 0s5 2 8 0 5-2 8 0" stroke="#FFF6E8" stroke-width="2" stroke-linecap="round" opacity=".7"/></svg>
+    </div>
+    <div>
+      <div class="okina">ʻIke · one thing to remember</div>
+      <h2>Period is power.</h2>
+      <p>Wave energy grows with height squared times period, so 4 ft at 15 seconds carries about twice the push of 4 ft at 8 seconds. Long-period swell also feels the bottom sooner and stacks up on the reef. That is why the buoy number dropped a foot since Tuesday, but Little Point will still stand up chest to overhead on the sets.</p>
+    </div>
+  </div>
+
+  <div class="where">
+    <h2 class="sec-h">Where it's working</h2>
+    <div class="spot best">
+      <div class="n">★</div>
+      <div>
+        <div class="name">Little Point</div>
+        <div class="why">Perfect 1.00 on the scorecard. SSW groundswell (46258 SwH 3.9 ft @ 15s, 202–208°) is right in its window, the pier anemometer has E 6–11 kt offshore since 6a, and the tide is rising through the middle. The gauge read 4.1 ft at 6:54a, about 0.9 ft over the table, so it reaches the 5.5 ft ceiling around 8:45a. Paddle out by 7:30.</div>
+      </div>
+      <span class="pill">CALL</span>
+    </div>
+    <div class="spot">
+      <div class="n">2</div>
+      <div>
+        <div class="name">PB Drive</div>
+        <div class="why">Score 0.95. Also fine at dawn on the same offshore if Little Point is packed. Softer sandbar peaks, and sets to 6 ft will close out some.</div>
+      </div>
+      <span class="pill">ALSO</span>
+    </div>
+    <div class="spot">
+      <div class="n">3</div>
+      <div>
+        <div class="name">PB north of the pier</div>
+        <div class="why">Score 0.73. The SSW angle mostly misses the pier wedge, so it is smaller and less organized than Drive.</div>
+      </div>
+      <span class="pill">SOFT</span>
+    </div>
+    <div class="spot">
+      <div class="n">4</div>
+      <div>
+        <div class="name">Calumet</div>
+        <div class="why">Score 0.71. Good swell angle, but it wants less water than this flooding high. Pass.</div>
+      </div>
+      <span class="pill">SOFT</span>
+    </div>
+    <div class="spot">
+      <div class="n">5</div>
+      <div>
+        <div class="name">Tourmaline</div>
+        <div class="why">Score 0.68. Too full for the cobble on this high, and the E wind is outside its offshore cone. Pass.</div>
+      </div>
+      <span class="pill">SOFT</span>
+    </div>
+    <div class="spot skip">
+      <div class="n">·</div>
+      <div>
+        <div class="name">Skip · PB Point (0.44) is too full. The Cliffs (Garbage, Abs, Luscomb’s) want W groundswell and a low to mid tide, and today is SSW on a flooding high, so none of them beat Little Point. OB is the same story. Scripps and Blacks are extended only and do not top a local reef on offshore SSW.</div>
+        <div class="why"></div>
+      </div>
+      <span class="pill">SKIP</span>
+    </div>
+  </div>
+
+  <div class="scrub" id="scrub">
+    <h2 class="sec-h">Drag the tide</h2>
+    <div class="scrub-read" id="scrubRead">
+      <span class="t" id="scrubTime">7:00a</span>
+      <span id="scrubTide">3.3 ft tide</span>
+      <span id="scrubWind">E ~4 kt · NWS</span>
+      <span class="chip go" id="scrubWin">GO · Little Point</span>
+      <span id="scrubFace">3–5 ft, sets 6 (SRF)</span>
+    </div>
+    <div class="scrub-wins"><div class="swin"><div class="k">Pre-7a · first light</div><div class="v">WAIT</div></div>
+      <div class="swin on"><div class="k">7–8:45a · Little Point</div><div class="v">GO</div></div>
+      <div class="swin"><div class="k">9a–noon flood</div><div class="v">SKIP</div></div>
+      <div class="swin"><div class="k">Noon on · W/NW onshore</div><div class="v">SKIP</div></div></div>
+    <div class="scrub-chart">
+      <svg viewBox="0 0 360 72" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="tg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1AABB8" stop-opacity=".28"/>
+            <stop offset="100%" stop-color="#1AABB8" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path d="M0.0,30.9 L15.7,31.9 L31.3,35.1 L47.0,39.0 L62.6,41.7 L78.3,41.7 L93.9,38.3 L109.6,32.0 L125.2,23.9 L140.9,16.0 L156.5,10.1 L172.2,8.0 L187.8,10.4 L203.5,17.2 L219.1,27.4 L234.8,39.1 L250.4,50.2 L266.1,58.8 L281.7,63.6 L297.4,64.0 L313.0,60.5 L328.7,54.4 L344.3,47.4 L360.0,41.0 L360,72 L0,72 Z" fill="url(#tg)"/>
+        <path d="M0.0,30.9 L15.7,31.9 L31.3,35.1 L47.0,39.0 L62.6,41.7 L78.3,41.7 L93.9,38.3 L109.6,32.0 L125.2,23.9 L140.9,16.0 L156.5,10.1 L172.2,8.0 L187.8,10.4 L203.5,17.2 L219.1,27.4 L234.8,39.1 L250.4,50.2 L266.1,58.8 L281.7,63.6 L297.4,64.0 L313.0,60.5 L328.7,54.4 L344.3,47.4 L360.0,41.0" fill="none" stroke="#1AABB8" stroke-width="2"/>
+        <line id="scrubPlayhead" x1="109.6" y1="4" x2="109.6" y2="68" stroke="#FF6B4A" stroke-width="1.5" stroke-dasharray="2 2"/>
+        <circle id="scrubDot" cx="109.6" cy="32.0" r="3.5" fill="#FF6B4A"/>
+        <line class="print-marker" x1="109.6" y1="4" x2="109.6" y2="68" stroke="#2D8A6A" stroke-width="1.5" opacity=".7"/>
+      </svg>
+      <div class="print-marker" aria-hidden="true"></div>
+    </div>
+    <input class="scrub-slider" id="scrubSlider" type="range" min="0" max="23" step="1" value="7" aria-label="Scrub timeline hour">
+    <div class="scrub-legend"><span>L 2.4 @ 4:30a</span><span>H 5.4 @ 10:59a</span><span>L 0.5 @ 6:36p</span><span>obs 4.1 @ 6:54a</span></div>
+    <p class="scrub-note"><b style="color:var(--ink)">Little Point, 7 to about 8:45a, on the Inferno 72.</b> The table has L 2.4@4:30a rising to H 5.4@10:59a, but the gauge read 4.13 ft at 6:54a against about 3.3 predicted, so it is still running roughly 0.9 ft over the table. That puts the reef past its 5.5 ft ceiling around 8:45a, and the real high could reach about 6.3 ft. The NOAA pier anemometer (LJAC1 wind is out today) had E 7–11 kt from 5:24 to 6:36a, easing to E 4–6 kt by 6:54a. NWS hourly holds E 5 mph (~4 kt) through 8a, calm 9 to 10a, W 5 mph at 11a, then W/NW 10 mph (~9 kt) from noon. No good afternoon backup: the tide drains to L 0.5@6:36p, after sunset, with onshore NW the whole way. Sunrise 6:51a, sunset 6:18p.</p>
+  </div>
+
+  <div class="footstrip">
+    <div class="fchip">
+      <h3>Skip</h3>
+      <p>Little Point after about 8:45a, when the high tide goes over its ceiling, and again in the afternoon when it drains with onshore NW. Everything from 9a to noon while it is flooded. Calumet, Tourmo, and PB Point on this high. The Cliffs and OB on a SSW swell. Anything after noon once W/NW ~9 kt fills in.</p>
+    </div>
+    <div class="fchip warn">
+      <h3>Gotchas</h3>
+      <p>Little Point is a shallow reef with a tight takeoff, so it crowds fast and the rocks show as it drains. High rip current risk today and a Beach Hazards Statement through 2p Thursday (NWS). Sets to 6 ft with 15–17s period mean long lulls, then a big set. A Heat Advisory starts 10a Thursday, so bring water for the stairs at Fern Glen.</p>
+    </div>
+  </div>
+
+  </div>
+
+  <div class="srcwrap">
+    <p class="src">46258 SPEC @ 6:26a PT (13:26Z): Hs 4.6 ft (1.4 m) / SwH 3.9 ft (1.2 m) @ 15.4s SSW / WWH 2.6 ft (0.8 m) @ 8.3s W / MWD 208° · SPEC trend 2:56–6:26a: SwH 1.1–1.4 m @ 15.4–16.7s SSW · 46258 stdmet @ 5:56a PT: 1.3 m / 17s / 208° / 22.3°C · 46225: 1.3 m / 15s / 206° · 46224: 1.4 m / 17s / 198° · 46232: 1.4 m / 15s / 197° (5:56a PT) · 46254: 0.8 m / 15s / 288° (6:26a PT) · LJAC1 wind MM since 8:18p Tue · NOAA CO-OPS 9410230 wind E 91–95° 6.8–10.9 kt @ 5:24–6:36a, E 96° ~6 kt @ 6:54a PT · NOAA 9410230 WL 4.13 ft @ 6:54a PT vs pred ~3.3 (~+0.9) · tides L 2.4/4:30a H 5.4/10:59a L 0.5/6:36p · water 70.2°F (NOAA 9410230 @ 6:48a) / 72.1°F (46258) · NWS SRF SD (2:04a) TODAY 3–5 ft sets 6 · high rips · swell 200° · water 70–72°F · THU 3–5 sets 6 · Beach Hazards Statement through 2p Thu · Heat Advisory 10a Thu to 8p Sat · PZZ740 (2:12a) TODAY variable under 10 kt becoming NW 10 kt PM · seas 3–4 · W 1 ft @ 15s + S 3 ft @ 16s · NWS hourly (SGX 54,18): E 5 mph 6–8a → calm 9–10a → W 5 mph 11a → W/NW 10 mph noon on · 62–74°F · sunny · sunrise 6:51a / sunset 6:18p PT (sunrise-sunset.org) · Surfline Premium not used · scorecard overlay LP 1.00 · Drive 0.95 · PB north 0.73 · Calumet 0.71 · Tourmo 0.68 · PB Point 0.44 · CALL takes Little Point at dawn before the tide anomaly crosses the 5.5 ft ceiling</p>
+    <div class="brand">Gerry Bot Cowabunga Report</div>
+  </div>
+
+</div>
+
+<div class="gobar" role="region" aria-label="GO bar">
+  <div class="gobar-inner">
+    <div>
+      <div class="who">LOCAL · CALL</div>
+      <div class="spotname">Little Point</div>
+      <div class="meta">7–8:45a · Inferno 72 · ~70°F</div>
+    </div>
+    <div class="acts">
+      <a href="https://maps.google.com/?q=32.8316,-117.2810" target="_blank" rel="noopener">Maps</a>
+      <button type="button" id="shareBtn" data-share-text="Gerry Bot Cowabunga Report · Wed Oct 14 · Little Point 7–8:45a · SSW 4 ft @ 15s · E offshore · sets to 6 · Inferno 72 · tide running high, go early">Share</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var SHARE_URL = "https://d2gwgujzd9dqcv.cloudfront.net/";
+  var HOURS = [{"h": 0, "tide": 3.426, "wind": "E ~3 kt", "wind_src": "CO-OPS pier", "win": "Dark", "wcls": "skip", "face": "3–5 ft, sets 6 (SRF)"}, {"h": 1, "tide": 3.342, "wind": "E ~1 kt", "wind_src": "CO-OPS pier", "win": "Dark", "wcls": "skip", "face": "3–5 ft, sets 6 (SRF)"}, {"h": 2, "tide": 3.052, "wind": "NNE ~5 kt", "wind_src": "CO-OPS pier", "win": "Dark", "wcls": "skip", "face": "3–5 ft, sets 6 (SRF)"}, {"h": 3, "tide": 2.709, "wind": "E ~3 kt", "wind_src": "CO-OPS pier", "win": "Dark", "wcls": "skip", "face": "3–5 ft, sets 6 (SRF)"}, {"h": 4, "tide": 2.474, "wind": "E ~3 kt", "wind_src": "CO-OPS pier", "win": "Dark", "wcls": "skip", "face": "3–5 ft, sets 6 (SRF)"}, {"h": 5, "tide": 2.476, "wind": "E ~3 kt", "wind_src": "CO-OPS pier", "win": "Dark", "wcls": "skip", "face": "3–5 ft, sets 6 (SRF)"}, {"h": 6, "tide": 2.772, "wind": "E ~11 kt", "wind_src": "CO-OPS pier", "win": "First light", "wcls": "meh", "face": "3–5 ft, sets 6 (SRF)"}, {"h": 7, "tide": 3.332, "wind": "E ~4 kt", "wind_src": "NWS", "win": "GO · Little Point", "wcls": "go", "face": "3–5 ft, sets 6 (SRF)"}, {"h": 8, "tide": 4.043, "wind": "E ~4 kt", "wind_src": "NWS", "win": "GO · Little Point", "wcls": "go", "face": "3–5 ft, sets 6 (SRF)"}, {"h": 9, "tide": 4.743, "wind": "calm", "wind_src": "NWS", "win": "Flooded", "wcls": "skip", "face": "3–5 ft, sets 6 (SRF)"}, {"h": 10, "tide": 5.258, "wind": "calm", "wind_src": "NWS", "win": "Flooded", "wcls": "skip", "face": "3–5 ft, sets 6 (SRF)"}, {"h": 11, "tide": 5.447, "wind": "W ~4 kt", "wind_src": "NWS", "win": "Flooded", "wcls": "skip", "face": "3–5 ft, sets 6 (SRF)"}, {"h": 12, "tide": 5.234, "wind": "W ~9 kt", "wind_src": "NWS", "win": "Onshore", "wcls": "skip", "face": "3–5 ft, sets 6 (SRF)"}, {"h": 13, "tide": 4.632, "wind": "NW ~9 kt", "wind_src": "NWS", "win": "Onshore", "wcls": "skip", "face": "3–5 ft, sets 6 (SRF)"}, {"h": 14, "tide": 3.735, "wind": "NW ~9 kt", "wind_src": "NWS", "win": "Onshore", "wcls": "skip", "face": "3–5 ft, sets 6 (SRF)"}, {"h": 15, "tide": 2.704, "wind": "NW ~9 kt", "wind_src": "NWS", "win": "Onshore", "wcls": "skip", "face": "3–5 ft, sets 6 (SRF)"}, {"h": 16, "tide": 1.722, "wind": "NW ~9 kt", "wind_src": "NWS", "win": "Onshore", "wcls": "skip", "face": "3–5 ft, sets 6 (SRF)"}, {"h": 17, "tide": 0.963, "wind": "NW ~9 kt", "wind_src": "NWS", "win": "Onshore", "wcls": "skip", "face": "3–5 ft, sets 6 (SRF)"}, {"h": 18, "tide": 0.543, "wind": "NW ~9 kt", "wind_src": "NWS", "win": "Dark", "wcls": "skip", "face": "3–5 ft, sets 6 (SRF)"}, {"h": 19, "tide": 0.506, "wind": "NW ~9 kt", "wind_src": "NWS", "win": "Dark", "wcls": "skip", "face": "3–5 ft, sets 6 (SRF)"}, {"h": 20, "tide": 0.812, "wind": "N ~9 kt", "wind_src": "NWS", "win": "Dark", "wcls": "skip", "face": "3–5 ft, sets 6 (SRF)"}, {"h": 21, "tide": 1.349, "wind": "N ~4 kt", "wind_src": "NWS", "win": "Dark", "wcls": "skip", "face": "3–5 ft, sets 6 (SRF)"}, {"h": 22, "tide": 1.971, "wind": "N ~4 kt", "wind_src": "NWS", "win": "Dark", "wcls": "skip", "face": "3–5 ft, sets 6 (SRF)"}, {"h": 23, "tide": 2.531, "wind": "N ~4 kt", "wind_src": "NWS", "win": "Dark", "wcls": "skip", "face": "3–5 ft, sets 6 (SRF)"}];
+  var slider = document.getElementById('scrubSlider');
+  var play = document.getElementById('scrubPlayhead');
+  function fmtHour(h){
+    var ap = h >= 12 ? 'p' : 'a';
+    var hr = h % 12; if (hr === 0) hr = 12;
+    return hr + ':00' + ap;
+  }
+  function apply(h){
+    var d = HOURS[h] || HOURS[0];
+    document.getElementById('scrubTime').textContent = fmtHour(h);
+    document.getElementById('scrubTide').textContent = d.tide.toFixed(1) + ' ft tide';
+    document.getElementById('scrubWind').textContent = d.wind + ' · ' + d.wind_src;
+    var w = document.getElementById('scrubWin');
+    w.textContent = d.win;
+    w.className = 'chip ' + d.wcls;
+    document.getElementById('scrubFace').textContent = d.face;
+    if (play) {
+      var x = (h / 23) * 360;
+      play.setAttribute('x1', x);
+      play.setAttribute('x2', x);
+      var dot = document.getElementById('scrubDot');
+      if (dot) {
+        dot.setAttribute('cx', x);
+        var mn = 0.506, mx = 5.447;
+        var y = 8 + (mx - d.tide) / (mx - mn) * 56;
+        dot.setAttribute('cy', y);
+      }
+    }
+  }
+  if (slider) {
+    slider.addEventListener('input', function(){ apply(+slider.value); });
+    apply(+slider.value);
+  }
+  var chart = document.querySelector('.scrub-chart');
+  function hourFromX(el, clientX){
+    var r = el.getBoundingClientRect();
+    if (!r.width) return 0;
+    var t = (clientX - r.left) / r.width;
+    return Math.max(0, Math.min(23, Math.round(t * 23)));
+  }
+  function setHour(h){
+    h = Math.max(0, Math.min(23, h|0));
+    if (slider) slider.value = String(h);
+    apply(h);
+  }
+  if (chart) {
+    chart.addEventListener('pointerdown', function(e){
+      e.preventDefault();
+      try { chart.setPointerCapture(e.pointerId); } catch (err) {}
+      setHour(hourFromX(chart, e.clientX));
+    });
+    chart.addEventListener('pointermove', function(e){
+      if (e.pointerType === 'mouse' && !(e.buttons & 1)) return;
+      e.preventDefault();
+      setHour(hourFromX(chart, e.clientX));
+    });
+  }
+  var btn = document.getElementById('shareBtn');
+  if (btn) {
+    btn.addEventListener('click', function(){
+      var shareText = btn.getAttribute('data-share-text') || "Gerry Bot Cowabunga Report";
+      var data = {title: "Gerry Bot Cowabunga Report", text: shareText, url: SHARE_URL};
+      if (navigator.share) {
+        navigator.share(data).catch(function(){});
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(SHARE_URL).then(function(){
+          btn.textContent = 'Copied';
+          setTimeout(function(){ btn.textContent = 'Share'; }, 1500);
+        });
+      } else {
+        prompt('Copy share URL', SHARE_URL);
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>
