@@ -210,6 +210,28 @@
   .plan .note{margin:0;font-size:15px;line-height:1.5;color:var(--mint)}
   .plan .note b{color:var(--sand)}
   .plan .tl span{display:inline-block;margin:0 10px 2px 0;font-family:var(--mono);font-size:13px;font-weight:600}
+
+  /* 1–10 rating strip (rating.py, filled by finalize_page.py) */
+  .ratings .rhead{margin:-4px 0 12px;font-size:15px;line-height:1.45;color:var(--body)} .ratings .rhead b{color:var(--ink)}
+  .rstrip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+  .rday{border:3px solid var(--ink);border-radius:16px;background:var(--paper);padding:8px 6px;display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center;min-width:0;position:relative}
+  .rday .rd{font-weight:900;font-size:13px;display:flex;flex-direction:column;align-items:center;gap:2px}
+  .rday .rt{font-family:var(--mono);font-size:8px;letter-spacing:1px;font-weight:600;padding:1px 5px;border-radius:999px;border:1.5px solid currentColor}
+  .rday .rn{font-family:var(--disp);font-size:clamp(26px,5vw,44px);line-height:1;color:var(--rc);white-space:nowrap}
+  .rday.fcst .rn{opacity:.78}
+  .rday .rb{font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--muted)}
+  .rday .rw{font-size:10px;line-height:1.25;color:var(--body)}
+  .rday.best{background:var(--rc);color:var(--sand);box-shadow:4px 4px 0 var(--amber)}
+  .rday.best .rn,.rday.best .rb,.rday.best .rw{color:var(--sand);opacity:1}
+  .rday .rbadge{font-family:var(--mono);font-size:8px;letter-spacing:1px;font-weight:600;background:var(--amber);color:var(--ink);border-radius:999px;padding:2px 6px}
+  .rday.na{opacity:.6} .rday.na .rn{color:var(--muted)}
+  .rlegend{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+  .rlegend span{display:flex;align-items:center;gap:6px} .rlegend span::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--rc)}
+  @media (max-width:560px){
+    .rstrip{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .rday .rw{display:none}
+  }
+  @media print{ .rday,.ratings{break-inside:avoid} }
 </style>
 </head>
 <body>
@@ -248,6 +270,8 @@
       <p class="note"><b>Daily wins the day.</b> Weekly refreshes every morning with the Daily brief. The La Jolla gauge is still running about 0.9 ft over the table, so Little Point hits its 5.5 ft ceiling earlier than the tide table says. Heat Advisory 10a Thu through 8p Sat. Showers possible Tue–Wed.</p>
     </aside>
   </section>
+
+  <section class="ratings" aria-label="Surf rating by day"><h2 class="sec-h">Rating · 1–10</h2><p class="rhead"><b>Best: Sun &amp; Mon · 6–8/10 (forecast) — up to “Very good — move a meeting”.</b> Better than 81% of 32 logged PB/La Jolla mornings since 09/12. Forecast days show a range (lower confidence further out).</p><div class="rstrip"><div class="rday" style="--rc:#1F7A6E"><div class="rd">Thu 15<span class="rt">LIVE</span></div><div class="rn">7</div><div class="rb">GOOD</div><div class="rw">capped by swell 3.0 ft</div></div><div class="rday fcst" style="--rc:#1F7A6E"><div class="rd">Fri 16<span class="rt">FCST</span></div><div class="rn">6–7</div><div class="rb">GOOD</div><div class="rw">capped by swell 3.0 ft</div></div><div class="rday fcst" style="--rc:#1F7A6E"><div class="rd">Sat 17<span class="rt">FCST</span></div><div class="rn">6–7</div><div class="rb">GOOD</div><div class="rw">capped by swell 3.0 ft</div></div><div class="rday best fcst" style="--rc:#1F7A6E"><div class="rd">Sun 18<span class="rt">FCST</span></div><div class="rn">6–8</div><div class="rb">GOOD</div><span class="rbadge">★ BEST</span><div class="rw">capped by swell 4.0 ft</div></div><div class="rday best fcst" style="--rc:#1F7A6E"><div class="rd">Mon 19<span class="rt">FCST</span></div><div class="rn">6–8</div><div class="rb">GOOD</div><span class="rbadge">★ BEST</span><div class="rw">capped by swell 4.0 ft</div></div><div class="rday na"><div class="rd">Tue 20<span class="rt">FCST</span></div><div class="rn">—</div><div class="rb">NO DATA</div><div class="rw">no marine forecast yet</div></div><div class="rday na"><div class="rd">Wed 21<span class="rt">FCST</span></div><div class="rn">—</div><div class="rb">NO DATA</div><div class="rw">no marine forecast yet</div></div></div><div class="rlegend" aria-label="Rating scale"><span style="--rc:#8A8172">1–2 flat/blown</span><span style="--rc:#B9442B">3–4 poor</span><span style="--rc:#E9A23B">5–6 fair/fun</span><span style="--rc:#1F7A6E">7–8 good</span><span style="--rc:#12464F">9–10 epic/rare</span></div></section>
 
   <div>
   <section class="near-viz" aria-label="Next 5 days at a glance">
@@ -496,6 +520,7 @@
 <script>
 /* Fallback if finalize_page.py did not run (see SITE.md → Design 2026-10-15) */
 (function(){
+  document.querySelectorAll('main *').forEach(function(n){ if(n.children.length===0 && /%%RATING_[A-Z]+%%/.test(n.textContent)) n.textContent=n.textContent.replace(/%%RATING_[A-Z]+%%/g,''); });
   var p=document.getElementById('paddleBy');
   if(p && p.textContent.indexOf('%%')>-1){
     var m=(document.querySelector('.gobar .meta')||{}).textContent||'';
