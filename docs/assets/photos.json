@@ -1,0 +1,116 @@
+{
+ "note": "No properly licensed photos of Gerry Lopez surfing were found (Wikimedia Commons, Openverse/Flickr CC searched 2026-10-15). These are licensed stand-in surf photos. Add licensed Gerry Lopez photos here (subject field) and rotation picks them up.",
+ "rotation": "index = day_of_year(date) % len(photos)",
+ "photos": [
+  {
+   "file": "assets/photos/surf-01.webp",
+   "caption": "Malibu, California, 1972",
+   "subject": "Unidentified surfer (not Gerry Lopez)",
+   "author": "Erik Calonius (EPA DOCUMERICA / U.S. National Archives)",
+   "license": "Public domain",
+   "license_url": "https://creativecommons.org/publicdomain/mark/1.0/",
+   "source_url": "https://commons.wikimedia.org/wiki/File:SURFING_ALONG_MALIBU_BEACH,_CALIFORNIA_-_NARA_-_544964.jpg",
+   "width": 1200,
+   "height": 810
+  },
+  {
+   "file": "assets/photos/surf-02.webp",
+   "caption": "North Shore, Oahu, 2016",
+   "subject": "Unidentified surfer (not Gerry Lopez)",
+   "author": "Tony Hisgett",
+   "license": "CC BY 2.0",
+   "license_url": "https://creativecommons.org/licenses/by/2.0",
+   "source_url": "https://commons.wikimedia.org/wiki/File:Surfer_6_(30602849666).jpg",
+   "width": 1200,
+   "height": 812
+  },
+  {
+   "file": "assets/photos/surf-03.webp",
+   "caption": "Newport Beach, California, 1975",
+   "subject": "Unidentified surfer (not Gerry Lopez)",
+   "author": "Charles O'Rear (EPA DOCUMERICA / U.S. National Archives)",
+   "license": "Public domain",
+   "license_url": "https://creativecommons.org/publicdomain/mark/1.0/",
+   "source_url": "https://commons.wikimedia.org/wiki/File:SURFER_AT_NEWPORT_BEACH,_A_HEAVILY_USED_RECREATION_SPOT_UPPER_NEWPORT_BAY,_NORTH_OF_THIS_AREA,_IS_SCHEDULED_FOR..._-_NARA_-_557424.jpg",
+   "width": 1200,
+   "height": 815
+  },
+  {
+   "file": "assets/photos/surf-04.webp",
+   "caption": "Banzai Pipeline, North Shore, Oahu, 2007",
+   "subject": "Unidentified surfer (not Gerry Lopez)",
+   "author": "Mandolin Davis",
+   "license": "CC BY-SA 2.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/2.0",
+   "source_url": "https://commons.wikimedia.org/wiki/File:Surfer_at_Banzai_Pipeline,_North_Shore_(Oahu).jpg",
+   "width": 1200,
+   "height": 798
+  },
+  {
+   "file": "assets/photos/surf-05.webp",
+   "caption": "Banzai Pipeline, Oahu, 2014",
+   "subject": "Unidentified surfer (not Gerry Lopez)",
+   "author": "Fosterand sons",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "source_url": "https://commons.wikimedia.org/wiki/File:Escaping_the_jaws_of_a_Banzai_Pipeline_wave.jpg",
+   "width": 1200,
+   "height": 799
+  },
+  {
+   "file": "assets/photos/surf-06.webp",
+   "caption": "Barrel, open ocean, 2016",
+   "subject": "Unidentified surfer (not Gerry Lopez)",
+   "author": "Ben Warren wazzastudio",
+   "license": "CC0",
+   "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "source_url": "https://commons.wikimedia.org/wiki/File:A_surfer_surfing_on_the_ocean_(Unsplash).jpg",
+   "width": 1200,
+   "height": 675
+  },
+  {
+   "file": "assets/photos/surf-07.webp",
+   "caption": "North Shore, Oahu, 2016",
+   "subject": "Unidentified surfer (not Gerry Lopez)",
+   "author": "Tony Hisgett",
+   "license": "CC BY 2.0",
+   "license_url": "https://creativecommons.org/licenses/by/2.0",
+   "source_url": "https://commons.wikimedia.org/wiki/File:Surfer_1_(30339374360).jpg",
+   "width": 1200,
+   "height": 971
+  },
+  {
+   "file": "assets/photos/surf-08.webp",
+   "caption": "North Shore, Oahu, 2016",
+   "subject": "Unidentified surfer (not Gerry Lopez)",
+   "author": "Tony Hisgett",
+   "license": "CC BY 2.0",
+   "license_url": "https://creativecommons.org/licenses/by/2.0",
+   "source_url": "https://commons.wikimedia.org/wiki/File:Surfer_2_(30007374464).jpg",
+   "width": 1200,
+   "height": 896
+  },
+  {
+   "file": "assets/photos/surf-09.webp",
+   "caption": "North Shore, Oahu, 2016",
+   "subject": "Unidentified surfer (not Gerry Lopez)",
+   "author": "Tony Hisgett",
+   "license": "CC BY 2.0",
+   "license_url": "https://creativecommons.org/licenses/by/2.0",
+   "source_url": "https://commons.wikimedia.org/wiki/File:Surfer_5_(30005338723).jpg",
+   "width": 1200,
+   "height": 759
+  },
+  {
+   "file": "assets/photos/surf-10.webp",
+   "caption": "North Shore, Oahu, 2016",
+   "subject": "Unidentified surfer (not Gerry Lopez)",
+   "author": "Tony Hisgett",
+   "license": "CC BY 2.0",
+   "license_url": "https://creativecommons.org/licenses/by/2.0",
+   "source_url": "https://commons.wikimedia.org/wiki/File:Surfer_7_(30602854356).jpg",
+   "width": 1200,
+   "height": 841
+  }
+ ]
+}
