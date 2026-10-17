@@ -14,13 +14,12 @@
     --amber:#E9A23B; --orange:#DD6E2C; --rust:#B9442B; --teal:#12464F; --teal2:#3E6F76;
     --mint:#CFE0DC; --line:#D8C9AE; --tan:#E4D6BD; --go:#1F7A6E;
     --disp:'Shrikhand',Georgia,serif; --sans:'Archivo',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
-    --go-bar-h:72px;
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   html,body{overflow-x:hidden}
   body{margin:0;background:var(--sand);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;
-    padding-bottom:calc(var(--go-bar-h) + env(safe-area-inset-bottom,0px) + 8px)}
+    padding-bottom:env(safe-area-inset-bottom,0px)}
   a{color:var(--rust)}
   details summary::-webkit-details-marker{display:none}
   .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
@@ -74,26 +73,11 @@
   .frow .wm{font-family:var(--disp);font-size:26px;color:var(--rust)}
   .frow .bn{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
 
-  /* sticky GO bar */
-  .gobar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--ink);color:var(--sand);border-top:4px solid var(--amber);
-    padding:10px clamp(12px,4vw,40px) calc(10px + env(safe-area-inset-bottom,0px))}
-  .gobar-inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
-  .gobar .who{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--amber);text-transform:uppercase}
-  .gobar .spotname{font-family:var(--disp);font-size:20px;line-height:1.1}
-  .gobar .meta{font-family:var(--mono);font-size:11px;color:var(--mint)}
-  .gobar .acts{display:flex;gap:8px}
-  .gobar a,.gobar button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 16px;border-radius:999px;
-    border:2px solid var(--amber);background:none;color:var(--amber);text-decoration:none;cursor:pointer;
-    font-family:var(--sans);font-stretch:125%;font-weight:800;font-size:12px;letter-spacing:2px;text-transform:uppercase}
-  .gobar button{background:var(--amber);color:var(--ink)}
 
   @media (max-width:560px){
     .top{padding-top:14px}
     .top-r{width:100%;justify-content:space-between}
     .viewnav{flex:1;max-width:260px} .viewnav a{flex:1}
-    .gobar-inner{grid-template-columns:1fr}
-    .gobar .acts a,.gobar .acts button{flex:1}
-    body{--go-bar-h:118px}
   }
   @media (prefers-reduced-motion: reduce){
     *,*::before,*::after{animation:none !important;transition:none !important;scroll-behavior:auto !important}
@@ -106,7 +90,7 @@
     .hero{grid-template-columns:1.25fr 1fr !important;padding-top:20px !important}
     .water,.scrub .hd,.where h2{break-after:avoid}
     .say{font-size:56px}
-    .gobar{display:none !important}
+    .maplink,.sharelink{display:none !important}
     *{-webkit-print-color-adjust:exact;print-color-adjust:exact;animation:none !important}
     .spot,.near-card,article.day,.sbar,.teach,.quiver,.tcard{break-inside:avoid}
     .src-details[open] summary ~ *, .src-details .src{display:block}
@@ -266,7 +250,7 @@
     <aside class="plan" aria-label="This week's plays">
       <div class="k">This week · make the most of it</div>
       <div class="spot">Sat · Little Point 7–11a</div>
-      <div class="row"><span class="k">Today</span><b>Inferno 72 · SRF 3–5 ft sets 6</b></div>
+      <div class="row"><span class="k">Today</span><b id="gpWindow">Inferno 72 · SRF 3–5 ft sets 6</b></div>
       <p class="note"><b>Daily wins the day.</b> Weekly refreshes every morning with the Daily brief. The La Jolla gauge is running about 1.2 ft over the table, so Little Point fills toward its 5.5 ft ceiling earlier than the tide table says. Showers likely Wed–Thu; watch water quality after rain.</p>
     </aside>
   </section>
@@ -507,23 +491,13 @@
   </footer>
 </div>
 
-<div class="gobar" role="region" aria-label="Week highlight">
-  <div class="gobar-inner">
-    <div>
-      <div class="who">TODAY LIVE</div>
-      <div class="spotname">Sat · Little Point 7–11a</div>
-      <div class="meta">Inferno 72 · SRF 3–5 ft sets 6</div>
-    </div>
-    <div class="acts"><a href="/">Today's daily</a></div>
-  </div>
-</div>
 <script>
 /* Fallback if finalize_page.py did not run (see SITE.md → Design 2026-10-15) */
 (function(){
   document.querySelectorAll('main *').forEach(function(n){ if(n.children.length===0 && /%%RATING_[A-Z]+%%/.test(n.textContent)) n.textContent=n.textContent.replace(/%%RATING_[A-Z]+%%/g,''); });
   var p=document.getElementById('paddleBy');
   if(p && p.textContent.indexOf('%%')>-1){
-    var m=(document.querySelector('.gobar .meta')||{}).textContent||'';
+    var m=(document.getElementById('gpWindow')||{}).textContent||'';
     var t=m.match(/(\d\d?)(?::(\d\d))?\s*([ap])?\s*[–-]/);
     p.textContent=t?(t[1]+':'+(t[2]||'00')):'—';
   }

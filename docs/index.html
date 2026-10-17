@@ -14,13 +14,12 @@
     --amber:#E9A23B; --orange:#DD6E2C; --rust:#B9442B; --teal:#12464F; --teal2:#3E6F76;
     --mint:#CFE0DC; --line:#D8C9AE; --tan:#E4D6BD; --go:#1F7A6E;
     --disp:'Shrikhand',Georgia,serif; --sans:'Archivo',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
-    --go-bar-h:72px;
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   html,body{overflow-x:hidden}
   body{margin:0;background:var(--sand);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;
-    padding-bottom:calc(var(--go-bar-h) + env(safe-area-inset-bottom,0px) + 8px)}
+    padding-bottom:env(safe-area-inset-bottom,0px)}
   a{color:var(--rust)}
   details summary::-webkit-details-marker{display:none}
   .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
@@ -74,26 +73,11 @@
   .frow .wm{font-family:var(--disp);font-size:26px;color:var(--rust)}
   .frow .bn{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
 
-  /* sticky GO bar */
-  .gobar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--ink);color:var(--sand);border-top:4px solid var(--amber);
-    padding:10px clamp(12px,4vw,40px) calc(10px + env(safe-area-inset-bottom,0px))}
-  .gobar-inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
-  .gobar .who{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--amber);text-transform:uppercase}
-  .gobar .spotname{font-family:var(--disp);font-size:20px;line-height:1.1}
-  .gobar .meta{font-family:var(--mono);font-size:11px;color:var(--mint)}
-  .gobar .acts{display:flex;gap:8px}
-  .gobar a,.gobar button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 16px;border-radius:999px;
-    border:2px solid var(--amber);background:none;color:var(--amber);text-decoration:none;cursor:pointer;
-    font-family:var(--sans);font-stretch:125%;font-weight:800;font-size:12px;letter-spacing:2px;text-transform:uppercase}
-  .gobar button{background:var(--amber);color:var(--ink)}
 
   @media (max-width:560px){
     .top{padding-top:14px}
     .top-r{width:100%;justify-content:space-between}
     .viewnav{flex:1;max-width:260px} .viewnav a{flex:1}
-    .gobar-inner{grid-template-columns:1fr}
-    .gobar .acts a,.gobar .acts button{flex:1}
-    body{--go-bar-h:118px}
   }
   @media (prefers-reduced-motion: reduce){
     *,*::before,*::after{animation:none !important;transition:none !important;scroll-behavior:auto !important}
@@ -106,7 +90,7 @@
     .hero{grid-template-columns:1.25fr 1fr !important;padding-top:20px !important}
     .water,.scrub .hd,.where h2{break-after:avoid}
     .say{font-size:56px}
-    .gobar{display:none !important}
+    .maplink,.sharelink{display:none !important}
     *{-webkit-print-color-adjust:exact;print-color-adjust:exact;animation:none !important}
     .spot,.near-card,article.day,.sbar,.teach,.quiver,.tcard{break-inside:avoid}
     .src-details[open] summary ~ *, .src-details .src{display:block}
@@ -240,6 +224,9 @@
 
   /* Game plan card (replaces photo slot — Alec 2026-10-15: no photos) */
   .plan{border:3px solid var(--ink);border-radius:24px;background:var(--teal);color:var(--sand);padding:clamp(18px,3vw,28px);display:flex;flex-direction:column;gap:14px;box-shadow:8px 8px 0 var(--amber);min-width:0;margin:0 8px 12px 0}
+  /* inline Maps + Share links (GO bar removed — Alec 2026-10-17) */
+  .maplink{align-self:flex-start;margin-top:-6px;font-family:var(--mono);font-size:13px;font-weight:600;color:var(--amber);text-decoration:underline;text-underline-offset:3px}
+  .sharelink{background:none;border:0;padding:0;font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--rust);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
   .plan .k{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--amber);text-transform:uppercase}
   .plan .spot{font-family:var(--disp);font-size:clamp(30px,4vw,44px);line-height:1;padding:0;border:0;display:block}
   .plan .row{display:grid;grid-template-columns:92px minmax(0,1fr);gap:10px;align-items:baseline;border-top:2px solid var(--teal2);padding-top:10px}
@@ -299,7 +286,8 @@
     <aside class="plan" aria-label="Game plan">
       <div class="k">Game plan · make the most of it</div>
       <div class="spot">Little Point</div>
-      <div class="row"><span class="k">Window</span><b>7–11a · Inferno 72 · ~71°F</b></div>
+      <a class="maplink" href="https://maps.google.com/?q=32.8316,-117.2810" target="_blank" rel="noopener">Open in Maps ↗</a>
+      <div class="row"><span class="k">Window</span><b id="gpWindow">7–11a · Inferno 72 · ~71°F</b></div>
       <div class="row"><span class="k">Surf</span><b>3–5 ft, sets 6 (SRF)</b></div>
       <div class="row"><span class="k">Tide</span><b class="tl"><span>L 0.9 @ 8:59p Fri</span><span>H 4.4 @ 1:15p</span><span>L 0.9 @ 10:24p</span><span>obs 4.6 @ 6:42a</span></b></div>
       <div class="tip">Read the gauge, not just the table.</div>
@@ -466,23 +454,10 @@
 
   <footer>
     <div class="fstripes" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-    <div class="frow"><div class="wm">Cowabunga</div><div class="bn brand">Gerry Bot Cowabunga Report · North PB</div></div>
+    <div class="frow"><div class="wm">Cowabunga</div><div class="bn brand">Gerry Bot Cowabunga Report · North PB · <button type="button" class="sharelink" id="shareBtn" data-share-text="Gerry Bot Cowabunga Report · Sat Oct 17 · Little Point 7–11a · SSW 3.3 ft @ 14s · light E offshore then glassy · Inferno 72 · bigger SW Sunday">Share</button></div></div>
   </footer>
 </div>
 
-<div class="gobar" role="region" aria-label="GO bar">
-  <div class="gobar-inner">
-    <div>
-      <div class="who">LOCAL · CALL</div>
-      <div class="spotname">Little Point</div>
-      <div class="meta">7–11a · Inferno 72 · ~71°F</div>
-    </div>
-    <div class="acts">
-      <a href="https://maps.google.com/?q=32.8316,-117.2810" target="_blank" rel="noopener">Maps</a>
-      <button type="button" id="shareBtn" data-share-text="Gerry Bot Cowabunga Report · Sat Oct 17 · Little Point 7–11a · SSW 3.3 ft @ 14s · light E offshore then glassy · Inferno 72 · bigger SW Sunday">Share</button>
-    </div>
-  </div>
-</div>
 
 <script>
 (function(){
@@ -570,7 +545,7 @@
   document.querySelectorAll('main *').forEach(function(n){ if(n.children.length===0 && /%%RATING_[A-Z]+%%/.test(n.textContent)) n.textContent=n.textContent.replace(/%%RATING_[A-Z]+%%/g,''); });
   var p=document.getElementById('paddleBy');
   if(p && p.textContent.indexOf('%%')>-1){
-    var m=(document.querySelector('.gobar .meta')||{}).textContent||'';
+    var m=(document.getElementById('gpWindow')||{}).textContent||'';
     var t=m.match(/(\d\d?)(?::(\d\d))?\s*([ap])?\s*[–-]/);
     p.textContent=t?(t[1]+':'+(t[2]||'00')):'—';
   }
