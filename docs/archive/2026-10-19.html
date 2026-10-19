@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gerry Bot Cowabunga Report · Mon Oct 19, 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@400;600&family=Shrikhand&display=swap" rel="stylesheet">
+<!-- Design: Claude Design redesign 2026-10-15 (design/redesign-extracted.html). Placeholders filled by the 6:45a routine; see SITE.md. -->
+<style>
+  :root{
+    --sand:#F2E8D5; --paper:#FBF5EA; --ink:#22201C; --muted:#5B544A; --body:#4A443B;
+    --amber:#E9A23B; --orange:#DD6E2C; --rust:#B9442B; --teal:#12464F; --teal2:#3E6F76;
+    --mint:#CFE0DC; --line:#D8C9AE; --tan:#E4D6BD; --go:#1F7A6E;
+    --disp:'Shrikhand',Georgia,serif; --sans:'Archivo',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  html,body{overflow-x:hidden}
+  body{margin:0;background:var(--sand);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;
+    padding-bottom:env(safe-area-inset-bottom,0px)}
+  a{color:var(--rust)}
+  details summary::-webkit-details-marker{display:none}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
+  .mono{font-family:var(--mono)}
+  .kick{font-family:var(--mono);font-size:12px;letter-spacing:2px;color:var(--rust);text-transform:uppercase}
+  .wide{font-family:var(--sans);font-stretch:125%;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+  h2.disp{margin:0;font-family:var(--disp);font-weight:400;font-size:clamp(32px,4.4vw,54px);line-height:1}
+
+  /* header + toggle */
+  .top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px;padding-top:22px}
+  .brandmark{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap}
+  .wordmark{font-family:var(--disp);font-size:clamp(42px,7vw,76px);line-height:.9;color:var(--rust);letter-spacing:-.5px}
+  .bm-sub{display:flex;flex-direction:column;gap:3px;padding-bottom:6px}
+  .bm-sub .a{font-stretch:125%;font-weight:800;font-size:13px;letter-spacing:3px}
+  .bm-sub .b{font-family:var(--mono);font-size:11px;letter-spacing:1px;color:var(--muted)}
+  .top-r{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-bottom:6px}
+  .dt{font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted);text-transform:uppercase}
+  .viewnav{display:flex;gap:4px;padding:4px;border:2px solid var(--ink);border-radius:999px;background:var(--sand)}
+  .viewnav a{display:flex;align-items:center;justify-content:center;min-height:40px;text-decoration:none;border-radius:999px;padding:8px 18px;
+    font-stretch:125%;font-weight:800;font-size:12px;letter-spacing:2px;color:var(--ink);text-transform:uppercase;-webkit-tap-highlight-color:transparent}
+  .viewnav a.on{background:var(--ink);color:var(--sand)}
+  .stripes{display:flex;flex-direction:column;gap:4px;margin-top:16px}
+  .stripes i{display:block;height:9px}
+  .stripes i:nth-child(1),.fstripes i:nth-child(1){background:var(--amber)}
+  .stripes i:nth-child(2),.fstripes i:nth-child(2){background:var(--orange)}
+  .stripes i:nth-child(3),.fstripes i:nth-child(3){background:var(--rust)}
+  .stripes i:nth-child(4),.fstripes i:nth-child(4){background:var(--teal)}
+
+    color:#F2E8D5;background:rgba(34,32,28,.66);padding:3px 7px;border-radius:8px}
+
+  main{display:flex;flex-direction:column;gap:clamp(36px,6vw,56px);padding-bottom:40px}
+  .src-details{border-top:3px solid var(--ink);padding-top:14px}
+  .src-details summary{cursor:pointer;list-style:none;font-family:var(--mono);font-size:12px;letter-spacing:2px;color:var(--muted);min-height:32px}
+  .src-details .src{margin:12px 0 0;font-family:var(--mono);font-size:12px;line-height:1.7;color:var(--body);overflow-wrap:anywhere}
+
+  /* three-column foot (skip / gotchas / home stretch) */
+  .trio{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px}
+  .trio > div{display:flex;flex-direction:column;gap:12px;padding-top:16px;border-top:6px solid var(--rust)}
+  .trio h3{margin:0;font-stretch:125%;font-weight:900;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--rust)}
+  .trio p{margin:0;font-size:15px;line-height:1.55}
+  .trio .warn{border-top-color:var(--amber)} .trio .warn h3{color:#9A6A12}
+  .trio .home{border-top-color:var(--teal)} .trio .home h3{color:var(--teal)}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  .chips span{padding:5px 10px;border-radius:999px;background:var(--teal);color:var(--sand);font-size:13px;font-weight:700}
+  .chips.not span{background:none;border:2px solid #C9BBA2;color:var(--muted);font-weight:400}
+  .chips.not span.lbl{border:0;padding:5px 2px;font-family:var(--mono);font-size:11px;letter-spacing:1px}
+
+  footer{padding-bottom:30px;display:flex;flex-direction:column;gap:12px}
+  .fstripes{display:flex;gap:4px} .fstripes i{flex:1;height:6px;display:block}
+  .frow{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;align-items:center}
+  .frow .wm{font-family:var(--disp);font-size:26px;color:var(--rust)}
+  .frow .bn{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+
+
+  @media (max-width:560px){
+    .top{padding-top:14px}
+    .top-r{width:100%;justify-content:space-between}
+    .viewnav{flex:1;max-width:260px} .viewnav a{flex:1}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation:none !important;transition:none !important;scroll-behavior:auto !important}
+  }
+  @media print{
+    @page{margin:0}
+    html,body{background:#F2E8D5}
+    body{padding:8mm 0 0}
+    .plan{break-inside:avoid;box-shadow:none}
+    .hero{grid-template-columns:1.25fr 1fr !important;padding-top:20px !important}
+    .water,.scrub .hd,.where h2{break-after:avoid}
+    .say{font-size:56px}
+    .maplink,.sharelink{display:none !important}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;animation:none !important}
+    .spot,.near-card,article.day,.sbar,.teach,.quiver,.tcard{break-inside:avoid}
+    .src-details[open] summary ~ *, .src-details .src{display:block}
+  }
+  /* hero */
+  .hero{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(24px,4vw,40px);align-items:center;padding-top:clamp(24px,5vw,44px)}
+  .hero-l{display:flex;flex-direction:column;gap:18px;min-width:0}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase}
+  .say{margin:0;font-family:var(--disp);font-weight:400;font-size:clamp(44px,7.4vw,92px);line-height:.98;color:var(--ink);text-wrap:balance;overflow-wrap:anywhere}
+  .whisper{margin:0;font-size:clamp(19px,2.2vw,26px);font-weight:600;line-height:1.3;max-width:32ch;text-wrap:pretty}
+  .whisper em{font-style:normal;color:var(--rust)}
+  .paddle{display:flex;align-items:stretch;border:3px solid var(--ink);border-radius:20px;overflow:hidden;align-self:flex-start;background:var(--paper);max-width:100%}
+  .paddle .l{padding:14px 16px;display:flex;flex-direction:column;justify-content:center;gap:4px;border-right:3px solid var(--ink);font-stretch:125%;font-weight:800;font-size:12px;letter-spacing:2px}
+  .paddle .t{padding:6px 20px 10px;font-family:var(--disp);font-size:clamp(48px,7vw,84px);line-height:1;color:var(--orange);white-space:nowrap}
+  .paddle .r{padding:12px 16px;display:flex;flex-direction:column;justify-content:center;gap:5px;background:var(--teal);color:var(--sand);min-width:0}
+  .paddle .r .k{font-family:var(--mono);font-size:11px;letter-spacing:1px}
+  .paddle .r .rec{font-weight:800;font-size:16px}
+  .calls{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .calls.hidden{display:none}
+  .call{border:3px solid var(--ink);border-radius:18px;padding:12px 14px;background:var(--paper);display:flex;flex-direction:column;gap:4px;min-width:0}
+  .call.go{background:var(--amber)}
+  .call .heat{align-self:flex-start;font-family:var(--mono);font-size:10px;letter-spacing:2px;background:var(--ink);color:var(--amber);padding:3px 8px;border-radius:999px;text-transform:uppercase}
+  .call .big{font-family:var(--disp);font-size:22px;line-height:1.1}
+  .call .sec{margin:0;font-size:13px;color:var(--body)}
+  .spotbadge{position:absolute;left:-10px;bottom:28px;background:var(--rust);color:var(--sand);padding:10px 16px;border-radius:999px;border:3px solid var(--ink);
+    font-stretch:125%;font-weight:800;font-size:12px;letter-spacing:2px;text-transform:uppercase;transform:rotate(-4deg);max-width:90%}
+
+  /* what's in the water */
+  .water{background:var(--teal);color:var(--sand);border-radius:28px;padding:clamp(20px,3.5vw,40px);display:flex;flex-direction:column;gap:22px}
+  .water .hd{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:10px}
+  .water h2{margin:0;font-family:var(--disp);font-weight:400;font-size:clamp(30px,3.6vw,44px);color:var(--amber)}
+  .water .hd .k{font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--mint);text-transform:uppercase}
+  .wgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));gap:14px}
+  .bars{display:contents}
+  .sbar{border:2px solid var(--teal2);border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+  .sbar .lab{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--mint);text-transform:uppercase}
+  .sbar .track{height:10px;border-radius:999px;background:rgba(242,232,213,.14);overflow:hidden}
+  .sbar .fill{height:100%;border-radius:999px;background:var(--amber);transform-origin:left;animation:grow .9s cubic-bezier(.2,.8,.2,1) both}
+  .sbar .fill.wind{background:var(--orange)}
+  .sbar .fill.hint{opacity:.5}
+  .sbar .num{font-stretch:115%;font-weight:900;font-size:22px;line-height:1.1}
+  .roseb{border:2px solid var(--teal2);border-radius:18px;padding:16px 18px;display:flex;align-items:center;gap:14px;min-width:0}
+  .rose{width:76px;height:76px;flex:none;position:relative}
+  .rose svg{width:100%;height:100%;display:block}
+  .rose svg circle:first-of-type{fill:transparent;stroke:#F2E8D5;stroke-width:2}
+  .rose svg text{fill:#F2E8D5}
+  .rose svg line,.rose svg circle:nth-of-type(3){stroke:var(--orange);fill:var(--orange)}
+  .rose svg circle:last-of-type{fill:#F2E8D5}
+  .roseb .deg{font-stretch:115%;font-weight:900;font-size:26px;line-height:1.05}
+  .roseb .k{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--mint)}
+  .swmeta{margin:0;font-family:var(--mono);font-size:12px;line-height:1.6;color:var(--mint)}
+
+  /* tide scrub */
+  .scrub{display:flex;flex-direction:column;gap:18px}
+  .scrub .hd{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px}
+  .tcard{border:3px solid var(--ink);border-radius:24px;overflow:hidden;background:var(--paper)}
+  .scrub-wins{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));border-bottom:3px solid var(--ink)}
+  .swin{padding:10px 12px;background:#EFD2C2;border-right:2px solid var(--paper);min-width:0}
+  .swin:last-child{border-right:0}
+  .swin.on{background:#BFDCD3} .swin.meh{background:#F3DDA6}
+  .swin .k{font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--body);text-transform:uppercase}
+  .swin .v{font-stretch:125%;font-weight:800;font-size:13px;letter-spacing:2px;color:#7A2E2A}
+  .swin.on .v{color:var(--teal)} .swin.meh .v{color:#7A5A12}
+  .scrub-chart{position:relative;height:clamp(150px,26vw,260px);cursor:ew-resize;touch-action:none;user-select:none;-webkit-user-select:none;padding:10px 0}
+  .scrub-chart svg{width:100%;height:100%;display:block;pointer-events:none;overflow:visible}
+  .scrub-chart svg path[fill^="url"]{fill:rgba(18,70,79,.16)}
+  .scrub-chart svg path[fill="none"]{stroke:var(--teal);stroke-width:3;vector-effect:non-scaling-stroke}
+  .scrub-chart #scrubPlayhead{stroke:var(--ink);stroke-width:3;stroke-dasharray:none;vector-effect:non-scaling-stroke}
+  .scrub-chart #scrubDot{fill:var(--amber);stroke:var(--ink);stroke-width:1.5}
+  .scrub-chart line.print-marker,.print-marker{display:none}
+  .scrub-read{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));border-top:3px solid var(--ink)}
+  .scrub-read > *{padding:14px 18px;border-left:2px solid var(--tan);font-weight:700;font-size:15px;display:flex;align-items:center;min-width:0}
+  .scrub-read > :first-child{border-left:0}
+  .scrub-read .t{font-family:var(--disp);font-weight:400;font-size:30px}
+  .scrub-read .chip{font-family:var(--disp);font-weight:400;font-size:24px;line-height:1.1;background:var(--rust);color:var(--sand)}
+  .scrub-read .chip.go{background:var(--teal)} .scrub-read .chip.meh{background:var(--amber);color:var(--ink)}
+  .scrub-slider{width:100%;accent-color:var(--rust);margin:0;min-height:32px}
+  .scrub-legend{display:flex;flex-wrap:wrap;gap:8px;font-family:var(--mono);font-size:12px}
+  .scrub-legend span{padding:7px 12px;border:2px solid var(--ink);border-radius:999px}
+  .scrub-legend span:last-child{background:var(--orange);border-color:var(--orange);font-weight:600}
+  .scrub-note{margin:0;font-size:15px;line-height:1.55;color:var(--body);max-width:75ch}
+
+  /* where it's working */
+  .where{display:flex;flex-direction:column;gap:0}
+  .where h2{margin-bottom:18px}
+  .spot{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:8px 18px;align-items:center;padding:16px 4px;border-bottom:2px solid var(--line)}
+  .spot .n{font-family:var(--disp);font-size:34px;color:#8A8172;text-align:center;line-height:1}
+  .spot .name{font-weight:800;font-size:20px}
+  .spot .why{font-size:14px;line-height:1.45;color:var(--body);margin-top:3px}
+  .pill{padding:5px 11px;border-radius:999px;border:2px solid #8A8172;color:var(--muted);font-stretch:125%;font-weight:800;font-size:10px;letter-spacing:2px;white-space:nowrap}
+  .spot.best{border:3px solid var(--ink);border-radius:24px;background:var(--amber);padding:clamp(18px,3vw,30px);margin-bottom:8px;grid-template-columns:auto minmax(0,1fr) auto}
+  .spot.best .n{font-size:clamp(56px,8vw,96px);color:var(--ink)}
+  .spot.best .name{font-stretch:120%;font-weight:900;font-size:clamp(26px,3.4vw,40px);line-height:1}
+  .spot.best .why{font-size:16px;line-height:1.5;color:var(--ink);margin-top:10px}
+  .spot.best .pill{background:var(--ink);color:var(--amber);border-color:var(--ink)}
+  .spot:nth-child(2) .n{color:var(--teal)} .spot:nth-child(2) .pill{background:var(--teal);border-color:var(--teal);color:var(--sand)}
+  .spot.skip .n{color:var(--rust)} .spot.skip .name{font-weight:500;font-size:15px;line-height:1.5}
+  .spot.skip .pill{background:var(--rust);border-color:var(--rust);color:var(--sand)}
+
+  /* quiver + ike */
+  .duo{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:20px}
+  .quiver{border:3px solid var(--ink);border-radius:24px;background:var(--paper);overflow:hidden;display:flex;flex-direction:column}
+  .quiver .band{background:var(--teal);color:var(--sand);padding:20px 24px;border-bottom:3px solid var(--ink);display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+  .quiver .band .k{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--amber)}
+  .quiver .band .rec{font-family:var(--disp);font-size:34px;line-height:1}
+  .quiver .band .wt{font-family:var(--mono);font-size:12px;letter-spacing:1px;border:2px solid var(--amber);border-radius:999px;padding:6px 12px;color:var(--amber)}
+  .quiver .body{padding:20px 24px;display:flex;flex-direction:column;gap:12px}
+  .qv-name{font-family:var(--disp);font-size:26px;line-height:1.05}
+  .qv-why{margin:0;font-size:15px;line-height:1.5;color:var(--body)}
+  .qv-alts{display:flex;flex-direction:column;gap:8px;padding-top:10px;border-top:2px solid var(--tan)}
+  .qv-alts .alt{font-size:14px;color:var(--muted)}
+  .qv-alts .alt.on{color:var(--ink);font-weight:800}
+  .teach{border:3px solid var(--ink);border-radius:24px;background:var(--rust);color:var(--sand);padding:clamp(22px,3vw,36px);display:flex;flex-direction:column;justify-content:space-between;gap:22px}
+  .teach .okina{font-family:var(--mono);font-size:12px;letter-spacing:2px;color:#F6D9A8;text-transform:uppercase}
+  .teach h2{margin:12px 0 0;font-family:var(--disp);font-weight:400;font-size:clamp(34px,4.6vw,56px);line-height:1;text-wrap:balance}
+  .teach p{margin:0;font-size:16px;line-height:1.55}
+  @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  @media (max-width:560px){
+    .spot{grid-template-columns:36px minmax(0,1fr)} .spot .pill{grid-column:2;justify-self:start}
+    .spot.best{grid-template-columns:auto minmax(0,1fr)}
+    .scrub-read .t{font-size:24px}
+    .paddle .l{padding:12px}
+    .paddle .t{padding:6px 12px 8px}
+  }
+  @media print{
+    .scrub-slider{display:none !important}
+    .scrub-chart line.print-marker{display:inline;stroke:var(--go)}
+    .sbar .fill{transform:none !important}
+  }
+
+
+  /* Game plan card (replaces photo slot — Alec 2026-10-15: no photos) */
+  .plan{border:3px solid var(--ink);border-radius:24px;background:var(--teal);color:var(--sand);padding:clamp(18px,3vw,28px);display:flex;flex-direction:column;gap:14px;box-shadow:8px 8px 0 var(--amber);min-width:0;margin:0 8px 12px 0}
+  /* inline Maps + Share links (GO bar removed — Alec 2026-10-17) */
+  .maplink{align-self:flex-start;margin-top:-6px;font-family:var(--mono);font-size:13px;font-weight:600;color:var(--amber);text-decoration:underline;text-underline-offset:3px}
+  .sharelink{background:none;border:0;padding:0;font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--rust);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+  .plan .k{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--amber);text-transform:uppercase}
+  .plan .spot{font-family:var(--disp);font-size:clamp(30px,4vw,44px);line-height:1;padding:0;border:0;display:block}
+  .plan .row{display:grid;grid-template-columns:92px minmax(0,1fr);gap:10px;align-items:baseline;border-top:2px solid var(--teal2);padding-top:10px}
+  .plan .row b{font-weight:800;font-size:16px;line-height:1.35}
+  .plan .tip{background:var(--amber);color:var(--ink);border-radius:16px;padding:12px 14px;font-weight:700;font-size:15px;line-height:1.4}
+  .plan .note{margin:0;font-size:15px;line-height:1.5;color:var(--mint)}
+  .plan .note b{color:var(--sand)}
+  .plan .tl span{display:inline-block;margin:0 10px 2px 0;font-family:var(--mono);font-size:13px;font-weight:600}
+
+  /* 1–10 rating (rating.py, filled by finalize_page.py) */
+  .rating{display:flex;align-items:stretch;border:3px solid var(--ink);border-radius:22px;overflow:hidden;background:var(--paper);max-width:560px}
+  .rating .rnum{background:var(--rc,#8A8172);color:var(--sand);font-family:var(--disp);font-size:clamp(64px,12vw,96px);line-height:1;padding:10px 18px 14px;display:flex;align-items:baseline;border-right:3px solid var(--ink)}
+  .rating .rnum span{font-family:var(--mono);font-size:14px;margin-left:2px;opacity:.85}
+  .rating .rtxt{padding:12px 16px;display:flex;flex-direction:column;gap:6px;justify-content:center;min-width:0}
+  .rating .rk{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--muted)}
+  .rating b{font-size:18px;line-height:1.25}
+  .rating .rmeter{display:grid;grid-template-columns:repeat(10,1fr);gap:3px}
+  .rating .rmeter i{height:8px;border-radius:3px;background:var(--tan)}
+  .rating .rmeter i.on{background:var(--rc)}
+  .rating .rctx{font-family:var(--mono);font-size:11px;line-height:1.45;color:var(--body)}
+  .rating.none .rnum{background:#8A8172}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brandmark">
+      <div class="wordmark">Cowabunga</div>
+      <div class="bm-sub"><div class="a">SURF REPORT</div><div class="b">by GERRY BOT · NORTH PB</div></div>
+    </div>
+    <div class="top-r">
+      <div class="dt">Mon Oct 19, 2026</div>
+      <nav class="viewnav" aria-label="Brief view">
+        <a class="on" href="/" aria-current="page">Daily</a>
+        <a href="/weekly.html">Weekly</a>
+      </nav>
+    </div>
+  </header>
+  <div class="stripes" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+  <main>
+  <section class="hero" aria-label="Today's call">
+    <div class="hero-l">
+      <div class="kick">Today's call</div>
+      <div class="eyebrow">Gerry Bot Cowabunga Report · Mon Oct 19 · North PB</div>
+      <h1 class="say">The S swell is building and the wind is asleep.<br>Little Point this morning, before the W breeze.</h1>
+      <p class="whisper">building S groundswell, glassy early: <em>paddle out by 7:30</em></p>
+    
+      
+      <div class="paddle">
+        <div class="l"><span>PADDLE</span><span>OUT BY</span></div>
+        <div class="t" id="paddleBy">7:30</div>
+        <div class="r"><div class="k">BOARD</div><div class="rec">Inferno 72</div><div class="k">~72°F WATER</div></div>
+      </div>
+      <div class="rating" style="--rc:#1F7A6E" aria-label="Surf rating 8 out of 10"><div class="rnum">8<span>/10</span></div><div class="rtxt"><div class="rk">SURF RATING · GOOD · LIVE</div><b>Very good — move a meeting</b><div class="rmeter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i></div><div class="rctx">scorecard 0.86 · Better than 81% of 36 logged PB/La Jolla mornings since 09/12</div></div></div>
+    </div>
+    <aside class="plan" aria-label="Game plan">
+      <div class="k">Game plan · make the most of it</div>
+      <div class="spot">Little Point</div>
+      <a class="maplink" href="https://maps.google.com/?q=32.8316,-117.2810" target="_blank" rel="noopener">Open in Maps ↗</a>
+      <div class="row"><span class="k">Window</span><b id="gpWindow">7:30–11a · Inferno 72 · ~72°F</b></div>
+      <div class="row"><span class="k">Surf</span><b>3–6 ft (SRF), long lulls at 15s</b></div>
+      <div class="row"><span class="k">Tide</span><b class="tl"><span>H 3.8 @ 6:57a</span><span>L 3.1 @ 11:31a</span><span>H 4.2 @ 4:49p</span><span>obs 5.1 @ 5:48a</span></b></div>
+      <div class="tip">Read the tide gauge, not just the table.</div>
+    </aside>
+  </section>
+
+  <section class="water" aria-label="What's in the water">
+    <div class="hd"><h2>What's in the water</h2><div class="k">3–6 ft (SRF), long lulls at 15s</div></div>
+    <div class="wgrid">
+      <div class="bars">
+      <div class="sbar">
+        <div class="lab">Ground</div>
+        <div class="track"><div class="fill" style="width:44%"></div></div>
+        <div class="num">SwH 3.6–4.6 ft · 15s</div>
+      </div>
+      <div class="sbar">
+        <div class="lab">Windswell</div>
+        <div class="track"><div class="fill wind" style="width:13%"></div></div>
+        <div class="num">WWH 1.3 ft · 10s</div>
+      </div>
+      <div class="sbar">
+        <div class="lab">Hs buoy</div>
+        <div class="track"><div class="fill" style="width:46%;opacity:.35"></div></div>
+        <div class="num">Hs 4.6 ft · 46258</div>
+      </div>
+      </div>
+      <div class="roseb">
+        <div class="rose" aria-hidden="true"><svg viewBox="0 0 72 72">
+        <circle cx="36" cy="36" r="30" fill="#fff" stroke="rgba(10,31,51,.12)" stroke-width="1"/>
+        <circle cx="36" cy="36" r="22" fill="none" stroke="rgba(26,171,184,.25)" stroke-width="1" stroke-dasharray="2 2"/>
+        <text x="36" y="12" text-anchor="middle" font-size="7" fill="#5A7382" font-family="DM Mono,monospace">N</text>
+        <line x1="36" y1="36" x2="31.5" y2="61.6" stroke="#FF6B4A" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="31.5" cy="61.6" r="3.5" fill="#FF6B4A"/>
+        <circle cx="36" cy="36" r="2.5" fill="#0A1F33"/>
+      </svg></div>
+        <div><div class="k">FROM</div><div class="deg">190°<br>S</div></div>
+      </div>
+    </div>
+    <p class="swmeta">Buoy 46258 · Hs 4.6 ft @ 15s S (spectrum SwH 3.6–4.6 ft @ 15–18s overnight, building) + WWH 1.3 ft @ 10s · face 3–6 ft (NWS SRF SD) · PZZ740 S 4 ft @ 15s + W 2 ft @ 12s · MWD 190° S · wind calm early, W 10 mph from 1p</p>
+  </section>
+
+  <section class="scrub" id="scrub" aria-label="Drag the tide">
+    <div class="hd">
+      <div><div class="kick">Drag across the day</div><h2 class="disp">Drag the tide</h2></div>
+    </div>
+    <div class="tcard">
+      <div class="scrub-wins"><div class="swin"><div class="k">Pre-7:30a · fog, full tide</div><div class="v">WAIT</div></div>
+      <div class="swin on"><div class="k">7:30–11a · Little Point</div><div class="v">GO</div></div>
+      <div class="swin"><div class="k">11a–1p · light W</div><div class="v">MEH</div></div>
+      <div class="swin"><div class="k">1–6p · W 10 mph + ceiling</div><div class="v">SKIP</div></div></div>
+      <div class="scrub-chart">
+        <svg viewBox="0 0 360 72" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="tg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1AABB8" stop-opacity=".28"/>
+            <stop offset="100%" stop-color="#1AABB8" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path d="M0.0,64.0 L15.7,59.0 L31.3,50.4 L47.0,40.0 L62.6,29.6 L78.3,21.2 L93.9,16.0 L109.6,14.5 L125.2,16.0 L140.9,19.6 L156.5,23.1 L172.2,25.4 L187.8,25.6 L203.5,23.1 L219.1,18.4 L234.8,13.2 L250.4,9.2 L266.1,8.0 L281.7,10.9 L297.4,18.4 L313.0,29.3 L328.7,42.2 L344.3,54.3 L360.0,63.2 L360,72 L0,72 Z" fill="url(#tg)"/>
+        <path d="M0.0,64.0 L15.7,59.0 L31.3,50.4 L47.0,40.0 L62.6,29.6 L78.3,21.2 L93.9,16.0 L109.6,14.5 L125.2,16.0 L140.9,19.6 L156.5,23.1 L172.2,25.4 L187.8,25.6 L203.5,23.1 L219.1,18.4 L234.8,13.2 L250.4,9.2 L266.1,8.0 L281.7,10.9 L297.4,18.4 L313.0,29.3 L328.7,42.2 L344.3,54.3 L360.0,63.2" fill="none" stroke="#1AABB8" stroke-width="2"/>
+        <line id="scrubPlayhead" x1="125.2" y1="4" x2="125.2" y2="68" stroke="#FF6B4A" stroke-width="1.5" stroke-dasharray="2 2"/>
+        <circle id="scrubDot" cx="125.2" cy="16.0" r="3.5" fill="#FF6B4A"/>
+        <line class="print-marker" x1="125.2" y1="4" x2="125.2" y2="68" stroke="#2D8A6A" stroke-width="1.5" opacity=".7"/>
+      </svg>
+        <div class="print-marker" aria-hidden="true"></div>
+      </div>
+      <div class="scrub-read" id="scrubRead">
+        <span class="t" id="scrubTime">8:00a</span>
+        <span class="chip go" id="scrubWin">GO · Little Point</span>
+        <span id="scrubTide">3.7 ft tide</span>
+        <span id="scrubWind">Calm · NWS</span>
+        <span id="scrubFace">3–6 ft (SRF), long lulls at 15s</span>
+      </div>
+    </div>
+    <input class="scrub-slider" id="scrubSlider" type="range" min="0" max="23" step="1" value="8" aria-label="Scrub timeline hour">
+    <div class="scrub-legend"><span>H 3.8 @ 6:57a</span><span>L 3.1 @ 11:31a</span><span>H 4.2 @ 4:49p</span><span>obs 5.1 @ 5:48a</span></div>
+    <p class="scrub-note"><b style="color:var(--ink)">Little Point, 7:30 to about 11a, on the Inferno 72.</b> Table tides: H 3.8 @ 6:57a, L 3.1 @ 11:31a, H 4.2 @ 4:49p. The gauge read 5.14 ft at 5:48a against 3.68 predicted, about 1.5 ft over the table, so the reef sits near 5.3 ft at the morning high and eases toward 4.6 ft late morning, never close to the 3.0 ft floor. It climbs back over the 5.5 ft ceiling around 3 to 5p. LJAC1 is calm to 1 kt ENE at 5a. NWS hourly has calm wind through 9a, W 5 mph 10a to noon, then W 10 mph 1 to 4p (PZZ740 variable under 10 kt becoming W 10 kt this afternoon). Patchy fog until about 8a. Sunrise 6:55a, sunset 6:12p.</p>
+  </section>
+
+  <section class="where" aria-label="Where it's working">
+    <h2 class="disp">Where it's working</h2>
+    <div class="spot best">
+      <div class="n">★</div>
+      <div>
+        <div class="name">Little Point</div>
+        <div class="why">Top of the scorecard at 0.86. The S groundswell is building overnight (46258 SwH 3.6–4.6 ft @ 15–18s, last reading Hs 4.6 ft @ 15s, MWD 190° at 5:26a). The angle is a touch more southerly than yesterday, so it scores a bit lower on swell fit, but the period and size are right. The gauge is running about 1.5 ft over the table (5.14 ft at 5:48a vs 3.68 predicted), so the reef sits near 5.3 ft at the 6:57a high, right under its 5.5 ft ceiling, then drains toward about 4.6 ft by 11a. Calm wind until 9a, light W 5 mph from 10a. Paddle out by 7:30.</div>
+      </div>
+      <span class="pill">CALL</span>
+    </div>
+    <div class="spot">
+      <div class="n">2</div>
+      <div>
+        <div class="name">PB north of the pier</div>
+        <div class="why">Score 0.72. Clean tide and wind, but the S angle mostly misses the pier wedge, and the W 2 ft @ 12s in PZZ740 is too small to carry it.</div>
+      </div>
+      <span class="pill">SOFT</span>
+    </div>
+    <div class="spot">
+      <div class="n">3</div>
+      <div>
+        <div class="name">Calumet</div>
+        <div class="why">Score 0.65. Good swell angle, but flagged tide-high vs its window with the gauge this full. Pass.</div>
+      </div>
+      <span class="pill">SOFT</span>
+    </div>
+    <div class="spot">
+      <div class="n">4</div>
+      <div>
+        <div class="name">PB Drive</div>
+        <div class="why">Score 0.61. Flagged oversize for the sandbar; 15-second sets at this size tend to close out. Only if the reef is packed; bring the Anvil.</div>
+      </div>
+      <span class="pill">SOFT</span>
+    </div>
+    <div class="spot skip">
+      <div class="n">·</div>
+      <div>
+        <div class="name">Skip · PB Point (0.51) and Tourmaline (0.50) are too full on the high gauge. The Cliffs (Garbage, Abs, Luscomb’s) and OB want W groundswell and lower tide; today is a S primary on a full tide. Blacks and Scripps (extended only) will show bigger sets on a S 15-second swell, but the full tide softens them and the walk eats the glassy window, so they do not beat a clean local reef.</div>
+        <div class="why"></div>
+      </div>
+      <span class="pill">SKIP</span>
+    </div>
+  </section>
+
+  <section class="duo" aria-label="Quiver and ʻIke">
+    
+    <div class="quiver" aria-label="Quiver pick">
+      <div class="band"><div><div class="k">BOARD</div><div class="rec">Inferno 72</div></div><div class="wt">~72°F</div></div>
+      <div class="body">
+        <div class="kick">Quiver</div>
+        <div class="qv-name">Sharp Eye Inferno 72</div>
+        <p class="qv-why">Chest-to-head 15-second groundswell on a steep reef with glassy wind. Yesterday proved the Anvil is too flat for these faces.</p>
+        <div class="qv-alts"><span class="alt">Anvil twin · only if you end up on the Drive sandbar</span><span class="alt">TW log · too much push for it today</span></div>
+      </div>
+    </div>
+    <div class="teach">
+      <div><div class="okina">ʻIke · one thing to remember</div><h2>Read the tide gauge, not just the table.</h2></div>
+      <p>The table says 3.8 ft at 6:57a, but the La Jolla gauge is reading about a foot and a half higher. Warm water, a southerly swell, and low pressure can all lift the sea above the forecast. On a shallow reef like Little Point that extra water decides whether a wave stands up or rolls through soft, so check the observed level before you trust the printed tide.</p>
+    </div>
+  </section>
+
+  <section class="trio" aria-label="Skip, gotchas, home stretch">
+    <div><h3>Skip</h3><p>The afternoon: W 10 mph from 1p and a gauge-adjusted tide back over the 5.5 ft ceiling around 3 to 5p. PB Drive on oversized 15-second closeouts. Calumet, Tourmo, and PB Point on a gauge this full. The Cliffs and OB on a S primary swell.</p></div>
+    <div class="warn"><h3>Gotchas</h3><p>The buoy is still climbing (SwH 1.1 m at 2:56a to 1.4 m at 5:26a), so the sets may get bigger through the morning than they look at first light. Fifteen-second sets come in groups with long lulls, so watch a full set cycle before paddling out. Patchy fog early. High rip current risk and a Beach Hazards Statement through 9a Tuesday (NWS SRF). Sunny and warm, near 76°F by noon.</p></div>
+    <div class="home lockey" aria-label="Which spots are local">
+      <h3>Home stretch</h3>
+      <div class="chips"><span>PB north</span><span>Drive</span><span>Tourmo</span><span>PB Point</span><span>Calumet</span><span>Little Point</span></div>
+      <div class="chips not"><span class="lbl">NOT LOCAL</span><span>Cliffs</span><span>OB</span><span>Scripps</span><span>Blacks</span><span>North County</span></div>
+    </div>
+  </section>
+
+  <details class="src-details">
+    <summary>▸ THE FULL READOUT · SOURCES</summary>
+    <p class="src">NDBC 46258 stdmet @ 5:26a PT (12:26Z): Hs 1.4 m (4.6 ft) · DPD 15s · MWD 190° · water 22.7°C · 46258 SPEC 11:56p–5:26a PT: SwH 1.1–1.4 m (3.6–4.6 ft) @ 15.4–18.2s S–SSW, 3-hr mean 1.25 m (4.1 ft), WWH 0.4 m (1.3 ft) @ 9.1–9.9s W–WSW, MWD 184–205° · LJAC1 E 4 kt @ 12a, ESE–SE 2 kt 1–3a, calm 4–5a, ENE 1 kt @ 5:06a · NOAA 9410230 WL 5.14 ft @ 5:48a PT vs pred 3.68 (~+1.5) · tides H 3.8/6:57a L 3.1/11:31a H 4.2/4:49p · water 72.5°F, air 67.8°F (9410230 @ 5:48a) · NWS SRF SD (1:22a) TODAY 3–6 ft · high rips · Beach Hazards Statement through 9a Tue · mixed swell 200° + 290° · water 66–72°F · TUE 3–5 ft · PZZ740 (2:17a) TODAY variable under 10 kt becoming W 10 kt · seas 4 · W 1 ft @ 4s + W 2 ft @ 12s + S 4 ft @ 15s · NWS hourly (SGX 54,18): calm 5–9a, W 5 mph 10a–12p, W 10 mph 1–4p · sunrise 6:55a / sunset 6:12p PT · Surfline Premium not used · scorecard overlay LP 0.86 · PB north 0.72 · Calumet 0.65 · Drive 0.61 · PB Point 0.51 · Tourmo 0.50</p>
+  </details>
+  </main>
+
+  <footer>
+    <div class="fstripes" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="frow"><div class="wm">Cowabunga</div><div class="bn brand">Gerry Bot Cowabunga Report · North PB · <button type="button" class="sharelink" id="shareBtn" data-share-text="Gerry Bot Cowabunga Report · Mon Oct 19 · Little Point 7:30–11a · S 15s groundswell building · glassy early then light W · Inferno 72 · storms Wed–Thu">Share</button></div></div>
+  </footer>
+</div>
+
+
+<script>
+(function(){
+  var SHARE_URL = "https://d2gwgujzd9dqcv.cloudfront.net/";
+  var HOURS = [{"h": 0, "tide": 0.87, "wind": "E ~4 kt", "wind_src": "LJAC1 obs", "win": "Dark", "wcls": "skip", "face": "3–6 ft (SRF), long lulls at 15s"}, {"h": 1, "tide": 1.17, "wind": "ESE ~2 kt", "wind_src": "LJAC1 obs", "win": "Dark", "wcls": "skip", "face": "3–6 ft (SRF), long lulls at 15s"}, {"h": 2, "tide": 1.68, "wind": "SE ~2 kt", "wind_src": "LJAC1 obs", "win": "Dark", "wcls": "skip", "face": "3–6 ft (SRF), long lulls at 15s"}, {"h": 3, "tide": 2.3, "wind": "SE ~2 kt", "wind_src": "LJAC1 obs", "win": "Dark", "wcls": "skip", "face": "3–6 ft (SRF), long lulls at 15s"}, {"h": 4, "tide": 2.92, "wind": "Calm", "wind_src": "LJAC1 obs", "win": "Dark", "wcls": "skip", "face": "3–6 ft (SRF), long lulls at 15s"}, {"h": 5, "tide": 3.42, "wind": "Calm", "wind_src": "LJAC1 obs", "win": "Dark", "wcls": "skip", "face": "3–6 ft (SRF), long lulls at 15s"}, {"h": 6, "tide": 3.73, "wind": "Calm", "wind_src": "NWS", "win": "First light · fog", "wcls": "meh", "face": "3–6 ft (SRF), long lulls at 15s"}, {"h": 7, "tide": 3.82, "wind": "Calm", "wind_src": "NWS", "win": "Full tide · still OK", "wcls": "meh", "face": "3–6 ft (SRF), long lulls at 15s"}, {"h": 8, "tide": 3.73, "wind": "Calm", "wind_src": "NWS", "win": "GO · Little Point", "wcls": "go", "face": "3–6 ft (SRF), long lulls at 15s"}, {"h": 9, "tide": 3.52, "wind": "Calm", "wind_src": "NWS", "win": "GO · Little Point", "wcls": "go", "face": "3–6 ft (SRF), long lulls at 15s"}, {"h": 10, "tide": 3.31, "wind": "W ~4 kt", "wind_src": "NWS", "win": "GO · Little Point", "wcls": "go", "face": "3–6 ft (SRF), long lulls at 15s"}, {"h": 11, "tide": 3.17, "wind": "W ~4 kt", "wind_src": "NWS", "win": "Light W · still OK", "wcls": "meh", "face": "3–6 ft (SRF), long lulls at 15s"}, {"h": 12, "tide": 3.16, "wind": "W ~4 kt", "wind_src": "NWS", "win": "Light W · still OK", "wcls": "meh", "face": "3–6 ft (SRF), long lulls at 15s"}, {"h": 13, "tide": 3.31, "wind": "W ~9 kt", "wind_src": "NWS", "win": "W 10 mph · bumpy", "wcls": "skip", "face": "3–6 ft (SRF), long lulls at 15s"}, {"h": 14, "tide": 3.59, "wind": "W ~9 kt", "wind_src": "NWS", "win": "W 10 mph · bumpy", "wcls": "skip", "face": "3–6 ft (SRF), long lulls at 15s"}, {"h": 15, "tide": 3.9, "wind": "W ~9 kt", "wind_src": "NWS", "win": "W 10 mph · bumpy", "wcls": "skip", "face": "3–6 ft (SRF), long lulls at 15s"}, {"h": 16, "tide": 4.14, "wind": "W ~9 kt", "wind_src": "NWS", "win": "W 10 mph · bumpy", "wcls": "skip", "face": "3–6 ft (SRF), long lulls at 15s"}, {"h": 17, "tide": 4.21, "wind": "W ~4 kt", "wind_src": "NWS", "win": "Tide over ceiling", "wcls": "skip", "face": "3–6 ft (SRF), long lulls at 15s"}, {"h": 18, "tide": 4.04, "wind": "W ~4 kt", "wind_src": "NWS", "win": "Tide over ceiling", "wcls": "skip", "face": "3–6 ft (SRF), long lulls at 15s"}, {"h": 19, "tide": 3.59, "wind": "Calm", "wind_src": "NWS", "win": "Dark", "wcls": "skip", "face": "3–6 ft (SRF), long lulls at 15s"}, {"h": 20, "tide": 2.94, "wind": "Calm", "wind_src": "NWS", "win": "Dark", "wcls": "skip", "face": "3–6 ft (SRF), long lulls at 15s"}, {"h": 21, "tide": 2.17, "wind": "Calm", "wind_src": "NWS", "win": "Dark", "wcls": "skip", "face": "3–6 ft (SRF), long lulls at 15s"}, {"h": 22, "tide": 1.45, "wind": "Calm", "wind_src": "NWS", "win": "Dark", "wcls": "skip", "face": "3–6 ft (SRF), long lulls at 15s"}, {"h": 23, "tide": 0.92, "wind": "Calm", "wind_src": "NWS", "win": "Dark", "wcls": "skip", "face": "3–6 ft (SRF), long lulls at 15s"}];
+  var slider = document.getElementById('scrubSlider');
+  var play = document.getElementById('scrubPlayhead');
+  function fmtHour(h){
+    var ap = h >= 12 ? 'p' : 'a';
+    var hr = h % 12; if (hr === 0) hr = 12;
+    return hr + ':00' + ap;
+  }
+  function apply(h){
+    var d = HOURS[h] || HOURS[0];
+    document.getElementById('scrubTime').textContent = fmtHour(h);
+    document.getElementById('scrubTide').textContent = d.tide.toFixed(1) + ' ft tide';
+    document.getElementById('scrubWind').textContent = d.wind + ' · ' + d.wind_src;
+    var w = document.getElementById('scrubWin');
+    w.textContent = d.win;
+    w.className = 'chip ' + d.wcls;
+    document.getElementById('scrubFace').textContent = d.face;
+    if (play) {
+      var x = (h / 23) * 360;
+      play.setAttribute('x1', x);
+      play.setAttribute('x2', x);
+      var dot = document.getElementById('scrubDot');
+      if (dot) {
+        dot.setAttribute('cx', x);
+        var mn = 0.87, mx = 4.21;
+        var y = 8 + (mx - d.tide) / (mx - mn) * 56;
+        dot.setAttribute('cy', y);
+      }
+    }
+  }
+  if (slider) {
+    slider.addEventListener('input', function(){ apply(+slider.value); });
+    apply(+slider.value);
+  }
+  var chart = document.querySelector('.scrub-chart');
+  function hourFromX(el, clientX){
+    var r = el.getBoundingClientRect();
+    if (!r.width) return 0;
+    var t = (clientX - r.left) / r.width;
+    return Math.max(0, Math.min(23, Math.round(t * 23)));
+  }
+  function setHour(h){
+    h = Math.max(0, Math.min(23, h|0));
+    if (slider) slider.value = String(h);
+    apply(h);
+  }
+  if (chart) {
+    chart.addEventListener('pointerdown', function(e){
+      e.preventDefault();
+      try { chart.setPointerCapture(e.pointerId); } catch (err) {}
+      setHour(hourFromX(chart, e.clientX));
+    });
+    chart.addEventListener('pointermove', function(e){
+      if (e.pointerType === 'mouse' && !(e.buttons & 1)) return;
+      e.preventDefault();
+      setHour(hourFromX(chart, e.clientX));
+    });
+  }
+  var btn = document.getElementById('shareBtn');
+  if (btn) {
+    btn.addEventListener('click', function(){
+      var shareText = btn.getAttribute('data-share-text') || "Gerry Bot Cowabunga Report";
+      var data = {title: "Gerry Bot Cowabunga Report", text: shareText, url: SHARE_URL};
+      if (navigator.share) {
+        navigator.share(data).catch(function(){});
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(SHARE_URL).then(function(){
+          btn.textContent = 'Copied';
+          setTimeout(function(){ btn.textContent = 'Share'; }, 1500);
+        });
+      } else {
+        prompt('Copy share URL', SHARE_URL);
+      }
+    });
+  }
+})();
+</script>
+<script>
+/* Fallback if finalize_page.py did not run (see SITE.md → Design 2026-10-15) */
+(function(){
+  var w=document.createTreeWalker(document.querySelector('main')||document.body,NodeFilter.SHOW_TEXT),x; while((x=w.nextNode())){ if(x.nodeValue.indexOf('%%RATING_')>-1) x.nodeValue=x.nodeValue.replace(/%%RATING_[A-Z]+%%/g,''); }
+  var p=document.getElementById('paddleBy');
+  if(p && p.textContent.indexOf('%%')>-1){
+    var m=(document.getElementById('gpWindow')||{}).textContent||'';
+    var t=m.match(/(\d\d?)(?::(\d\d))?\s*([ap])?\s*[–-]/);
+    p.textContent=t?(t[1]+':'+(t[2]||'00')):'—';
+  }
+})();
+</script>
+</body>
+</html>
