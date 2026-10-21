@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gerry Bot Cowabunga Report · Weekly · Wed Oct 21 → Tue Oct 27</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@400;600&family=Shrikhand&display=swap" rel="stylesheet">
+<!-- Design: Claude Design redesign 2026-10-15 (design/redesign-extracted.html). Placeholders filled by the 6:45a routine; see SITE.md. -->
+<style>
+  :root{
+    --sand:#F2E8D5; --paper:#FBF5EA; --ink:#22201C; --muted:#5B544A; --body:#4A443B;
+    --amber:#E9A23B; --orange:#DD6E2C; --rust:#B9442B; --teal:#12464F; --teal2:#3E6F76;
+    --mint:#CFE0DC; --line:#D8C9AE; --tan:#E4D6BD; --go:#1F7A6E;
+    --disp:'Shrikhand',Georgia,serif; --sans:'Archivo',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  html,body{overflow-x:hidden}
+  body{margin:0;background:var(--sand);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;
+    padding-bottom:env(safe-area-inset-bottom,0px)}
+  a{color:var(--rust)}
+  details summary::-webkit-details-marker{display:none}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
+  .mono{font-family:var(--mono)}
+  .kick{font-family:var(--mono);font-size:12px;letter-spacing:2px;color:var(--rust);text-transform:uppercase}
+  .wide{font-family:var(--sans);font-stretch:125%;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+  h2.disp{margin:0;font-family:var(--disp);font-weight:400;font-size:clamp(32px,4.4vw,54px);line-height:1}
+
+  /* header + toggle */
+  .top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px;padding-top:22px}
+  .brandmark{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap}
+  .wordmark{font-family:var(--disp);font-size:clamp(42px,7vw,76px);line-height:.9;color:var(--rust);letter-spacing:-.5px}
+  .bm-sub{display:flex;flex-direction:column;gap:3px;padding-bottom:6px}
+  .bm-sub .a{font-stretch:125%;font-weight:800;font-size:13px;letter-spacing:3px}
+  .bm-sub .b{font-family:var(--mono);font-size:11px;letter-spacing:1px;color:var(--muted)}
+  .top-r{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-bottom:6px}
+  .dt{font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted);text-transform:uppercase}
+  .viewnav{display:flex;gap:4px;padding:4px;border:2px solid var(--ink);border-radius:999px;background:var(--sand)}
+  .viewnav a{display:flex;align-items:center;justify-content:center;min-height:40px;text-decoration:none;border-radius:999px;padding:8px 18px;
+    font-stretch:125%;font-weight:800;font-size:12px;letter-spacing:2px;color:var(--ink);text-transform:uppercase;-webkit-tap-highlight-color:transparent}
+  .viewnav a.on{background:var(--ink);color:var(--sand)}
+  .stripes{display:flex;flex-direction:column;gap:4px;margin-top:16px}
+  .stripes i{display:block;height:9px}
+  .stripes i:nth-child(1),.fstripes i:nth-child(1){background:var(--amber)}
+  .stripes i:nth-child(2),.fstripes i:nth-child(2){background:var(--orange)}
+  .stripes i:nth-child(3),.fstripes i:nth-child(3){background:var(--rust)}
+  .stripes i:nth-child(4),.fstripes i:nth-child(4){background:var(--teal)}
+
+    color:#F2E8D5;background:rgba(34,32,28,.66);padding:3px 7px;border-radius:8px}
+
+  main{display:flex;flex-direction:column;gap:clamp(36px,6vw,56px);padding-bottom:40px}
+  .src-details{border-top:3px solid var(--ink);padding-top:14px}
+  .src-details summary{cursor:pointer;list-style:none;font-family:var(--mono);font-size:12px;letter-spacing:2px;color:var(--muted);min-height:32px}
+  .src-details .src{margin:12px 0 0;font-family:var(--mono);font-size:12px;line-height:1.7;color:var(--body);overflow-wrap:anywhere}
+
+  /* three-column foot (skip / gotchas / home stretch) */
+  .trio{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px}
+  .trio > div{display:flex;flex-direction:column;gap:12px;padding-top:16px;border-top:6px solid var(--rust)}
+  .trio h3{margin:0;font-stretch:125%;font-weight:900;font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--rust)}
+  .trio p{margin:0;font-size:15px;line-height:1.55}
+  .trio .warn{border-top-color:var(--amber)} .trio .warn h3{color:#9A6A12}
+  .trio .home{border-top-color:var(--teal)} .trio .home h3{color:var(--teal)}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  .chips span{padding:5px 10px;border-radius:999px;background:var(--teal);color:var(--sand);font-size:13px;font-weight:700}
+  .chips.not span{background:none;border:2px solid #C9BBA2;color:var(--muted);font-weight:400}
+  .chips.not span.lbl{border:0;padding:5px 2px;font-family:var(--mono);font-size:11px;letter-spacing:1px}
+
+  footer{padding-bottom:30px;display:flex;flex-direction:column;gap:12px}
+  .fstripes{display:flex;gap:4px} .fstripes i{flex:1;height:6px;display:block}
+  .frow{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;align-items:center}
+  .frow .wm{font-family:var(--disp);font-size:26px;color:var(--rust)}
+  .frow .bn{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+
+
+  @media (max-width:560px){
+    .top{padding-top:14px}
+    .top-r{width:100%;justify-content:space-between}
+    .viewnav{flex:1;max-width:260px} .viewnav a{flex:1}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation:none !important;transition:none !important;scroll-behavior:auto !important}
+  }
+  @media print{
+    @page{margin:0}
+    html,body{background:#F2E8D5}
+    body{padding:8mm 0 0}
+    .plan{break-inside:avoid;box-shadow:none}
+    .hero{grid-template-columns:1.25fr 1fr !important;padding-top:20px !important}
+    .water,.scrub .hd,.where h2{break-after:avoid}
+    .say{font-size:56px}
+    .maplink,.sharelink{display:none !important}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;animation:none !important}
+    .spot,.near-card,article.day,.sbar,.teach,.quiver,.tcard{break-inside:avoid}
+    .src-details[open] summary ~ *, .src-details .src{display:block}
+  }
+  .hero{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(24px,4vw,36px);align-items:center;padding-top:clamp(24px,5vw,44px)}
+  .hero-l{display:flex;flex-direction:column;gap:16px;min-width:0}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase}
+  .say{margin:0;font-family:var(--disp);font-weight:400;font-size:clamp(34px,6vw,78px);line-height:1;text-wrap:balance;overflow-wrap:anywhere}
+  .whisper{margin:0;font-size:17px;line-height:1.5;max-width:46ch;color:var(--body)}
+  .whisper em{font-style:normal;font-weight:800;color:var(--teal)}
+  .badge-row{display:flex;flex-wrap:wrap;gap:8px}
+  .badge{font-family:var(--mono);font-size:11px;letter-spacing:1px;padding:5px 10px;border-radius:999px;border:2px solid var(--ink);text-transform:uppercase}
+  .badge.live{background:var(--go);border-color:var(--go);color:var(--sand)}
+  .badge.fcst{background:var(--paper)}
+
+  .sec-h{break-after:avoid;margin:0 0 16px;font-family:var(--disp);font-weight:400;font-size:clamp(30px,4vw,50px);line-height:1}
+  .sec-h .hint{font-family:var(--mono);font-size:11px;letter-spacing:1px;color:var(--muted);margin-left:8px;vertical-align:middle;text-transform:uppercase}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;letter-spacing:1px;color:var(--muted);margin:12px 0 0}
+  .legend span{display:flex;align-items:center;gap:6px} .legend i{width:10px;height:10px;border-radius:50%;display:block}
+
+  /* Next 5 days strip — 3+2 on phone, 5 across when wide */
+  .near-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+  .near-card{grid-column:span 2;display:flex;flex-direction:column;gap:8px;text-decoration:none;color:var(--ink);background:var(--paper);
+    border:3px solid var(--ink);border-radius:20px;padding:12px;min-width:0;-webkit-tap-highlight-color:transparent}
+  .near-card:nth-child(4){grid-column:2 / span 2}
+  .near-card:nth-child(5){grid-column:4 / span 2}
+  .near-card.today{background:var(--ink);color:var(--sand)}
+  .near-card.peak{background:var(--amber)}
+  .nc-top{display:flex;justify-content:space-between;align-items:center;gap:4px}
+  .nc-day{font-weight:900;font-size:15px} .nc-date{font-family:var(--mono);font-size:11px;opacity:.75}
+  .nc-flag{font-family:var(--mono);font-size:9px;letter-spacing:1px;padding:2px 6px;border-radius:999px;text-transform:uppercase;font-weight:600}
+  .nc-flag.live{background:var(--go);color:var(--sand)}
+  .nc-flag.fcst{border:1.5px solid currentColor}
+  .nc-bar-wrap{position:relative;height:88px;border-radius:10px;background:#EDE2CC;display:flex;align-items:flex-end;justify-content:center;padding:28px 30% 0}
+  .near-card.today .nc-bar-wrap{background:#3A3631}
+  .near-card.peak .nc-bar-wrap{background:#F3C77A}
+  .nc-bar{width:100%;height:calc(var(--sz,40) * 1%);min-height:6px;border-radius:6px 6px 0 0;background:var(--teal)}
+  .near-card.today .nc-bar{background:var(--amber)} .near-card.peak .nc-bar{background:var(--rust)}
+  .near-card.soft .nc-bar{background:#8A8172}
+  .nc-size{font-family:var(--disp);font-size:24px;line-height:1;white-space:nowrap}
+  .nc-size span{font-family:var(--mono);font-size:10px}
+  .nc-bar-wrap .nc-size{position:absolute;left:8px;top:5px;font-size:18px;z-index:1}
+  .nc-board{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:600}
+  .nc-board .glyph{width:10px;height:10px;border-radius:3px;background:var(--rust)}
+  .nc-board.anvil .glyph{background:var(--teal)} .nc-board.tw .glyph,.nc-board.log .glyph{background:var(--amber)}
+  .nc-meta{margin:0;font-weight:800;font-size:13px;line-height:1.2}
+  .nc-when{font-size:12px;line-height:1.3;opacity:.8}
+  .nc-conf{display:flex;align-items:center;gap:3px;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase}
+  .nc-conf i{width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.25;display:block}
+  .nc-conf.hi i{background:var(--go);opacity:1} .nc-conf.med i:nth-child(-n+2){background:var(--amber);opacity:1} .nc-conf.lo i:first-child{background:var(--rust);opacity:1}
+  .nc-conf .clbl{margin-left:3px}
+
+  /* home stretch */
+  .lockey{display:flex;flex-direction:column;gap:10px;padding-top:16px;border-top:6px solid var(--teal)}
+  .lockey h3{margin:0;font-stretch:125%;font-weight:900;font-size:20px;letter-spacing:3px;color:var(--teal)}
+
+  /* seven-day cards */
+  .days{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px}
+  article.day{border:3px solid var(--ink);border-radius:24px;background:var(--paper);padding:clamp(16px,3vw,26px);display:flex;flex-direction:column;gap:14px;scroll-margin-top:16px}
+  article.day.today{box-shadow:6px 6px 0 var(--amber)}
+  article.day.peak{box-shadow:6px 6px 0 var(--rust)}
+  article.day.far{opacity:.82}
+  .day-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .day-name{font-family:var(--disp);font-size:32px;line-height:1} .day-date{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .day-spark{display:inline-block;width:40px;height:10px;border-radius:999px;background:var(--tan);margin-left:8px;overflow:hidden;vertical-align:middle}
+  .day-spark i{display:block;height:100%;width:calc(var(--sz,0) * 1%);background:var(--teal)}
+  .conf{padding:5px 11px;border-radius:999px;color:var(--sand);font-stretch:125%;font-weight:800;font-size:10px;letter-spacing:2px;text-transform:uppercase;background:var(--rust)}
+  .conf.hi{background:var(--go)} .conf.med{background:var(--amber);color:var(--ink)}
+  .call-line{font-size:clamp(16px,1.8vw,19px);font-weight:600;line-height:1.4}
+  .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .cell{background:var(--teal);color:var(--sand);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;min-width:0}
+  .cell .lbl{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--amber);text-transform:uppercase}
+  .cell .val{font-weight:800;font-size:14px;line-height:1.25;overflow-wrap:anywhere}
+  .vibe{margin:0;font-family:var(--mono);font-size:12px;line-height:1.65;color:var(--body)}
+  .src-tag{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--rust);text-transform:uppercase}
+
+  .readhow{border:3px solid var(--ink);border-radius:24px;background:var(--amber);padding:clamp(18px,3vw,28px)}
+  .readhow summary{cursor:pointer;list-style:none;font-family:var(--mono);font-size:12px;letter-spacing:2px;text-transform:uppercase;min-height:28px}
+  .readhow .note{margin:12px 0 0;font-size:15px;line-height:1.55}
+  .footnote{margin:0;font-size:15px;line-height:1.55;color:var(--body);max-width:80ch}
+  .footnote b{font-family:var(--disp);font-weight:400;font-size:22px;color:var(--ink);display:block;margin-bottom:4px}
+  @media (min-width:760px){
+    .near-strip{grid-template-columns:repeat(5,1fr)}
+    .near-card,.near-card:nth-child(4),.near-card:nth-child(5){grid-column:auto}
+  }
+  @media (max-width:480px){
+    .near-strip{gap:6px} .near-card{padding:8px;border-width:2px;border-radius:14px}
+    .nc-bar-wrap{height:70px;padding:22px 24% 0} .nc-bar-wrap .nc-size{font-size:14px;left:5px}
+    .nc-meta{font-size:11px} .nc-when{font-size:10px}
+    .grid3{gap:5px} .cell{padding:8px} .cell .val{font-size:12px} .cell .lbl{font-size:9px;letter-spacing:1px}
+  }
+
+
+  /* Game plan card (replaces photo slot — Alec 2026-10-15: no photos) */
+  .plan{border:3px solid var(--ink);border-radius:24px;background:var(--teal);color:var(--sand);padding:clamp(18px,3vw,28px);display:flex;flex-direction:column;gap:14px;box-shadow:8px 8px 0 var(--amber);min-width:0;margin:0 8px 12px 0}
+  .plan .k{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--amber);text-transform:uppercase}
+  .plan .spot{font-family:var(--disp);font-size:clamp(30px,4vw,44px);line-height:1;padding:0;border:0;display:block}
+  .plan .row{display:grid;grid-template-columns:92px minmax(0,1fr);gap:10px;align-items:baseline;border-top:2px solid var(--teal2);padding-top:10px}
+  .plan .row b{font-weight:800;font-size:16px;line-height:1.35}
+  .plan .tip{background:var(--amber);color:var(--ink);border-radius:16px;padding:12px 14px;font-weight:700;font-size:15px;line-height:1.4}
+  .plan .note{margin:0;font-size:15px;line-height:1.5;color:var(--mint)}
+  .plan .note b{color:var(--sand)}
+  .plan .tl span{display:inline-block;margin:0 10px 2px 0;font-family:var(--mono);font-size:13px;font-weight:600}
+
+  /* 1–10 rating strip (rating.py, filled by finalize_page.py) */
+  .ratings .rhead{margin:-4px 0 12px;font-size:15px;line-height:1.45;color:var(--body)} .ratings .rhead b{color:var(--ink)}
+  .rstrip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+  .rday{border:3px solid var(--ink);border-radius:16px;background:var(--paper);padding:8px 6px;display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center;min-width:0;position:relative}
+  .rday .rd{font-weight:900;font-size:13px;display:flex;flex-direction:column;align-items:center;gap:2px}
+  .rday .rt{font-family:var(--mono);font-size:8px;letter-spacing:1px;font-weight:600;padding:1px 5px;border-radius:999px;border:1.5px solid currentColor}
+  .rday .rn{font-family:var(--disp);font-size:clamp(26px,5vw,44px);line-height:1;color:var(--rc);white-space:nowrap}
+  .rday.fcst .rn{opacity:.78}
+  .rday .rb{font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--muted)}
+  .rday .rw{font-size:10px;line-height:1.25;color:var(--body)}
+  .rday.best{background:var(--rc);color:var(--sand);box-shadow:4px 4px 0 var(--amber)}
+  .rday.best .rn,.rday.best .rb,.rday.best .rw{color:var(--sand);opacity:1}
+  .rday .rbadge{font-family:var(--mono);font-size:8px;letter-spacing:1px;font-weight:600;background:var(--amber);color:var(--ink);border-radius:999px;padding:2px 6px}
+  .rday.na{opacity:.6} .rday.na .rn{color:var(--muted)}
+  .rlegend{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+  .rlegend span{display:flex;align-items:center;gap:6px} .rlegend span::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--rc)}
+  @media (max-width:560px){
+    .rstrip{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .rday .rw{display:none}
+  }
+  @media print{ .rday,.ratings{break-inside:avoid} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brandmark">
+      <div class="wordmark">Cowabunga</div>
+      <div class="bm-sub"><div class="a">SURF REPORT</div><div class="b">by GERRY BOT · NORTH PB</div></div>
+    </div>
+    <div class="top-r">
+      <div class="dt">Wed Oct 21 → Tue Oct 27</div>
+      <nav class="viewnav" aria-label="Brief view">
+        <a href="/">Daily</a>
+        <a class="on" href="/weekly.html" aria-current="page">Weekly</a>
+      </nav>
+    </div>
+  </header>
+  <div class="stripes" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+  <main>
+  <section class="hero" aria-label="Week ahead">
+    <div class="hero-l">
+      <div class="kick">Week ahead</div>
+      <div class="eyebrow">Gerry Bot Cowabunga Report · Wed Oct 21 → Tue Oct 27 · North PB</div>
+      <h1 class="say">S swell holds today, then storms tonight and Thursday.<br>Clean N wind Friday, softer and sunny for the weekend.</h1>
+      <p class="whisper">Today 3–5 ft at Little Point with light wind until 11a. Thursday SRF 2–4 ft with rain and S wind. <em>Inferno</em> today and Friday on the S 15-second swell, Anvil for the mixed, softer weekend; watch water quality for about 72 hours after the rain.</p>
+      <div class="badge-row">
+        <span class="badge fcst">FCST = forecast</span>
+        <span class="badge live">LIVE = buoy/tide</span>
+      </div>
+    </div>
+    <aside class="plan" aria-label="This week's plays">
+      <div class="k">This week · make the most of it</div>
+      <div class="spot">Wed · Little Point 9–11:30a</div>
+      <div class="row"><span class="k">Today</span><b id="gpWindow">Inferno 72 · SRF 3–5 ft</b></div>
+      <p class="note"><b>Daily wins the day.</b> Weekly refreshes every morning with the Daily brief. The La Jolla gauge is running about 1.6 ft over the table, so Little Point stays fuller than the tide table says. Showers and thunderstorms tonight through Thursday; watch water quality for about 72 hours after rain.</p>
+    </aside>
+  </section>
+
+  <section class="ratings" aria-label="Surf rating by day"><h2 class="sec-h">Rating · 1–10</h2><p class="rhead"><b>Best: Wed &amp; Fri · 7/10 — up to “Good — worth rearranging your morning”.</b> Better than 29% of 38 logged PB/La Jolla mornings since 09/12. Forecast days show a range (lower confidence further out).</p><div class="rstrip"><div class="rday best" style="--rc:#1F7A6E"><div class="rd">Wed 21<span class="rt">LIVE</span></div><div class="rn">7</div><div class="rb">GOOD</div><span class="rbadge">★ BEST</span><div class="rw">capped by swell 3.3 ft</div></div><div class="rday fcst" style="--rc:#B9442B"><div class="rd">Thu 22<span class="rt">FCST</span></div><div class="rn">3–4</div><div class="rb">POOR</div><div class="rw">capped by onshore 10 kt</div></div><div class="rday best fcst" style="--rc:#1F7A6E"><div class="rd">Fri 23<span class="rt">FCST</span></div><div class="rn">6–7</div><div class="rb">GOOD</div><span class="rbadge">★ BEST</span><div class="rw">capped by swell 3.0 ft</div></div><div class="rday fcst" style="--rc:#1F7A6E"><div class="rd">Sat 24<span class="rt">FCST</span></div><div class="rn">5–7</div><div class="rb">GOOD</div><div class="rw">capped by swell 3.0 ft</div></div><div class="rday fcst" style="--rc:#E9A23B"><div class="rd">Sun 25<span class="rt">FCST</span></div><div class="rn">3–5</div><div class="rb">FAIR</div><div class="rw">capped by swell 2.0 ft</div></div><div class="rday na"><div class="rd">Mon 26<span class="rt">FCST</span></div><div class="rn">—</div><div class="rb">NO DATA</div><div class="rw">no marine forecast yet</div></div><div class="rday na"><div class="rd">Tue 27<span class="rt">FCST</span></div><div class="rn">—</div><div class="rb">NO DATA</div><div class="rw">no marine forecast yet</div></div></div><div class="rlegend" aria-label="Rating scale"><span style="--rc:#8A8172">1–2 flat/blown</span><span style="--rc:#B9442B">3–4 poor</span><span style="--rc:#E9A23B">5–6 fair/fun</span><span style="--rc:#1F7A6E">7–8 good</span><span style="--rc:#12464F">9–10 epic/rare</span></div></section>
+
+  <div>
+  <section class="near-viz" aria-label="Next 5 days at a glance">
+<h2 class="sec-h">Next 5 days <span class="hint">tap a card for detail</span></h2>
+<div class="near-strip">
+      <a class="near-card today peak" href="#day-wed">
+        <div class="nc-top">
+          <div><span class="nc-day">Wed</span> <span class="nc-date">21</span></div>
+          <span class="nc-flag live">LIVE</span>
+        </div>
+        <div class="nc-bar-wrap" title="LIVE: SRF 3-5 ft · 46258 Hs 3.6 ft @ 15s SSW · light E wind to 8a, S 10 mph from 11a">
+          <div class="nc-bar" style="--sz:83" aria-hidden="true"></div>
+          <div class="nc-size">3–5<span>′</span></div>
+        </div>
+        <div class="nc-board inferno"><span class="glyph" aria-hidden="true"></span>Inferno</div>
+        <p class="nc-meta">Little Point</p>
+        <div class="nc-when">9–11:30a</div>
+        <div class="nc-conf hi" title="High confidence" aria-label="Confidence high"><i></i><i></i><i></i><span class="clbl">hi</span></div>
+      </a>
+      <a class="near-card soft" href="#day-thu">
+        <div class="nc-top">
+          <div><span class="nc-day">Thu</span> <span class="nc-date">22</span></div>
+          <span class="nc-flag fcst">FCST</span>
+        </div>
+        <div class="nc-bar-wrap" title="SRF Thu: 2-4 ft · PZZ740 S 10 kt becoming W · S 3 @ 15s + W 2 @ 12s · showers, slight chance tstms PM">
+          <div class="nc-bar" style="--sz:67" aria-hidden="true"></div>
+          <div class="nc-size">2–4<span>′</span></div>
+        </div>
+        <div class="nc-board inferno"><span class="glyph" aria-hidden="true"></span>Inferno</div>
+        <p class="nc-meta">Skip or quick LP</p>
+        <div class="nc-when">Mid-morning, rain</div>
+        <div class="nc-conf hi" title="High confidence" aria-label="Confidence high"><i></i><i></i><i></i><span class="clbl">hi</span></div>
+      </a>
+      <a class="near-card" href="#day-fri">
+        <div class="nc-top">
+          <div><span class="nc-day">Fri</span> <span class="nc-date">23</span></div>
+          <span class="nc-flag fcst">FCST</span>
+        </div>
+        <div class="nc-bar-wrap" title="PZZ740 Fri: N 10 kt becoming W · seas 3-4 · S 3 @ 15s + W 1 @ 11s · mostly sunny">
+          <div class="nc-bar" style="--sz:67" aria-hidden="true"></div>
+          <div class="nc-size">3–4<span>′ seas</span></div>
+        </div>
+        <div class="nc-board inferno"><span class="glyph" aria-hidden="true"></span>Inferno</div>
+        <p class="nc-meta">Little Point</p>
+        <div class="nc-when">Late morning drain</div>
+        <div class="nc-conf med" title="Medium confidence" aria-label="Confidence medium"><i></i><i></i><i></i><span class="clbl">med</span></div>
+      </a>
+      <a class="near-card" href="#day-sat">
+        <div class="nc-top">
+          <div><span class="nc-day">Sat</span> <span class="nc-date">24</span></div>
+          <span class="nc-flag fcst">FCST</span>
+        </div>
+        <div class="nc-bar-wrap" title="PZZ740 Sat: variable under 10 kt becoming NW · seas 4 · W 3 @ 7s + S 3 @ 15s · sunny">
+          <div class="nc-bar" style="--sz:67" aria-hidden="true"></div>
+          <div class="nc-size">4<span>′ seas</span></div>
+        </div>
+        <div class="nc-board anvil"><span class="glyph" aria-hidden="true"></span>Anvil</div>
+        <p class="nc-meta">LOCAL default</p>
+        <div class="nc-when">Morning, light wind</div>
+        <div class="nc-conf lo" title="Low confidence" aria-label="Confidence low"><i></i><i></i><i></i><span class="clbl">lo</span></div>
+      </a>
+      <a class="near-card" href="#day-sun">
+        <div class="nc-top">
+          <div><span class="nc-day">Sun</span> <span class="nc-date">25</span></div>
+          <span class="nc-flag fcst">FCST</span>
+        </div>
+        <div class="nc-bar-wrap" title="PZZ740 Sun: variable under 10 kt becoming NW 10 · seas 3-4 · W 2 @ 11s + S 2 @ 14s · sunny">
+          <div class="nc-bar" style="--sz:67" aria-hidden="true"></div>
+          <div class="nc-size">3–4<span>′ seas</span></div>
+        </div>
+        <div class="nc-board anvil"><span class="glyph" aria-hidden="true"></span>Anvil</div>
+        <p class="nc-meta">LOCAL default</p>
+        <div class="nc-when">Morning, light wind</div>
+        <div class="nc-conf lo" title="Low confidence" aria-label="Confidence low"><i></i><i></i><i></i><span class="clbl">lo</span></div>
+      </a>
+    </div>
+  </section>
+  <div class="legend" aria-label="Confidence key"><span><i style="background:#1F7A6E"></i>HI</span><span><i style="background:#E9A23B"></i>MED</span><span><i style="background:#B9442B"></i>LO CONFIDENCE</span></div>
+  </div>
+
+  <section aria-label="Seven-day calls">
+    <h2 class="sec-h">Seven-day calls</h2>
+    <div class="days">
+    <article class="day today peak near" id="day-wed">
+    <div class="day-top">
+      <div>
+        <span class="day-name">Wed</span>
+        <span class="day-date"> · Oct 21</span>
+        <span class="day-spark" style="--sz:83" title="SRF 3-5 ft" aria-hidden="true"><i></i></span>
+      </div>
+      <span class="conf hi">LIVE · high</span>
+    </div>
+    <div class="call-line">Live now. The S groundswell is holding at 15 seconds with light E wind early and S 10 mph from 11a. Little Point once the high drains, from about 9, and out before the afternoon storms.</div>
+    <div class="grid3">
+      <div class="cell"><div class="lbl">When</div><div class="val">9–11:30a</div></div>
+      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL · Little Point</div></div>
+      <div class="cell"><div class="lbl">Board</div><div class="val board">Inferno 72</div></div>
+    </div>
+    <p class="vibe">Live 46258 Hs 3.6 ft @ 15s, MWD 205° (5:26a) · spectrum SwH 3.0–3.6 ft @ 14–15s overnight, steady · NWS SRF 3–5 ft · high rips · mixed 200° + 270° · LJAC1 calm @ 5a · NWS E 5 mph to 8a, S 10 mph 11a–4p, showers and thunderstorms from 5p · tide H 4.4 @ 7:17a, L 2.0 @ 12:58p, H 4.5 @ 6:42p · gauge ~+1.6 ft (obs 5.6 @ 5:48a) · water ~73°F. Flip to Daily for the full brief.</p>
+    <span class="src-tag">LIVE buoy/tide + Daily brief</span>
+  </article>
+  <article class="day near soft" id="day-thu">
+    <div class="day-top">
+      <div>
+        <span class="day-name">Thu</span>
+        <span class="day-date"> · Oct 22</span>
+        <span class="day-spark" style="--sz:67" title="SRF 2-4 ft" aria-hidden="true"><i></i></span>
+      </div>
+      <span class="conf hi">forecast · high</span>
+    </div>
+    <div class="call-line">Soggy. The S 15-second swell is still there at 2–4 ft, but S wind overnight, rain showers in the morning and a slight chance of thunderstorms in the afternoon. Water quality is poor after rain; a quick Little Point session on the drain is the only play if the wind lays down.</div>
+    <div class="grid3">
+      <div class="cell"><div class="lbl">When</div><div class="val">Mid-morning, if dry</div></div>
+      <div class="cell"><div class="lbl">Where</div><div class="val">Skip or quick LP</div></div>
+      <div class="cell"><div class="lbl">Board</div><div class="val board">Inferno 72</div></div>
+    </div>
+    <p class="vibe">NWS SRF Thu: 2–4 ft · moderate rips · mixed 200° + 280°. PZZ740 tonight S 10–15 kt, showers, slight chance tstms. Thu: S 10 kt becoming W afternoon · seas 3–5 · W 2 ft @ 4s + W 2 ft @ 12s + S 3 ft @ 15s · showers AM, showers likely with slight chance tstms PM. Tide H 4.8 @ 7:34a, L 1.4 @ 1:33p. NWS grid rain showers, 68°F, W 5–10 mph.</p>
+    <span class="src-tag">FORECAST · SRF Thu + PZZ740 + tides</span>
+  </article>
+  <article class="day near" id="day-fri">
+    <div class="day-top">
+      <div>
+        <span class="day-name">Fri</span>
+        <span class="day-date"> · Oct 23</span>
+        <span class="day-spark" style="--sz:67" title="seas 3-4" aria-hidden="true"><i></i></span>
+      </div>
+      <span class="conf med">forecast · medium</span>
+    </div>
+    <div class="call-line">Clearing with N wind in the morning and the S 15-second swell holding at 3 ft in the forecast, with the W windswell gone. Cleanest day of the next few, but still inside the roughly 72-hour water-quality window after Wednesday and Thursday rain. A 5.3 ft high at 7:53a means Little Point works late morning on the drain.</div>
+    <div class="grid3">
+      <div class="cell"><div class="lbl">When</div><div class="val">Late morning, N wind</div></div>
+      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL · Little Point</div></div>
+      <div class="cell"><div class="lbl">Board</div><div class="val board">Inferno 72</div></div>
+    </div>
+    <p class="vibe">PZZ740 Fri: N 10 kt becoming W afternoon · seas 3–4 · N 1 ft @ 4s + W 1 ft @ 11s + S 3 ft @ 15s. Tide H 5.3 @ 7:53a, L 0.7 @ 2:09p. NWS grid mostly sunny, 69°F, NW 5–10 mph.</p>
+    <span class="src-tag">FORECAST · PZZ740 + grid</span>
+  </article>
+  <article class="day near" id="day-sat">
+    <div class="day-top">
+      <div>
+        <span class="day-name">Sat</span>
+        <span class="day-date"> · Oct 24</span>
+        <span class="day-spark" style="--sz:67" title="seas 4" aria-hidden="true"><i></i></span>
+      </div>
+      <span class="conf lo">forecast · low</span>
+    </div>
+    <div class="call-line">Sunny and light wind early, with a short-period W windswell mixed into the S 15-second swell. Softer and more mixed, so a sandbar day. A big 5.7 ft high at 8:16a, so wait for the drain.</div>
+    <div class="grid3">
+      <div class="cell"><div class="lbl">When</div><div class="val">Mid-morning, light wind</div></div>
+      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL default</div></div>
+      <div class="cell"><div class="lbl">Board</div><div class="val board">Anvil twin</div></div>
+    </div>
+    <p class="vibe">PZZ740 Sat: variable under 10 kt becoming NW 10 kt afternoon · seas 4 · NE 1 ft @ 4s + W 3 ft @ 7s + S 3 ft @ 15s. Tide H 5.7 @ 8:16a, L 0.1 @ 2:47p. NWS grid sunny, 73°F, N 5–10 mph.</p>
+    <span class="src-tag">FORECAST · PZZ740 + grid</span>
+  </article>
+  <article class="day near" id="day-sun">
+    <div class="day-top">
+      <div>
+        <span class="day-name">Sun</span>
+        <span class="day-date"> · Oct 25</span>
+        <span class="day-spark" style="--sz:67" title="seas 3-4" aria-hidden="true"><i></i></span>
+      </div>
+      <span class="conf lo">forecast · low</span>
+    </div>
+    <div class="call-line">Sunny with light wind early. Both swells drop to 2 ft (W @ 11s, S @ 14s), so smaller and softer. A 6.1 ft high at 8:43a and a minus tide in the afternoon.</div>
+    <div class="grid3">
+      <div class="cell"><div class="lbl">When</div><div class="val">Mid-morning, light wind</div></div>
+      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL default</div></div>
+      <div class="cell"><div class="lbl">Board</div><div class="val board">Anvil twin</div></div>
+    </div>
+    <p class="vibe">PZZ740 Sun: variable under 10 kt becoming NW 10 kt afternoon · seas 3–4 · NE 1 ft @ 4s + W 2 ft @ 11s + S 2 ft @ 14s. Tide H 6.1 @ 8:43a, L −0.4 @ 3:27p. NWS grid sunny, 76°F, N 5–10 mph.</p>
+    <span class="src-tag">FORECAST · PZZ740 + grid</span>
+  </article>
+  <article class="day far" id="day-mon">
+    <div class="day-top">
+      <div>
+        <span class="day-name">Mon</span>
+        <span class="day-date"> · Oct 26</span>
+        <span class="day-spark" style="--sz:0" title="no surf height yet" aria-hidden="true"><i></i></span>
+      </div>
+      <span class="conf lo">forecast · low</span>
+    </div>
+    <div class="call-line">Sunny with light NW wind. No marine detail yet; a 6.4 ft morning high and a minus tide late afternoon.</div>
+    <div class="grid3">
+      <div class="cell"><div class="lbl">When</div><div class="val">TBD live</div></div>
+      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL default</div></div>
+      <div class="cell"><div class="lbl">Board</div><div class="val board">TBD</div></div>
+    </div>
+    <span class="src-tag">FORECAST · grid sunny 77°F · NW 5–10 mph · Sun night PZZ740 W 2 ft @ 11s + S 2 ft @ 14s · H 6.4 @ 9:13a · L −0.7 @ 4:10p</span>
+  </article>
+  <article class="day far" id="day-tue">
+    <div class="day-top">
+      <div>
+        <span class="day-name">Tue</span>
+        <span class="day-date"> · Oct 27</span>
+        <span class="day-spark" style="--sz:0" title="no surf height yet" aria-hidden="true"><i></i></span>
+      </div>
+      <span class="conf lo">forecast · low</span>
+    </div>
+    <div class="call-line">Mostly sunny with light N wind. No marine detail yet; a 6.6 ft morning high and the deepest minus tide of the week late afternoon.</div>
+    <div class="grid3">
+      <div class="cell"><div class="lbl">When</div><div class="val">TBD live</div></div>
+      <div class="cell"><div class="lbl">Where</div><div class="val">LOCAL default</div></div>
+      <div class="cell"><div class="lbl">Board</div><div class="val board">TBD</div></div>
+    </div>
+    <span class="src-tag">FORECAST · grid mostly sunny 76°F · N 5–10 mph · no marine detail past Sun night · H 6.6 @ 9:47a · L −0.8 @ 4:57p</span>
+  </article>
+    </div>
+  </section>
+
+  <section class="trio" aria-label="How to read and home stretch">
+    <details class="readhow">
+      <summary>▸ How to read · board logic</summary>
+      <p class="note"><b>Sources:</b> NWS SRF + PZZ740 + tide 9410230 + buoy trend — numbers quoted, never invented. Confidence drops past the first few days. Flip to <b>Daily</b> for the AM live call.<br><br><b>Boards:</b> Inferno 72 = punchy/clean chest+ · Anvil twin = soft waist–chest sandbar · TW log = soft small / mush. Dual CALL only when BEST is outside LOCAL.</p>
+    </details>
+    <div class="home lockey" aria-label="Which spots are local">
+      <h3>Home stretch</h3>
+      <div class="chips"><span>PB north</span><span>Drive</span><span>Tourmo</span><span>PB Point</span><span>Calumet</span><span>Little Point</span></div>
+      <div class="chips not"><span class="lbl">DRIVE ONLY WHEN BEST</span><span>Cliffs</span><span>OB</span><span>Scripps</span><span>Blacks</span><span>North County</span></div>
+    </div>
+  </section>
+
+
+  <details class="src-details">
+    <summary>▸ SOURCES</summary>
+    <p class="src">FORECAST: NWS SRF SGX issued 1:08a PT Wed Oct 21 (SD coast Wed–Thu detail) · NWS CWF/PZZ740 issued 2:23a PT Wed Oct 21 (through Sun night) · NOAA CO-OPS 9410230 hi/lo predictions Oct 21–28 · NWS grid SGX PB wind/wx through Tue · LIVE trend: NDBC 46258.spec 12:56–5:26a PT Wed: Hs 1.1–1.3 m (3.6–4.3 ft) / SwH 0.9–1.1 m (3.0–3.6 ft) @ 14.3–15.4s S–SSW, MWD 187–219°, steady · Surfline Premium not used · quiver_pick.py + expert judgment for BOARD labels · Weekly viz = next 5 days, see WEEKLY.md</p>
+  </details>
+  </main>
+
+  <footer>
+    <div class="fstripes" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="frow"><div class="wm">Cowabunga</div><div class="bn brand">Gerry Bot Cowabunga Report · North PB</div></div>
+  </footer>
+</div>
+
+<script>
+/* Fallback if finalize_page.py did not run (see SITE.md → Design 2026-10-15) */
+(function(){
+  var w=document.createTreeWalker(document.querySelector('main')||document.body,NodeFilter.SHOW_TEXT),x; while((x=w.nextNode())){ if(x.nodeValue.indexOf('%%RATING_')>-1) x.nodeValue=x.nodeValue.replace(/%%RATING_[A-Z]+%%/g,''); }
+  var p=document.getElementById('paddleBy');
+  if(p && p.textContent.indexOf('%%')>-1){
+    var m=(document.getElementById('gpWindow')||{}).textContent||'';
+    var t=m.match(/(\d\d?)(?::(\d\d))?\s*([ap])?\s*[–-]/);
+    p.textContent=t?(t[1]+':'+(t[2]||'00')):'—';
+  }
+})();
+</script>
+</body>
+</html>
